@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Network Highlighting Animation</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background-color: transparent;
+      }
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        margin-top: 0;
+      }
+      h1 {
+        text-align: left;
+        color: #2c3e50;
+        margin-bottom: -130px;
+        font-size: 18px;
+        font-weight: 600;
+        font-family: Arial, sans-serif;
+      }
+      .chart-container {
+        position: relative;
+        height: 1000px;
+        margin: -40px 0 10px 0;
+      }
+      #network-container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        Student Contact Frequency Network in Classroom - Highlighting the Two Largest Communities
+      </h1>
+      <div class="chart-container">
+        <div id="network-container"></div>
+      </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      // --- 配置参数 ---
+      const HIGHLIGHTED_GROUPS = [3, 4] // 定义需要高亮的社群
+      const colorMap = {
+        0: '#E2D874',
+        1: '#B4C7DE',
+        2: '#4592BB',
+        3: '#5AB3A6',
+        4: '#CA6E72',
+        5: '#CFBAAF',
+        6: '#E7A6AC',
+        7: '#B2789E',
+        8: '#F29076',
+      }
+      const GREY_COLOR = 'rgb(180, 180, 180)'
+
+      // --- D3 初始化 ---
+      const svg = d3
+        .select('#network-container')
+        .append('svg')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('preserveAspectRatio', 'xMinYMid meet')
+      const linkGroup = svg.append('g').attr('class', 'links')
+      const nodeGroup = svg.append('g').attr('class', 'nodes')
+
+      let globalNodes = null
+      let globalProxyToProxyEdges = []
+      let globalOtherEdges = []
+
+      // --- 数据加载 ---
+      Promise.all([
+        d3.csv('network_nodes.csv'),
+        d3.csv('network_routed.csv'),
+        d3.json('layout_positions.json').catch(() => null),
+      ])
+        .then(([nodes, edges, layoutJson]) => {
+          if (!nodes || nodes.length === 0) {
+            console.error('Unable to load node data from network_nodes.csv')
+            return
+          }
+          if (!edges || edges.length === 0) {
+            console.error('Unable to load edge data from network_routed.csv')
+            return
+          }
+
+          // --- 数据预处理 ---
+          nodes.forEach((d) => {
+            d.group = +d.group
+          })
+          edges.forEach((d) => {
+            d.weight = +d.weight
+          })
+          const nodeMap = new Map(nodes.map((node) => [node.id, node]))
+
+          const sqrtWeights = edges.map((e) => Math.sqrt(e.weight || 1))
+          const minSW = Math.min(...sqrtWeights),
+            maxSW = Math.max(...sqrtWeights)
+          function scaleWidth(w) {
+            const minWidth = 1,
+              maxWidth = 30
+            const sw = Math.sqrt(w || 1)
+            if (maxSW === minSW) return (minWidth + maxWidth) / 2
+            return minWidth + ((sw - minSW) / (maxSW - minSW)) * (maxWidth - minWidth)
+          }
+
+          const proxyToProxyEdges = []
+          const otherEdges = []
+          edges.forEach((edge) => {
+            const sourceNode = nodeMap.get(edge.source)
+            const targetNode = nodeMap.get(edge.target)
+            if (!sourceNode || !targetNode) return
+            edge.sourceNode = sourceNode
+            edge.targetNode = targetNode
+            edge.strokeWidth = scaleWidth(edge.weight)
+            const g1 = sourceNode.group,
+              g2 = targetNode.group
+            const sourceIsProxy = String(edge.source).startsWith('proxy_')
+            const targetIsProxy = String(edge.target).startsWith('proxy_')
+
+            if (sourceIsProxy && targetIsProxy) {
+              edge.strokeColor = '#CFBAAF'
+              edge.isDashed = false
+              proxyToProxyEdges.push(edge)
+            } else {
+              if (sourceIsProxy !== targetIsProxy) {
+                const communityGroup = sourceIsProxy ? g2 : g1
+                edge.strokeColor = colorMap[communityGroup] || '#9BAEBC'
+                edge.isDashed = true
+              } else {
+                edge.strokeColor = g1 === g2 && colorMap[g1] ? colorMap[g1] : '#9BAEBC'
+                edge.isDashed = false
+              }
+              otherEdges.push(edge)
+            }
+          })
+
+          // --- 核心绘图与布局函数 ---
+          function drawInitialStateAndAnimate(nodeData) {
+            let minX = Infinity,
+              maxX = -Infinity,
+              minY = Infinity,
+              maxY = -Infinity
+            nodeData.forEach((node) => {
+              minX = Math.min(minX, node.x)
+              maxX = Math.max(maxX, node.x)
+              minY = Math.min(minY, node.y)
+              maxY = Math.max(maxY, node.y)
+            })
+            const viewBoxWidth = maxX - minX
+            const viewBoxHeight = maxY - minY
+            const paddingX = viewBoxWidth * 0.25
+            const paddingY = viewBoxHeight * 0.25
+            const viewBox = `${minX - paddingX} ${minY - paddingY} ${viewBoxWidth + paddingX * 2} ${viewBoxHeight + paddingY * 2}`
+            svg.attr('viewBox', viewBox)
+
+            // --- ✨ 步骤 1: 绘制初始的全灰状态 (图 1) ---
+            linkGroup.selectAll('line').remove()
+            nodeGroup.selectAll('g').remove()
+
+            // 绘制所有边为灰色
+            const allEdges = [...proxyToProxyEdges, ...otherEdges]
+            linkGroup
+              .selectAll('line')
+              .data(allEdges)
+              .enter()
+              .append('line')
+              .attr('x1', (d) => d.sourceNode.x)
+              .attr('y1', (d) => d.sourceNode.y)
+              .attr('x2', (d) => d.targetNode.x)
+              .attr('y2', (d) => d.targetNode.y)
+              .style('stroke-width', (d) => d.strokeWidth)
+              .attr('stroke-dasharray', (d) => (d.isDashed ? '8, 4' : 'none'))
+              .style('stroke', GREY_COLOR) // 初始为灰色
+              .style('opacity', 0.6) // 初始透明度
+
+            // 绘制所有节点为灰色
+            const node = nodeGroup
+              .selectAll('g')
+              .data(nodeData)
+              .enter()
+              .append('g')
+              .attr('transform', (d) => `translate(${d.x},${d.y})`)
+            node
+              .append('circle')
+              .attr('r', 15)
+              .style('stroke', '#fff')
+              .style('stroke-width', 2)
+              .style('fill', GREY_COLOR) // 初始为灰色
+            node
+              .append('text')
+              .text((d) => d.id)
+              .attr('dx', 18)
+              .attr('dy', 5)
+              .style('fill', '#333')
+              .style('font-size', '14px')
+              .style('pointer-events', 'none')
+
+            // --- ✨ 步骤 2: 注释掉自动动画，改为通过外部触发 ---
+            // runHighlightAnimation()
+          }
+
+          // --- 布局逻辑 ---
+          if (layoutJson) {
+            nodes.forEach((node) => {
+              if (layoutJson[node.id]) {
+                node.x = layoutJson[node.id].x
+                node.y = layoutJson[node.id].y
+              }
+            })
+            globalNodes = nodes
+            drawInitialStateAndAnimate(nodes)
+          } else {
+            console.log('Layout file not found, calculating...')
+            const simulation = d3
+              .forceSimulation(nodes)
+              .force(
+                'link',
+                d3
+                  .forceLink(edges)
+                  .id((d) => d.id)
+                  .distance(100),
+              )
+              .force('charge', d3.forceManyBody().strength(-150))
+              .force('center', d3.forceCenter(900, 700))
+              .stop()
+
+            for (let i = 0; i < 300; ++i) {
+              simulation.tick()
+            }
+
+            const positions = {}
+            nodes.forEach((node) => {
+              positions[node.id] = { x: node.x, y: node.y }
+            })
+            const blob = new Blob([JSON.stringify(positions, null, 2)], {
+              type: 'application/json',
+            })
+            const a = document.createElement('a')
+            a.href = URL.createObjectURL(blob)
+            a.download = 'layout_positions.json'
+            a.click()
+            URL.revokeObjectURL(a.href)
+            console.log('Layout generated and downloaded.')
+
+            globalNodes = nodes
+            drawInitialStateAndAnimate(nodes)
+          }
+
+          globalProxyToProxyEdges = proxyToProxyEdges
+          globalOtherEdges = otherEdges
+
+          // --- 动画逻辑 ---
+          function runHighlightAnimation() {
+            const highlightDuration = 1200
+
+            // 节点高亮
+            nodeGroup
+              .selectAll('circle')
+              .filter((d) => HIGHLIGHTED_GROUPS.includes(d.group))
+              .transition()
+              .duration(highlightDuration)
+              .style('fill', (d) => colorMap[d.group])
+              .attr('r', 25)
+
+            // 边高亮
+            linkGroup
+              .selectAll('line')
+              .filter(
+                (d) =>
+                  HIGHLIGHTED_GROUPS.includes(d.sourceNode.group) ||
+                  HIGHLIGHTED_GROUPS.includes(d.targetNode.group),
+              )
+              .transition()
+              .duration(highlightDuration)
+              .style('stroke', (d) => d.strokeColor)
+              .style('opacity', 1)
+
+            // 非高亮边变暗
+            linkGroup
+              .selectAll('line')
+              .filter(
+                (d) =>
+                  !HIGHLIGHTED_GROUPS.includes(d.sourceNode.group) &&
+                  !HIGHLIGHTED_GROUPS.includes(d.targetNode.group),
+              )
+              .transition()
+              .duration(highlightDuration)
+              .style('opacity', 0.1)
+          }
+
+          // --- 暴露给外部的动画触发函数 ---
+          window.playHighlightAnimation = function () {
+            // 重置所有节点和边为灰色
+            nodeGroup.selectAll('circle').interrupt().attr('r', 15).style('fill', GREY_COLOR)
+
+            linkGroup
+              .selectAll('line')
+              .interrupt()
+              .style('stroke', GREY_COLOR)
+              .style('opacity', 0.6)
+
+            // 延迟后触发高亮动画
+            setTimeout(() => {
+              runHighlightAnimation()
+            }, 100)
+          }
+        })
+        .catch((error) => {
+          console.error('Error loading or drawing network:', error)
+        })
+    </script>
+  </body>
+</html>

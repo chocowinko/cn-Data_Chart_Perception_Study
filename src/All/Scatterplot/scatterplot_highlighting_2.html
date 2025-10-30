@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>2016年日平均PM2.5与臭氧浓度散点图</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            max-width: none;
+            margin: 0;
+            background-color: white;
+            padding: 5px;
+            border-radius: 0;
+            box-shadow: none;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 5px;
+            flex-shrink: 0;
+        }
+        .header h1 {
+            font-size: 18px;
+            margin: 30px 0;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        #plotDiv {
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+        }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2016年北京昌平区日平均PM2.5与臭氧浓度散点图</h1>
+        </div>
+        
+        <div id="plotDiv"></div>
+    </div>
+
+    <script>
+        // Parse CSV data
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.replace(/"/g, ''));
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const row = {};
+                headers.forEach((header, index) => {
+                    let value = values[index];
+                    if (value !== undefined) {
+                        // Remove quotes and convert to appropriate type
+                        value = value.replace(/"/g, '');
+                        row[header] = value;
+                    }
+                });
+                data.push(row);
+            }
+            
+            return data;
+        }
+        
+        // Process data for 2016 daily averages
+        function processData(rawData) {
+            // Filter for 2016 data and group by date
+            const dailyData = {};
+            
+            rawData.forEach(row => {
+                const year = parseInt(row.year);
+                if (year === 2016) {
+                    const month = row.month.toString().padStart(2, '0');
+                    const day = row.day.toString().padStart(2, '0');
+                    const date = `${year}-${month}-${day}`;
+                    
+                    if (!dailyData[date]) {
+                        dailyData[date] = {
+                            pm25_sum: 0,
+                            o3_sum: 0,
+                            count: 0,
+                            year: year,
+                            month: parseInt(row.month),
+                            day: parseInt(row.day)
+                        };
+                    }
+                    
+                    const pm25 = parseFloat(row['PM2.5']);
+                    const o3 = parseFloat(row['O3']);
+                    
+                    if (!isNaN(pm25) && !isNaN(o3) && pm25 > 0 && o3 > 0) {
+                        dailyData[date].pm25_sum += pm25;
+                        dailyData[date].o3_sum += o3;
+                        dailyData[date].count++;
+                    }
+                }
+            });
+            
+            // Calculate averages and prepare final data (filter for even days only)
+            const processedData = [];
+            Object.keys(dailyData).forEach(date => {
+                const day = dailyData[date];
+                if (day.count > 0 && day.day % 2 === 0) { // Only include even-numbered days
+                    const dateObj = new Date(day.year, day.month - 1, day.day);
+                    processedData.push({
+                        date: date,
+                        pm25: day.pm25_sum / day.count,
+                        o3: day.o3_sum / day.count,
+                        dayOfYear: Math.floor((dateObj - new Date(day.year, 0, 0)) / (1000 * 60 * 60 * 24)),
+                        monthName: dateObj.toLocaleDateString('zh-CN', { month: 'long' })
+                    });
+                }
+            });
+            
+            return processedData.sort((a, b) => new Date(a.date) - new Date(b.date));
+        }
+        
+        // Calculate correlation coefficient
+        function calculateCorrelation(x, y) {
+            const n = x.length;
+            const sumX = x.reduce((a, b) => a + b, 0);
+            const sumY = y.reduce((a, b) => a + b, 0);
+            const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
+            const sumXX = x.reduce((sum, xi) => sum + xi * xi, 0);
+            const sumYY = y.reduce((sum, yi) => sum + yi * yi, 0);
+            
+            const correlation = (n * sumXY - sumX * sumY) / 
+                Math.sqrt((n * sumXX - sumX * sumX) * (n * sumYY - sumY * sumY));
+            
+            return correlation;
+        }
+        
+        // Create the plot with highlighting animation
+        function createPlot(dailyData) {
+            // Extract arrays for plotting
+            const o3Values = dailyData.map(d => d.o3);
+            const pm25Values = dailyData.map(d => d.pm25);
+            const monthValues = dailyData.map(d => new Date(d.date).getMonth() + 1);
+            
+            // Define month colors
+            const monthColors = [
+                '#E0C4C4', '#4FAFAF', '#A8C8A8', '#F0906F', '#9BC49C', '#448CB3',
+                '#898888', '#E63946', '#F4E4BC', '#7FB3D3', '#D4AF37', '#BEA4B4'
+            ];
+            
+            // Create separate traces for each month - initially all light gray
+            const scatterTraces = [];
+            for (let month = 1; month <= 12; month++) {
+                const monthIndices = monthValues.map((m, i) => m === month ? i : -1).filter(i => i !== -1);
+                if (monthIndices.length > 0) {
+                    scatterTraces.push({
+                        x: monthIndices.map(i => o3Values[i]),
+                        y: monthIndices.map(i => pm25Values[i]),
+                        mode: 'markers',
+                        type: 'scatter',
+                        name: `${month}月`,
+                        marker: {
+                            size: 8,
+                            color: '#F1F1F1', // 浅灰色
+                            opacity: 1.0
+                        },
+                        hoverinfo: 'none'
+                    });
+                }
+            }
+            
+            // Layout
+            const layout = {
+                xaxis: {
+                    title: '日平均臭氧浓度 (μg/m³)',
+                    title_font: { size: 14 },
+                    showgrid: true,
+                    gridwidth: 1,
+                    gridcolor: 'rgba(128,128,128,0.2)'
+                },
+                yaxis: {
+                    title: '日平均PM2.5浓度 (μg/m³)',
+                    title_font: { size: 14 },
+                    showgrid: true,
+                    gridwidth: 1,
+                    gridcolor: 'rgba(128,128,128,0.2)'
+                },
+                plot_bgcolor: 'white',
+                paper_bgcolor: 'white',
+                font: { family: 'Arial, sans-serif' },
+                hovermode: false,
+                showlegend: true,
+                legend: {
+                    orientation: 'v',
+                    x: 1.02,
+                    y: 1,
+                    bgcolor: 'rgba(255,255,255,0.8)',
+                    bordercolor: 'rgba(0,0,0,0.2)',
+                    borderwidth: 1
+                },
+                margin: {
+                    t: 30,
+                    b: 100,
+                    l: 100,
+                    r: 120
+                }
+            };
+            
+            // Configuration
+            const config = {
+                displayModeBar: false,
+                staticPlot: true
+            };
+            
+            // Create initial plot with all gray points
+            Plotly.newPlot('plotDiv', scatterTraces, layout, config);
+            
+            // After 1 second, highlight high PM2.5 concentration points (top 10%)
+            setTimeout(() => {
+                // Calculate 90th percentile (top 10%) threshold
+                const sortedPM25 = [...pm25Values].sort((a, b) => a - b);
+                const percentileIndex = Math.floor(sortedPM25.length * 0.90);
+                const pm25Threshold = sortedPM25[percentileIndex];
+                
+                // Find indices of high PM2.5 concentration points
+                const highPM25Indices = [];
+                pm25Values.forEach((pm25, i) => {
+                    if (pm25 > pm25Threshold) {
+                        highPM25Indices.push(i);
+                    }
+                });
+                
+                if (highPM25Indices.length > 0) {
+                    // Group high PM2.5 points by month for proper coloring
+                    const highlightedTraces = [];
+                    
+                    for (let month = 1; month <= 12; month++) {
+                        const monthHighPM25Indices = highPM25Indices.filter(i => monthValues[i] === month);
+                        
+                        if (monthHighPM25Indices.length > 0) {
+                            highlightedTraces.push({
+                                x: monthHighPM25Indices.map(i => o3Values[i]),
+                                y: monthHighPM25Indices.map(i => pm25Values[i]),
+                                mode: 'markers',
+                                type: 'scatter',
+                                name: `${month}月 (高PM2.5)`,
+                                marker: {
+                                    size: 8,
+                                    color: monthColors[month - 1],
+                                    opacity: 1.0
+                                },
+                                hoverinfo: 'none'
+                            });
+                        }
+                    }
+                    
+                    // Add highlighted traces on top
+                    Plotly.addTraces('plotDiv', highlightedTraces);
+                }
+            }, 1000);
+        }
+        
+        // Load and process data
+        async function loadData() {
+            try {
+                const response = await fetch('PRSA_Data_Changping_20130301-20170228.csv');
+                const csvText = await response.text();
+                const rawData = parseCSV(csvText);
+                const dailyData = processData(rawData);
+                createPlot(dailyData);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('statsDiv').innerHTML = '<div class="loading">数据加载失败，请检查CSV文件是否存在</div>';
+                document.getElementById('plotDiv').innerHTML = '<div class="loading">无法生成图表</div>';
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>

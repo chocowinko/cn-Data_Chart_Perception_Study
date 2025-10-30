@@ -1,0 +1,75 @@
+continent,sub_region,country,year,emissions
+Asia,Central Asia,Kazakhstan,2023,16.721973
+Asia,Central Asia,Kyrgyzstan,2023,2.9513316
+Asia,Central Asia,Tajikistan,2023,2.04069
+Asia,Central Asia,Turkmenistan,2023,16.621178
+Asia,Central Asia,Uzbekistan,2023,5.853957
+Asia,Eastern Asia,China,2023,9.819389
+Asia,Eastern Asia,Japan,2023,8.294703
+Asia,Eastern Asia,Mongolia,2023,27.010798
+Asia,South-eastern Asia,Cambodia,2023,4.763503
+Asia,South-eastern Asia,Indonesia,2023,6.834751
+Asia,South-eastern Asia,Malaysia,2023,11.832582
+Asia,South-eastern Asia,Myanmar,2023,3.7941139
+Asia,South-eastern Asia,Philippines,2023,2.475422
+Asia,South-eastern Asia,Singapore,2023,9.839174
+Asia,South-eastern Asia,Thailand,2023,5.813638
+Asia,Southern Asia,Bangladesh,2023,1.5374016
+Asia,Southern Asia,Bhutan,2023,6.3624034
+Asia,Southern Asia,India,2023,2.9181125
+Asia,Southern Asia,Maldives,2023,4.3927684
+Asia,Southern Asia,Nepal,2023,2.0587952
+Asia,Southern Asia,Pakistan,2023,2.108759
+Asia,Southern Asia,Sri Lanka,2023,1.792095
+Asia,Western Asia,Armenia,2023,3.5969958
+Asia,Western Asia,Azerbaijan,2023,7.474677
+Asia,Western Asia,Bahrain,2023,42.68389
+Asia,Western Asia,Cyprus,2023,7.2273912
+Asia,Western Asia,Georgia,2023,3.1328762
+Asia,Western Asia,Iraq,2023,7.5054784
+Asia,Western Asia,Israel,2023,8.773405
+Asia,Western Asia,Jordan,2023,2.567009
+Asia,Western Asia,Kuwait,2023,29.004393
+Asia,Western Asia,Lebanon,2023,4.338192
+Asia,Western Asia,Oman,2023,24.342335
+Asia,Western Asia,Qatar,2023,68.46848
+Asia,Western Asia,Saudi Arabia,2023,26.427397
+Asia,Western Asia,United Arab Emirates,2023,26.672436
+Asia,Western Asia,Yemen,2023,0.7916695
+Europe,Eastern Europe,Belarus,2023,11.741748
+Europe,Eastern Europe,Bulgaria,2023,6.8618026
+Europe,Eastern Europe,Czechia,2023,8.500456
+Europe,Eastern Europe,Hungary,2023,5.0902004
+Europe,Eastern Europe,Poland,2023,8.743342
+Europe,Eastern Europe,Romania,2023,5.0648956
+Europe,Eastern Europe,Slovakia,2023,4.93981
+Europe,Eastern Europe,Ukraine,2023,5.6962376
+Europe,Northern Europe,Denmark,2023,7.6021976
+Europe,Northern Europe,Estonia,2023,9.784591
+Europe,Northern Europe,Finland,2023,14.141146
+Europe,Northern Europe,Iceland,2023,12.923014
+Europe,Northern Europe,Ireland,2023,11.095656
+Europe,Northern Europe,Latvia,2023,7.599865
+Europe,Northern Europe,Lithuania,2023,7.954381
+Europe,Northern Europe,Norway,2023,12.848431
+Europe,Northern Europe,Sweden,2023,6.6562734
+Europe,Southern Europe,Albania,2023,2.729141
+Europe,Southern Europe,Andorra,2023,6.608698
+Europe,Southern Europe,Bosnia and Herzegovina,2023,8.411481
+Europe,Southern Europe,Croatia,2023,5.4408545
+Europe,Southern Europe,Greece,2023,6.127219
+Europe,Southern Europe,Italy,2023,6.0840797
+Europe,Southern Europe,Malta,2023,3.7450125
+Europe,Southern Europe,Montenegro,2023,2.4353302
+Europe,Southern Europe,North Macedonia,2023,4.868938
+Europe,Southern Europe,Portugal,2023,5.190643
+Europe,Southern Europe,Serbia,2023,6.7752805
+Europe,Southern Europe,Slovenia,2023,7.784693
+Europe,Southern Europe,Spain,2023,5.8987417
+Europe,Western Europe,Austria,2023,7.4421196
+Europe,Western Europe,Belgium,2023,9.120019
+Europe,Western Europe,France,2023,5.031376
+Europe,Western Europe,Germany,2023,7.931879
+Europe,Western Europe,Liechtenstein,2023,4.369119
+Europe,Western Europe,Luxembourg,2023,11.862686
+Europe,Western Europe,Switzerland,2023,4.515535

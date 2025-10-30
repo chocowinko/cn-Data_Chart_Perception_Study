@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Superstore 2016 vs 2017 Treemap with Staging</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 10px;
+        background-color: transparent;
+        text-align: center;
+      }
+      h1 {
+        display: none;
+      }
+      #main-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 10px;
+        max-width: 100%;
+        width: 100%;
+        margin: 15px 0 0 0;
+      }
+      .chart-container {
+        border: 1px solid #ccc;
+        background: #fff;
+        padding: 5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .tooltip {
+        position: absolute;
+        text-align: center;
+        padding: 8px 12px;
+        font-size: 12px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .tooltip-format {
+        font-weight: bold;
+      }
+      .node-label {
+        fill: white;
+        font-size: 8px;
+        pointer-events: none;
+      }
+      .parent-label {
+        fill: white;
+        font-size: 12px;
+        font-weight: bold;
+        pointer-events: none;
+      }
+
+      /* Animation stages */
+      .category-group {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+      .subcategory-group {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+      .segment-group {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .stage-1 .category-group {
+        opacity: 1;
+      }
+      .stage-2 .subcategory-group {
+        opacity: 1;
+      }
+      .stage-3 .segment-group {
+        opacity: 1;
+      }
+
+      /* Step-by-step customer segment appearance */
+      .segment-consumer {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+      .segment-corporate {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+      .segment-home-office {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .stage-3a .segment-consumer {
+        opacity: 1;
+      }
+      .stage-3b .segment-corporate {
+        opacity: 1;
+      }
+      .stage-3c .segment-home-office {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Superstore Sales Treemap</h1>
+    <div id="main-container">
+      <div>
+        <h3>2016 Sales Data</h3>
+        <div class="chart-container">
+          <div id="chart-1"></div>
+        </div>
+      </div>
+      <div>
+        <h3>2017 Sales Data</h3>
+        <div class="chart-container">
+          <div id="chart-2"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      const chartWidth = 700
+      const chartHeight = 900
+
+      // 创建一个通用的Tooltip
+      const tooltip = d3.select('body').append('div').attr('class', 'tooltip')
+
+      // 自定义颜色映射 - 产品类别
+      const colorMap = {
+        Technology: {
+          base: '#66c2a5',
+          level1: '#8dd3c7',
+          level2: '#b3e5d1',
+        },
+        Furniture: {
+          base: '#fc8d62',
+          level1: '#fda085',
+          level2: '#feb3a8',
+        },
+        'Office Supplies': {
+          base: '#8da0cb',
+          level1: '#a6b3d4',
+          level2: '#bfc6dd',
+        },
+      }
+
+      const getColor = (category, depth) => {
+        const colors = colorMap[category]
+        if (!colors) return '#cccccc'
+
+        switch (depth) {
+          case 1:
+            return colors.base // Category - 基础色
+          case 2:
+            return colors.level1 // Sub-Category - 中等深度
+          case 3:
+            return colors.level2 // Segment - 最深色
+          default:
+            return colors.base
+        }
+      }
+
+      let allSvgs = []
+
+      // --- 核心绘图函数 ---
+      function createTreemap(containerId, dataForYear, year) {
+        const svg = d3
+          .select(containerId)
+          .append('svg')
+          .attr('width', chartWidth)
+          .attr('height', chartHeight)
+          .attr('class', 'stage-initial') // 初始状态不显示任何内容
+
+        allSvgs.push(svg)
+
+        // 按产品类别分组数据
+        const hierarchyData = { name: 'root', children: [] }
+        const groupedByCategory = d3.group(dataForYear, (d) => d.category)
+
+        groupedByCategory.forEach((categoryData, category) => {
+          const categoryNode = { name: category, children: [] }
+
+          // 按子类别分组
+          const groupedBySubCategory = d3.group(categoryData, (d) => d.subCategory)
+
+          groupedBySubCategory.forEach((subCategoryData, subCategory) => {
+            const subCategoryNode = { name: subCategory, children: [] }
+
+            // 按客户类型聚合销售额
+            const segmentSales = d3.rollup(
+              subCategoryData,
+              (v) => d3.sum(v, (d) => d.sales),
+              (d) => d.segment,
+            )
+
+            segmentSales.forEach((sales, segment) => {
+              subCategoryNode.children.push({
+                name: segment,
+                value: sales,
+                segment: segment,
+                category: category,
+                subCategory: subCategory,
+              })
+            })
+
+            categoryNode.children.push(subCategoryNode)
+          })
+
+          hierarchyData.children.push(categoryNode)
+        })
+
+        const root = d3
+          .hierarchy(hierarchyData)
+          .sum((d) => d.value)
+          .sort((a, b) => b.value - a.value)
+
+        d3.treemap().size([chartWidth, chartHeight]).padding(1).paddingTop(20)(root)
+
+        const cell = svg
+          .selectAll('g')
+          .data(root.descendants())
+          .enter()
+          .append('g')
+          .attr('class', (d) => {
+            if (d.depth === 1) return 'category-group'
+            if (d.depth === 2) return 'subcategory-group'
+            if (d.depth === 3) {
+              const segment = d.data.segment
+              let segmentClass = 'segment-group'
+              if (segment === 'Consumer') segmentClass += ' segment-consumer'
+              else if (segment === 'Corporate') segmentClass += ' segment-corporate'
+              else if (segment === 'Home Office') segmentClass += ' segment-home-office'
+              return segmentClass
+            }
+            return ''
+          })
+          .attr('transform', (d) => `translate(${d.x0},${d.y0})`)
+
+        cell
+          .append('rect')
+          .attr('width', (d) => d.x1 - d.x0)
+          .attr('height', (d) => d.y1 - d.y0)
+          .attr('fill', (d) => {
+            if (!d.depth) return 'transparent'
+            // 根据产品类别着色
+            const category =
+              d.depth === 1
+                ? d.data.name
+                : d.depth === 2
+                  ? d.parent.data.name
+                  : d.parent.parent.data.name
+            return getColor(category, d.depth)
+          })
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 1)
+
+        // 产品类别标签 (depth 1)
+        cell
+          .filter((d) => d.depth === 1)
+          .append('text')
+          .attr('class', 'parent-label')
+          .attr('x', 4)
+          .attr('y', 13)
+          .text((d) => d.data.name)
+
+        // 子类别标签 (depth 2)
+        cell
+          .filter((d) => d.depth === 2)
+          .append('text')
+          .attr('class', 'node-label')
+          .attr('x', 4)
+          .attr('y', 13)
+          .text((d) => d.data.name)
+          .style('display', (d) => (d.x1 - d.x0 < 10 ? 'none' : 'inline'))
+
+        const leafCells = cell.filter((d) => !d.children)
+
+        // Add labels to leaf cells
+        leafCells.each(function (d) {
+          const group = d3.select(this)
+          const width = d.x1 - d.x0
+          const height = d.y1 - d.y0
+
+          // Add text for the segment name
+          const text = group
+            .append('text')
+            .attr('class', 'node-label')
+            .attr('x', 4)
+            .attr('y', 13)
+            .text(d.data.name)
+            .style('display', width < 30 ? 'none' : 'inline') // Hide if too small
+
+          // Add sales value
+          group
+            .append('text')
+            .attr('class', 'node-label')
+            .attr('x', 4)
+            .attr('y', 25)
+            .text(`$${d3.format(',.0f')(d.data.value)}`)
+            .style('display', width < 30 || height < 26 ? 'none' : 'inline')
+        })
+
+        leafCells
+          .on('mouseover', function (event, d) {
+            tooltip.style('opacity', 0.9)
+            tooltip
+              .html(
+                `<div class="tooltip-format">${d.data.category}</div>` +
+                  `<div>Sub-Category: ${d.data.subCategory}</div>` +
+                  `<div>Segment: ${d.data.segment}</div>` +
+                  `<div>Sales: $${d3.format(',.2f')(d.data.value)}</div>`,
+              )
+              .style('left', event.pageX + 10 + 'px')
+              .style('top', event.pageY - 28 + 'px')
+          })
+          .on('mouseout', function (d) {
+            tooltip.style('opacity', 0)
+          })
+      }
+
+      // 三阶段动画控制器
+      window.playStagingAnimation = function () {
+        allSvgs.forEach((svg) => {
+          // 重置到初始状态
+          svg.attr('class', 'stage-initial')
+
+          // 阶段1: 显示产品大类 (2秒)
+          setTimeout(() => {
+            svg.attr('class', 'stage-1')
+          }, 100)
+
+          // 阶段2: 显示子类别 (再2秒)
+          setTimeout(() => {
+            svg.attr('class', 'stage-1 stage-2')
+          }, 2100)
+
+          // 阶段3a: 显示Consumer客户类型 (再2秒) - 这是问题关注的阶段
+          setTimeout(() => {
+            svg.attr('class', 'stage-1 stage-2 stage-3a')
+          }, 4100)
+
+          // 阶段3b: 显示Corporate客户类型 (再2秒)
+          setTimeout(() => {
+            svg.attr('class', 'stage-1 stage-2 stage-3a stage-3b')
+          }, 6100)
+
+          // 阶段3c: 显示Home Office客户类型 (再2秒)
+          setTimeout(() => {
+            svg.attr('class', 'stage-1 stage-2 stage-3a stage-3b stage-3c')
+          }, 8100)
+        })
+      }
+
+      // --- 主逻辑：加载数据并为每个年份调用绘图函数 ---
+      d3.csv('Sample - Superstore.csv')
+        .then(function (data) {
+          // 清洗和预处理数据
+          const cleanData = data
+            .map((d) => ({
+              year: new Date(d['Order Date']).getFullYear(),
+              sales: +d.Sales,
+              segment: d.Segment,
+              category: d.Category,
+              subCategory: d['Sub-Category'],
+            }))
+            // 过滤掉不完整的数据，只保留2016和2017年
+            .filter(
+              (d) =>
+                d.year &&
+                d.sales &&
+                d.segment &&
+                d.category &&
+                d.subCategory &&
+                (d.year === 2016 || d.year === 2017),
+            )
+
+          // 分别处理两个年份的数据并绘图
+          const years = [
+            { id: '#chart-1', year: 2016 },
+            { id: '#chart-2', year: 2017 },
+          ]
+
+          years.forEach((y) => {
+            const yearData = cleanData.filter((d) => d.year === y.year)
+            createTreemap(y.id, yearData, y.year)
+          })
+        })
+        .catch(function (error) {
+          console.error('数据加载失败:', error)
+          document.querySelector('#main-container').innerHTML =
+            `<p style="color: red; text-align: center;">错误：无法加载数据文件 'Sample - Superstore.csv'。请确保文件存在。</p>`
+        })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Network Diagram</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background-color: transparent;
+      }
+      #network-container {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="network-container"></div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      const colorMap = {
+        0: '#E2D874',
+        1: '#B4C7DE',
+        2: '#4592BB',
+        3: '#5AB3A6',
+        4: '#CA6E72',
+        5: '#CFBAAF',
+        6: '#E7A6AC',
+        7: '#B2789E',
+        8: '#F29076',
+      }
+
+      const svg = d3
+        .select('#network-container')
+        .append('svg')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('preserveAspectRatio', 'xMinYMid meet')
+
+      const linkGroup = svg.append('g').attr('class', 'links')
+      const nodeGroup = svg.append('g').attr('class', 'nodes')
+
+      // --- 数据加载 ---
+      Promise.all([
+        d3.csv('network_nodes.csv'),
+        d3.csv('network_routed.csv'),
+        d3.json('layout_positions.json').catch(() => null),
+      ])
+        .then(([nodes, edges, layoutJson]) => {
+          if (!nodes || nodes.length === 0) {
+            console.error('Unable to load node data from network_nodes.csv')
+            return
+          }
+          if (!edges || edges.length === 0) {
+            console.error('Unable to load edge data from network_routed.csv')
+            return
+          }
+
+          // --- 数据预处理 ---
+          nodes.forEach((d) => {
+            d.group = +d.group
+          })
+          edges.forEach((d) => {
+            d.weight = +d.weight
+          })
+          const nodeMap = new Map(nodes.map((node) => [node.id, node]))
+
+          const sqrtWeights = edges.map((e) => Math.sqrt(e.weight || 1))
+          const minSW = Math.min(...sqrtWeights),
+            maxSW = Math.max(...sqrtWeights)
+          function scaleWidth(w) {
+            const minWidth = 1,
+              maxWidth = 30
+            const sw = Math.sqrt(w || 1)
+            if (maxSW === minSW) return (minWidth + maxWidth) / 2
+            return minWidth + ((sw - minSW) / (maxSW - minSW)) * (maxWidth - minWidth)
+          }
+
+          const proxyToProxyEdges = []
+          const otherEdges = []
+          edges.forEach((edge) => {
+            const sourceNode = nodeMap.get(edge.source)
+            const targetNode = nodeMap.get(edge.target)
+            if (!sourceNode || !targetNode) return
+            edge.sourceNode = sourceNode
+            edge.targetNode = targetNode
+            edge.strokeWidth = scaleWidth(edge.weight)
+            const g1 = sourceNode.group,
+              g2 = targetNode.group
+            const sourceIsProxy = String(edge.source).startsWith('proxy_')
+            const targetIsProxy = String(edge.target).startsWith('proxy_')
+
+            if (sourceIsProxy && targetIsProxy) {
+              edge.strokeColor = '#CFBAAF'
+              edge.isDashed = false
+              proxyToProxyEdges.push(edge)
+            } else {
+              if (sourceIsProxy !== targetIsProxy) {
+                const communityGroup = sourceIsProxy ? g2 : g1
+                edge.strokeColor = colorMap[communityGroup] || '#9BAEBC'
+                edge.isDashed = true
+              } else {
+                edge.strokeColor = g1 === g2 && colorMap[g1] ? colorMap[g1] : '#9BAEBC'
+                edge.isDashed = false
+              }
+              otherEdges.push(edge)
+            }
+          })
+
+          // 应用布局
+          if (layoutJson) {
+            nodes.forEach((node) => {
+              if (layoutJson[node.id]) {
+                node.x = layoutJson[node.id].x
+                node.y = layoutJson[node.id].y
+              }
+            })
+          }
+
+          drawStaticGraph(nodes, proxyToProxyEdges, otherEdges)
+        })
+        .catch((error) => {
+          console.error('Error loading or drawing network:', error)
+        })
+
+      function drawStaticGraph(nodeData, proxyToProxyEdges, otherEdges) {
+        let minX = Infinity,
+          maxX = -Infinity,
+          minY = Infinity,
+          maxY = -Infinity
+        nodeData.forEach((node) => {
+          minX = Math.min(minX, node.x)
+          maxX = Math.max(maxX, node.x)
+          minY = Math.min(minY, node.y)
+          maxY = Math.max(maxY, node.y)
+        })
+        const viewBoxWidth = maxX - minX
+        const viewBoxHeight = maxY - minY
+        const paddingX = viewBoxWidth * 0.25
+        const paddingY = viewBoxHeight * 0.25
+        const viewBox = `${minX - paddingX} ${minY - paddingY} ${viewBoxWidth + paddingX * 2} ${viewBoxHeight + paddingY * 2}`
+        svg.attr('viewBox', viewBox)
+
+        // 绘制所有边
+        const allEdges = [...proxyToProxyEdges, ...otherEdges]
+        linkGroup
+          .selectAll('line')
+          .data(allEdges)
+          .enter()
+          .append('line')
+          .attr('x1', (d) => d.sourceNode.x)
+          .attr('y1', (d) => d.sourceNode.y)
+          .attr('x2', (d) => d.targetNode.x)
+          .attr('y2', (d) => d.targetNode.y)
+          .style('stroke-width', (d) => d.strokeWidth)
+          .attr('stroke-dasharray', (d) => (d.isDashed ? '8, 4' : 'none'))
+          .style('stroke', (d) => d.strokeColor)
+          .style('opacity', 0.8)
+
+        // 绘制所有节点
+        const node = nodeGroup
+          .selectAll('g')
+          .data(nodeData)
+          .enter()
+          .append('g')
+          .attr('transform', (d) => `translate(${d.x},${d.y})`)
+
+        node
+          .append('circle')
+          .attr('r', 15)
+          .style('stroke', '#fff')
+          .style('stroke-width', 2)
+          .style('fill', (d) => colorMap[d.group] || '#999')
+
+        node
+          .append('text')
+          .text((d) => d.id)
+          .attr('dx', 18)
+          .attr('dy', 5)
+          .style('fill', '#333')
+          .style('font-size', '14px')
+          .style('pointer-events', 'none')
+      }
+    </script>
+  </body>
+</html>

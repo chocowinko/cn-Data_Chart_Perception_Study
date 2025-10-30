@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>英国能源流动系统（外部 CSV）</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <!-- 其余 CSS 保持不变 -->
+  <style>
+    /* 与之前完全一致，可保留 */
+  </style>
+</head>
+<body>
+  <div id="sankey-chart" style="width:100%;height:800px;"></div>
+
+  <script>
+    const chart = echarts.init(document.getElementById('sankey-chart'));
+
+    // 1. 拉取外部 CSV
+    fetch('energyzh.csv')
+      .then(res => res.text())
+      .then(csv => {
+        const lines = csv
+          .split(/\r?\n/)
+          .slice(1)                 // 跳过表头
+          .filter(Boolean);
+
+        const links = [];
+        const nodeSet = new Set();
+
+        lines.forEach(line => {
+          const [source, target, valueStr] = line.split(',');
+          const value = parseFloat(valueStr);
+          if (isNaN(value)) return;
+
+          links.push({ source, target, value });
+          nodeSet.add(source);
+          nodeSet.add(target);
+        });
+
+        const nodes = Array.from(nodeSet).map(name => ({ name }));
+        categorizeNodes(nodes);   // 与之前相同，给节点着色
+
+        const option = {
+          title: { text: '英国能源流动系统', left: 'center' },
+          tooltip: { trigger: 'item' },
+          series: [{
+            type: 'sankey',
+            layout: 'none',
+            emphasis: { focus: 'adjacency' },
+            data: nodes,
+            links: links,
+            label: { fontSize: 12, formatter: '{b}' },
+            lineStyle: { color: 'gradient', curveness: 0.5 }
+          }]
+        };
+
+        chart.setOption(option);
+      })
+      .catch(err => {
+        console.error('CSV 加载失败：', err);
+        chart.showLoading({ text: 'CSV 加载失败，请检查文件路径', color: '#f00' });
+      });
+
+    // 2. 节点着色函数（与之前一致）
+    function categorizeNodes(nodes) {
+      const colors = {
+        source: '#4299e1',   // 来源
+        process: '#48bb78',  // 转化
+        use: '#ed8936',      // 消耗
+        loss: '#f56565'      // 损耗
+      };
+      nodes.forEach(n => {
+        const name = n.name;
+        if (name.includes('进口') || name.includes('储量') || name.includes('废弃物') || name.includes('地热能') || name.includes('水力发电') || name.includes('核能') || name.includes('太阳能') || name.includes('潮汐能') || name.includes('波浪能') || name.includes('风能')) {
+          n.itemStyle = { color: colors.source };
+        } else if (name.includes('转化') || name.includes('发电') || name.includes('电网') || name.includes('燃料') || name.includes('氢气')) {
+          n.itemStyle = { color: colors.process };
+        } else if (name.includes('供暖') || name.includes('制冷') || name.includes('工业') || name.includes('运输') || name.includes('航空') || name.includes('航运') || name.includes('农业') || name.includes('照明')) {
+          n.itemStyle = { color: colors.use };
+        } else if (name.includes('损失') || name.includes('出口')) {
+          n.itemStyle = { color: colors.loss };
+        } else {
+          n.itemStyle = { color: '#9f7aea' };
+        }
+      });
+    }
+  </script>
+</body>
+</html>

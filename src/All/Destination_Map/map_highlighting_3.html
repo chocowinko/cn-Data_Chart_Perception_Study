@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>全球迁移流静态展示</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: transparent;
+        overflow: hidden;
+      }
+
+      .container {
+        max-width: 100%;
+        height: auto;
+        margin: 0px auto;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        box-shadow: none;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      .info-panel {
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #3498db;
+      }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 15px;
+        margin: 15px 0;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        width: 100%;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+      }
+
+      .legend-color {
+        width: 20px;
+        height: 4px;
+        border-radius: 2px;
+      }
+
+      #chart-container {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        margin: 0;
+        border: none;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      #loading {
+        text-align: left;
+        margin-top: 10px;
+        font-size: 12px;
+        color: #555;
+      }
+
+      svg {
+        position: relative;
+        z-index: 1;
+        background: transparent;
+      }
+
+      .link {
+        fill: none;
+        stroke-opacity: 0.7;
+      }
+
+      .node {
+        stroke: #fff;
+        stroke-width: 2px;
+      }
+
+      .node-label {
+        font-size: 13px;
+        font-weight: 600;
+        text-anchor: middle;
+        pointer-events: none;
+        fill: #333;
+      }
+
+      .route-path {
+        fill: none;
+        stroke-linecap: round;
+        stroke-opacity: 0.8;
+      }
+
+      .route-shadow {
+        fill: none;
+        stroke-linecap: round;
+        stroke-opacity: 0.3;
+      }
+
+      .world-map {
+        fill: #e8e8e8;
+        stroke: #d0d0d0;
+        stroke-width: 0.5;
+        opacity: 0.6;
+      }
+
+      .label-bg {
+        fill: rgba(255, 255, 255, 0.9);
+        stroke: #ddd;
+        stroke-width: 1;
+        rx: 4;
+        ry: 4;
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="legend" id="legend"></div>
+
+      <div id="chart-container">
+        <div id="loading">Loading data...</div>
+        <svg id="map" width="100%" height="600"></svg>
+      </div>
+    </div>
+
+    <script>
+      /* ---------- 全局变量与常量 ---------- */
+      let dataLoaded = null
+      let links = []
+      let thicknessScale
+
+      const regions = [
+        'EUROPE',
+        'NORTHERN AMERICA',
+        'Central and Southern Asia',
+        'Latin America and the Caribbean',
+        'Oceania (excluding Australia and New Zealand)',
+        'Sub-Saharan Africa',
+        'Eastern and South-Eastern Asia',
+      ]
+      const regionNames = {
+        EUROPE: 'Europe',
+        'NORTHERN AMERICA': 'Northern America',
+        'Central and Southern Asia': 'Central & Southern Asia',
+        'Latin America and the Caribbean': 'Latin America',
+        'Oceania (excluding Australia and New Zealand)': 'Oceania',
+        'Sub-Saharan Africa': 'Sub-Saharan Africa',
+        'Eastern and South-Eastern Asia': 'Eastern & SE Asia',
+      }
+
+      const regionColors = {
+        EUROPE: '#8dd3c7',
+        'NORTHERN AMERICA': '#E2D874',
+        'Central and Southern Asia': '#bebada',
+        'Latin America and the Caribbean': '#fdb462',
+        'Oceania (excluding Australia and New Zealand)': '#b3de69',
+        'Sub-Saharan Africa': '#f49fc7',
+        'Eastern and South-Eastern Asia': '#bc80bd',
+      }
+
+      // 动态获取SVG宽度并设置投影
+      let svgWidth,
+        svgHeight = 600
+      let projection, pos
+
+      function initializeProjection() {
+        const svg = document.getElementById('map')
+        svgWidth = svg.getBoundingClientRect().width
+
+        projection = d3
+          .geoMercator()
+          .center([30, 15])
+          .scale(svgWidth * 0.18)
+          .translate([svgWidth / 2, svgHeight / 2])
+
+        pos = {
+          EUROPE: projection([15, 50]),
+          'NORTHERN AMERICA': projection([-100, 45]),
+          'Central and Southern Asia': projection([70, 30]),
+          'Latin America and the Caribbean': projection([-70, -20]),
+          'Oceania (excluding Australia and New Zealand)': projection([140, -20]),
+          'Sub-Saharan Africa': projection([20, -10]),
+          'Eastern and South-Eastern Asia': projection([110, 20]),
+        }
+      }
+
+      /* ---------- 数据处理与初始化 ---------- */
+      const svg = d3.select('#map')
+      const mapGroup = svg.append('g').attr('id', 'map-group')
+      const linkGroup = svg.append('g').attr('id', 'link-group')
+      const nodeGroup = svg.append('g').attr('id', 'node-group')
+      const labelGroup = svg.append('g').attr('id', 'label-group')
+      const loadingDiv = document.getElementById('loading')
+
+      function initialize() {
+        initializeProjection()
+        drawWorldMap()
+        createLegend()
+        d3.csv('imbig_data.csv')
+          .then((data) => {
+            loadingDiv.style.display = 'none'
+            processData(data)
+            drawAllRoutes()
+          })
+          .catch((error) => {
+            console.error('Error loading or parsing data:', error)
+            loadingDiv.textContent = 'Failed to load data. Please check the file.'
+            loadingDiv.style.color = 'red'
+          })
+      }
+
+      function drawWorldMap() {
+        const path = d3.geoPath().projection(projection)
+        d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+          .then((worldData) => {
+            mapGroup
+              .selectAll('path')
+              .data(topojson.feature(worldData, worldData.objects.countries).features)
+              .enter()
+              .append('path')
+              .attr('d', path)
+              .attr('class', 'world-map')
+          })
+          .catch((error) => {
+            console.error('Error loading map data:', error)
+          })
+      }
+
+      function createLegend() {
+        const legendContainer = document.getElementById('legend')
+        regions.forEach((region) => {
+          const legendItem = document.createElement('div')
+          legendItem.className = 'legend-item'
+
+          const colorBox = document.createElement('div')
+          colorBox.className = 'legend-color'
+          colorBox.style.backgroundColor = regionColors[region]
+
+          const label = document.createElement('span')
+          label.textContent = regionNames[region]
+
+          legendItem.appendChild(colorBox)
+          legendItem.appendChild(label)
+          legendContainer.appendChild(legendItem)
+        })
+      }
+
+      function processData(data) {
+        dataLoaded = data
+        links = []
+        data.forEach((row) => {
+          const src = row['Origin Region']
+          regions.forEach((tgt) => {
+            const value = +row[tgt]
+            if (value > 0 && src !== tgt) {
+              links.push({
+                source: src,
+                target: tgt,
+                value: value,
+                color: regionColors[src],
+              })
+            }
+          })
+        })
+
+        const maxValue = d3.max(links, (d) => d.value)
+        thicknessScale = d3.scalePow().exponent(0.5).domain([0, maxValue]).range([1, 15])
+      }
+
+      function drawAllRoutes() {
+        // 绘制节点和标签
+        drawStaticElements()
+
+        // 绘制所有路线（初始为浅灰色）
+        links.forEach((link, index) => {
+          const s = { x: pos[link.source][0], y: pos[link.source][1] }
+          const t = { x: pos[link.target][0], y: pos[link.target][1] }
+          const dx = t.x - s.x
+          const dy = t.y - s.y
+          const dr = Math.sqrt(dx * dx + dy * dy)
+
+          const pathData = `M${s.x},${s.y}A${dr},${dr} 0 0,1 ${t.x},${t.y}`
+          const strokeWidth = thicknessScale(link.value)
+
+          // 主路线（初始为浅灰色）
+          linkGroup
+            .append('path')
+            .attr('class', 'route-path')
+            .attr('d', pathData)
+            .attr('stroke', '#cccccc')
+            .attr('stroke-width', strokeWidth)
+            .attr('data-source', link.source)
+            .attr('data-target', link.target)
+            .attr('data-original-color', link.color)
+            .append('title')
+            .text(
+              `${regionNames[link.source]} → ${regionNames[link.target]}: ${link.value.toLocaleString()} people`,
+            )
+        })
+
+        // 注释掉自动高亮，等待用户点击 Play Animation 按钮
+        // setTimeout(() => {
+        //   highlightRegionRoutes()
+        // }, 1000)
+      }
+
+      function highlightRegionRoutes() {
+        // 对每个地区找出其出发的最粗线条
+        regions.forEach((region) => {
+          // 找到该地区出发的所有路线
+          const regionRoutes = links.filter((link) => link.source === region)
+
+          if (regionRoutes.length > 0) {
+            // 找到最大的迁移量
+            const maxValue = Math.max(...regionRoutes.map((link) => link.value))
+
+            // 找到对应的最粗线条
+            const thickestRoute = regionRoutes.find((link) => link.value === maxValue)
+
+            if (thickestRoute) {
+              // 高亮这条最粗的线条
+              const highlightedPath = linkGroup.selectAll('.route-path').filter(function () {
+                const source = d3.select(this).attr('data-source')
+                const target = d3.select(this).attr('data-target')
+                return source === thickestRoute.source && target === thickestRoute.target
+              })
+
+              highlightedPath
+                .transition()
+                .duration(800)
+                .ease(d3.easeBackOut)
+                .attr('stroke', function () {
+                  return d3.select(this).attr('data-original-color')
+                })
+                .attr('stroke-opacity', 1)
+                .on('end', function () {
+                  // 将高亮路径移到linkGroup的最后（最上层）
+                  this.parentNode.appendChild(this)
+                })
+
+              // 高亮对应的阴影
+              const highlightedShadow = linkGroup.selectAll('.route-shadow').filter(function () {
+                const source = d3.select(this).attr('data-source')
+                const target = d3.select(this).attr('data-target')
+                return source === thickestRoute.source && target === thickestRoute.target
+              })
+
+              highlightedShadow
+                .transition()
+                .duration(800)
+                .ease(d3.easeBackOut)
+                .attr('stroke', function () {
+                  return d3.select(this).attr('data-original-color')
+                })
+                .attr('stroke-opacity', 0.3)
+            }
+          }
+        })
+
+        // 高亮所有地区的节点
+        nodeGroup
+          .selectAll('.node')
+          .filter(function (d) {
+            return regions.includes(d.id)
+          })
+          .transition()
+          .duration(800)
+          .ease(d3.easeBackOut)
+          .attr('r', 10)
+          .attr('stroke-width', 3)
+      }
+
+      // 暴露函数给父窗口，以便 Play Animation 按钮可以调用
+      window.playHighlightAnimation = function () {
+        // 先重置所有路径
+        linkGroup
+          .selectAll('.route-path')
+          .transition()
+          .duration(300)
+          .attr('stroke', '#cccccc')
+          .attr('stroke-opacity', 0.8)
+
+        nodeGroup.selectAll('.node').transition().duration(300).attr('r', 7).attr('stroke-width', 2)
+
+        // 延迟后播放高亮动画
+        setTimeout(() => {
+          highlightRegionRoutes()
+        }, 400)
+      }
+
+      function drawStaticElements() {
+        const nodes = regions.map((r) => ({ id: r, x: pos[r][0], y: pos[r][1] }))
+
+        // 绘制节点
+        nodeGroup
+          .selectAll('.node')
+          .data(nodes)
+          .enter()
+          .append('circle')
+          .attr('class', 'node')
+          .attr('r', 7)
+          .attr('cx', (d) => d.x)
+          .attr('cy', (d) => d.y)
+          .attr('fill', (d) => regionColors[d.id])
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 2)
+
+        // 标签背景
+        labelGroup
+          .selectAll('.label-bg')
+          .data(nodes)
+          .enter()
+          .append('rect')
+          .attr('class', 'label-bg')
+          .attr('x', (d) => d.x - 55)
+          .attr('y', (d) => d.y - 26)
+          .attr('width', 110)
+          .attr('height', 20)
+
+        // 标签文字
+        labelGroup
+          .selectAll('.node-label')
+          .data(nodes)
+          .enter()
+          .append('text')
+          .attr('class', 'node-label')
+          .attr('x', (d) => d.x)
+          .attr('y', (d) => d.y - 14)
+          .text((d) => regionNames[d.id] || d.id)
+      }
+
+      // 窗口大小改变时重新初始化
+      window.addEventListener('resize', function () {
+        initializeProjection()
+        mapGroup.selectAll('*').remove()
+        linkGroup.selectAll('*').remove()
+        nodeGroup.selectAll('*').remove()
+        labelGroup.selectAll('*').remove()
+        drawWorldMap()
+        if (dataLoaded) {
+          drawAllRoutes()
+        }
+      })
+
+      initialize()
+    </script>
+  </body>
+</html>

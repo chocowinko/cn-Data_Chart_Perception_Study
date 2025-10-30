@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>亚洲与欧洲温室气体排放量</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f8f9fa;
+        color: #333;
+      }
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      #chart-container {
+        width: 100%;
+        height: 1000px;
+        margin: 20px auto;
+        border: 1px solid #eaeaea;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+      }
+      .controls {
+        text-align: center;
+        margin: 20px 0;
+      }
+      button {
+        background: #3498db;
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        margin: 0 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background: #2980b9;
+      }
+      button:disabled {
+        background: #95a5a6;
+        cursor: not-allowed;
+      }
+      .tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.85);
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        pointer-events: none;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>亚洲与欧洲温室气体排放量</h1>
+      <div class="controls">
+        <button id="playBtn">高亮动画</button>
+        <button id="resetBtn">重置视图</button>
+      </div>
+      <div class="controls">
+        <button id="task1Btn">高亮欧洲最高</button>
+        <button id="task2Btn">高亮亚欧人均</button>
+        <button id="task3Btn">高亮欧洲中位数</button>
+      </div>
+      <div id="chart-container">
+        <svg id="chart" width="100%" height="100%"></svg>
+      </div>
+    </div>
+
+    <script>
+      const CSV_URL = 'asia_europe_emissions_hierarchical.csv'
+      const colorScale = d3.scaleOrdinal().domain(['Asia', 'Europe']).range(['#FFA07A', '#5DADE2'])
+      let root, svg, allNodes, allLabels
+
+      d3.csv(CSV_URL)
+        .then((data) => {
+          const filt = data.filter(
+            (d) =>
+              (d.continent === 'Asia' &&
+                [
+                  'Western Asia',
+                  'South-eastern Asia',
+                  'Southern Asia',
+                  'Central Asia',
+                  'Eastern Asia',
+                ].includes(d.sub_region)) ||
+              (d.continent === 'Europe' &&
+                ['Eastern Europe', 'Northern Europe', 'Southern Europe', 'Western Europe'].includes(
+                  d.sub_region,
+                )),
+          )
+          const contTot = d3.rollup(
+            filt,
+            (v) => d3.sum(v, (d) => +d.emissions),
+            (d) => d.continent,
+          )
+          const subTot = d3.rollup(
+            filt,
+            (v) => d3.sum(v, (d) => +d.emissions),
+            (d) => d.continent + d.sub_region,
+          )
+          const couMap = new Map(filt.map((d) => [d.country, +d.emissions]))
+
+          const hier = {
+            name: 'World',
+            children: Array.from(contTot.keys()).map((c) => ({
+              name: c,
+              value: contTot.get(c),
+              children: Array.from(
+                d3
+                  .group(
+                    filt.filter((d) => d.continent === c),
+                    (d) => d.sub_region,
+                  )
+                  .entries(),
+              ).map(([s, sDat]) => ({
+                name: s,
+                value: subTot.get(c + s),
+                children: sDat.map((d) => ({
+                  name: d.country,
+                  value: couMap.get(d.country),
+                })),
+              })),
+            })),
+          }
+          createViz(hier)
+        })
+        .catch((err) => console.error(err))
+
+      function createViz(hier) {
+        d3.select('#chart').selectAll('*').remove()
+        const box = document.getElementById('chart-container')
+        const w = box.clientWidth,
+          h = box.clientHeight
+        svg = d3
+          .select('#chart')
+          .attr('viewBox', `0 0 ${w} ${h}`)
+          .append('g')
+          .attr('transform', `translate(${w / 2},${h / 2})`)
+
+        const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0)
+
+        const pack = d3.pack().size([w, h]).padding(1)
+        root = d3
+          .hierarchy(hier)
+          .sum((d) => d.value || 0)
+          .sort((a, b) => b.value - a.value)
+        pack(root)
+        const nodes = root.children
+
+        allNodes = svg
+          .selectAll('circle')
+          .data(nodes.flatMap((d) => d.descendants()))
+          .enter()
+          .append('circle')
+          .attr('r', 0)
+          .attr('cx', (d) => d.x - w / 2)
+          .attr('cy', (d) => d.y - h / 2)
+          .attr('fill', (d) => {
+            if (d.depth === 1) return colorScale(d.data.name)
+            if (d.depth === 2) return d3.color(colorScale(d.parent.data.name)).brighter(0.5)
+            return d3.color(colorScale(d.parent.parent.data.name)).brighter(1)
+          })
+          .attr('opacity', 0)
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 1.2)
+          .on('mouseover', (e, d) => {
+            tooltip
+              .html(`<strong>${d.data.name}</strong><br>${d.data.value.toFixed(2)} tCO₂e`)
+              .style('left', e.pageX + 10 + 'px')
+              .style('top', e.pageY - 10 + 'px')
+              .transition()
+              .duration(200)
+              .style('opacity', 0.9)
+          })
+          .on('mouseout', () => tooltip.transition().duration(200).style('opacity', 0))
+
+        allLabels = svg
+          .selectAll('text.label')
+          .data(nodes.flatMap((d) => d.descendants()))
+          .enter()
+          .append('text')
+          .attr('class', 'label')
+          .attr('opacity', 0)
+          .each(function (d) {
+            const sel = d3.select(this)
+            const labelText =
+              d.data.name.length > 15 ? d.data.name.substring(0, 15) + '…' : d.data.name
+            sel.text(labelText)
+
+            if (d.depth === 1) {
+              // 大洲名置顶
+              sel
+                .attr('x', d.x - w / 2)
+                .attr('y', d.y - h / 2 - d.r - 8)
+                .attr('text-anchor', 'middle')
+                .attr('font-weight', '500')
+                .attr('font-size', Math.max(12, Math.min(22, d.r * 0.35)))
+                .attr('fill', '#000')
+            } else if (d.depth === 2) {
+              // 子区域名放圆圈上方
+              sel
+                .attr('x', d.x - w / 2)
+                .attr('y', d.y - h / 2 - d.r + 14)
+                .attr('text-anchor', 'middle')
+                .attr('font-weight', '500')
+                .attr('font-size', Math.max(10, Math.min(15, d.r * 0.4)))
+                .attr('fill', '#000')
+            } else {
+              // 国家名居中
+              sel
+                .attr('x', d.x - w / 2)
+                .attr('y', d.y - h / 2)
+                .attr('text-anchor', 'middle')
+                .attr('dominant-baseline', 'middle')
+                .attr('font-size', Math.max(8, Math.min(12, d.r * 0.35)))
+                .attr('fill', '#333')
+            }
+          })
+
+        // 按钮事件
+        document.getElementById('playBtn').addEventListener('click', playAnim)
+        document.getElementById('resetBtn').addEventListener('click', resetAnim)
+        document.getElementById('task1Btn').addEventListener('click', highlightTask1)
+        document.getElementById('task2Btn').addEventListener('click', highlightTask2)
+        document.getElementById('task3Btn').addEventListener('click', highlightTask3)
+
+        // 初始渲染
+        allNodes
+          .transition()
+          .duration(1000)
+          .attr('r', (d) => d.r)
+          .attr('opacity', 0.85)
+        allLabels.transition().duration(1000).attr('opacity', 1)
+
+        function playAnim() {
+          allNodes
+            .transition()
+            .duration(1000)
+            .attr('r', (d) => d.r)
+            .attr('opacity', 0.85)
+          allLabels.transition().duration(500).attr('opacity', 1)
+        }
+        function resetAnim() {
+          allNodes
+            .transition()
+            .duration(500)
+            .attr('r', (d) => d.r)
+            .attr('opacity', 0.85)
+            .attr('stroke', '#fff')
+          allLabels.transition().duration(500).attr('opacity', 1)
+        }
+
+        function clearHighlights() {
+          allNodes
+            .transition()
+            .duration(200)
+            .attr('opacity', 0.2)
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 1.2)
+          allLabels.transition().duration(200).attr('opacity', 0.2)
+        }
+        function highlightTask1() {
+          clearHighlights()
+          const regions = ['Eastern Europe', 'Southern Europe', 'Western Europe', 'Northern Europe']
+          const top4 = []
+          regions.forEach((rName) => {
+            const regionNode = root.descendants().find((d) => d.data.name === rName)
+            if (!regionNode || !regionNode.children) return
+            const top = regionNode.children.reduce((max, d) => (d.value > max.value ? d : max))
+            top4.push(top)
+          })
+          allNodes
+            .filter((d) => top4.includes(d))
+            .transition()
+            .duration(500)
+            .attr('opacity', 1)
+            .attr('stroke', '#FFD700')
+            .attr('stroke-width', 3)
+          allLabels
+            .filter((d) => top4.includes(d))
+            .transition()
+            .duration(500)
+            .attr('opacity', 1)
+        }
+        function highlightTask2() {
+          clearHighlights()
+          const asianHighest = ['Qatar', 'Mongolia', 'Kazakhstan', 'Malaysia', 'Bhutan']
+          const europeanCountry = 'Finland'
+          allNodes
+            .filter((d) => asianHighest.includes(d.data.name) || d.data.name === europeanCountry)
+            .transition()
+            .duration(500)
+            .attr('opacity', 1)
+            .attr('stroke', '#FFD700')
+            .attr('stroke-width', 2)
+          allLabels
+            .filter((d) => asianHighest.includes(d.data.name) || d.data.name === europeanCountry)
+            .transition()
+            .duration(500)
+            .attr('opacity', 1)
+        }
+        function highlightTask3() {
+          clearHighlights()
+          const europeanSubRegions = [
+            'Eastern Europe',
+            'Northern Europe',
+            'Southern Europe',
+            'Western Europe',
+          ]
+          const medianCountries = []
+          europeanSubRegions.forEach((regionName) => {
+            const regionNode = root.descendants().find((d) => d.data.name === regionName)
+            if (regionNode && regionNode.children) {
+              const countries = regionNode.children
+                .filter((d) => d.depth === 3)
+                .sort((a, b) => a.value - b.value)
+              if (countries.length) {
+                const medianIndex = Math.floor((countries.length - 1) / 2)
+                medianCountries.push(countries[medianIndex].data.name)
+              }
+            }
+          })
+          allNodes
+            .filter((d) => medianCountries.includes(d.data.name))
+            .transition()
+            .duration(500)
+            .attr('opacity', 1)
+            .attr('stroke', '#FFD700')
+            .attr('stroke-width', 2)
+          allLabels
+            .filter((d) => medianCountries.includes(d.data.name))
+            .transition()
+            .duration(500)
+            .attr('opacity', 1)
+        }
+      }
+    </script>
+  </body>
+</html>

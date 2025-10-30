@@ -1,0 +1,316 @@
+<template>
+  <div class="destination-map-highlighting-task">
+    <!-- 页面标题 -->
+    <h2 class="page-title">Destination Map + Highlighting (2/3)</h2>
+
+    <!-- 主内容区域：左右两列布局 -->
+    <div class="content-container">
+      <!-- 左侧：任务问题区域 -->
+      <div class="task-section">
+        <h3 class="event-description">
+          Highlighted Event: All routes flowing <em>INTO</em> <em>North America</em> are highlighted
+          in <em>blue</em>, and all routes flowing <em>OUT OF</em> <em>North America</em> are
+          highlighted in <em>red</em>.
+        </h3>
+
+        <h2 class="task-title">
+          Task 2: When all routes related to <em>North America</em> are highlighted (inflow in
+          <em>blue</em>, outflow in <em>red</em>), what major pattern can we observe?
+        </h2>
+
+        <div class="options-section">
+          <div class="option" v-for="(option, index) in options" :key="index">
+            <input
+              type="radio"
+              :id="`option-${index}`"
+              :value="option.value"
+              v-model="selectedAnswer"
+              class="option-radio"
+            />
+            <label :for="`option-${index}`" class="option-label">
+              <span class="option-letter">({{ option.letter }})</span>
+              <span v-html="option.text"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 按钮区域 -->
+        <div class="button-control">
+          <button
+            class="confirm-btn"
+            @click="handleConfirm(null, selectedAnswer, '/destination-map-highlighting-3')"
+            :disabled="!selectedAnswer"
+          >
+            <span class="button-text">Confirm</span>
+          </button>
+          <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
+            <span class="button-text">Play Animation</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 右侧：图表区域 -->
+      <div class="chart-area">
+        <!-- 嵌入图表 -->
+        <div class="chart-display">
+          <div class="chart-wrapper">
+            <iframe
+              src="/src/All/Destination_Map/map_highlighting_2.html"
+              class="chart-iframe"
+              frameborder="0"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useTaskTimer } from '@/composables/useTaskTimer'
+
+const selectedAnswer = ref('')
+
+const { handlePlayAnimation, handleConfirm } = useTaskTimer(
+  'destination-map-highlighting-2',
+  'Destination Map + Highlighting (2/3)',
+)
+
+const options = [
+  {
+    letter: 'A',
+    value: 'A',
+    text: 'The inflow (<em>blue</em>) and outflow (<em>red</em>) volumes appear roughly equal.',
+  },
+  {
+    letter: 'B',
+    value: 'B',
+    text: '<em>North America</em> has almost no traffic exchange with other regions.',
+  },
+  {
+    letter: 'C',
+    value: 'C',
+    text: 'The inflow volume appears much larger than the outflow volume.',
+  },
+  {
+    letter: 'D',
+    value: 'D',
+    text: 'The outflow volume appears much larger than the inflow volume.',
+  },
+]
+
+const playAnimation = () => {
+  const iframe = document.querySelector('.chart-iframe')
+  if (iframe && iframe.contentWindow && iframe.contentWindow.playHighlightAnimation) {
+    iframe.contentWindow.playHighlightAnimation()
+  }
+}
+
+// confirmAnswer 功能已由 handleConfirm 替代
+</script>
+
+<style scoped>
+.destination-map-highlighting-task {
+  width: 100%;
+  padding: 0 0 60px 0;
+  margin: 0;
+  position: relative;
+}
+
+.page-title {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  color: #1f1f1f;
+  margin: 0 0 10px 0;
+  padding: 0;
+  text-align: left;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.content-container {
+  display: flex;
+  gap: 0;
+  margin-bottom: 40px;
+  margin-top: 0;
+  align-items: flex-start;
+}
+
+.task-section {
+  flex: 0 0 280px;
+  min-width: 280px;
+  margin-top: 30px;
+}
+
+.chart-area {
+  flex: 1;
+  min-width: 800px;
+  width: calc(100vw - 320px);
+  margin-top: 30px;
+}
+
+.chart-display {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.chart-wrapper {
+  width: 100%;
+  margin-left: 40px;
+}
+
+.chart-iframe {
+  width: 100%;
+  height: 660px;
+  display: block;
+  border: none;
+  overflow: hidden;
+}
+
+.button-control {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.play-animation-btn {
+  width: 160px;
+  height: 50px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.play-animation-btn:hover {
+  background-color: #333;
+}
+
+.play-animation-btn:active {
+  transform: translateY(1px);
+}
+
+.event-description {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #545454;
+  margin: 10px 0 20px 0;
+  text-align: left;
+  font-style: italic;
+}
+
+.event-description em {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.task-title {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #1f1f1f;
+  margin: 0 0 10px 0;
+  text-align: left;
+}
+
+.task-title em {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.options-section {
+  margin-bottom: 0;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 6px;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.option:hover {
+  background-color: #f5f5f5;
+}
+
+.option-radio {
+  margin-right: 12px;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.option-label {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #545454;
+  cursor: pointer;
+  text-align: left;
+}
+
+.option-label em {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.option-letter {
+  font-weight: 600;
+  color: #1f1f1f;
+  margin-right: 8px;
+}
+
+.confirm-btn {
+  width: 120px;
+  height: 50px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-btn:hover:not(:disabled) {
+  background-color: #333;
+}
+
+.confirm-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.confirm-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.button-text {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #ffffff;
+}
+</style>

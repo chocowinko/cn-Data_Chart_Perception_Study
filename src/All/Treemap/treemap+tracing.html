@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Treemap - 自动追踪动画 (静态初始)</title>
+    <style>
+      /* CSS样式与上一版相同 */
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding-top: 50px;
+        background-color: #f4f4f9;
+      }
+      .title-container {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+      }
+      h1 {
+        color: #333;
+        font-size: 18px;
+        margin: 0;
+      }
+      .tooltip {
+        position: absolute;
+        text-align: center;
+        padding: 8px 12px;
+        font-size: 14px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .tooltip-format {
+        font-weight: bold;
+      }
+      .node-label {
+        fill: white;
+        font-size: 8px;
+        pointer-events: none;
+      }
+      .parent-label {
+        fill: white;
+        font-size: 12px;
+        font-weight: bold;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title-container">
+      <h1 id="chart-title">电影数据Treemap</h1>
+    </div>
+    <div id="treemap-container"></div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      // --- 1. 内嵌的数据 ---
+      const data_2015_2017 = [
+        { genre: 'Action', format: 'D', value: 137 },
+        { genre: 'Action', format: 'D|F', value: 35 },
+        { genre: 'Action', format: 'F', value: 36 },
+        { genre: 'Adventure', format: 'D', value: 150 },
+        { genre: 'Adventure', format: 'D|F', value: 25 },
+        { genre: 'Adventure', format: 'F', value: 20 },
+        { genre: 'Comedy', format: 'D', value: 158 },
+        { genre: 'Comedy', format: 'D|F', value: 13 },
+        { genre: 'Comedy', format: 'F', value: 33 },
+        { genre: 'Crime', format: 'D', value: 57 },
+        { genre: 'Crime', format: 'D|F', value: 10 },
+        { genre: 'Crime', format: 'F', value: 21 },
+        { genre: 'Drama', format: 'D', value: 153 },
+        { genre: 'Drama', format: 'D|F', value: 20 },
+        { genre: 'Drama', format: 'F', value: 53 },
+        { genre: 'Family', format: 'D', value: 77 },
+        { genre: 'Family', format: 'D|F', value: 2 },
+        { genre: 'Family', format: 'F', value: 7 },
+        { genre: 'Fantasy', format: 'D', value: 79 },
+        { genre: 'Fantasy', format: 'D|F', value: 9 },
+        { genre: 'Fantasy', format: 'F', value: 12 },
+        { genre: 'Horror', format: 'D', value: 57 },
+        { genre: 'Horror', format: 'D|F', value: 4 },
+        { genre: 'Horror', format: 'F', value: 8 },
+        { genre: 'Sci-Fi', format: 'D', value: 88 },
+        { genre: 'Sci-Fi', format: 'D|F', value: 18 },
+        { genre: 'Sci-Fi', format: 'F', value: 14 },
+        { genre: 'Thriller', format: 'D', value: 131 },
+        { genre: 'Thriller', format: 'D|F', value: 22 },
+        { genre: 'Thriller', format: 'F', value: 33 },
+      ]
+      const data_2006_2008 = [
+        { genre: 'Action', format: 'D', value: 21 },
+        { genre: 'Action', format: 'D|F', value: 15 },
+        { genre: 'Action', format: 'F', value: 61 },
+        { genre: 'Adventure', format: 'D', value: 37 },
+        { genre: 'Adventure', format: 'D|F', value: 10 },
+        { genre: 'Adventure', format: 'F', value: 52 },
+        { genre: 'Biography', format: 'D', value: 4 },
+        { genre: 'Biography', format: 'F', value: 32 },
+        { genre: 'Comedy', format: 'D', value: 46 },
+        { genre: 'Comedy', format: 'D|F', value: 8 },
+        { genre: 'Comedy', format: 'F', value: 115 },
+        { genre: 'Crime', format: 'D', value: 8 },
+        { genre: 'Crime', format: 'D|F', value: 9 },
+        { genre: 'Crime', format: 'F', value: 42 },
+        { genre: 'Drama', format: 'D', value: 15 },
+        { genre: 'Drama', format: 'D|F', value: 10 },
+        { genre: 'Drama', format: 'F', value: 129 },
+        { genre: 'Family', format: 'D', value: 37 },
+        { genre: 'Family', format: 'D|F', value: 4 },
+        { genre: 'Family', format: 'F', value: 38 },
+        { genre: 'Fantasy', format: 'D', value: 22 },
+        { genre: 'Fantasy', format: 'D|F', value: 6 },
+        { genre: 'Fantasy', format: 'F', value: 43 },
+        { genre: 'Romance', format: 'D', value: 12 },
+        { genre: 'Romance', format: 'D|F', value: 4 },
+        { genre: 'Romance', format: 'F', value: 78 },
+        { genre: 'Thriller', format: 'D', value: 15 },
+        { genre: 'Thriller', format: 'D|F', value: 15 },
+        { genre: 'Thriller', format: 'F', value: 79 },
+      ]
+
+      // --- 2. 初始化和设置 ---
+      const width = 1430
+      const height = 800
+      const chartTitle = d3.select('#chart-title')
+      const svg = d3
+        .select('#treemap-container')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height)
+
+      const colorMap = { D: '#E7A6AC', F: '#9BAEBC', 'D|F': '#F29076' }
+      const color = (d) => colorMap[d] || '#cccccc'
+      const tooltip = d3.select('body').append('div').attr('class', 'tooltip')
+      let currentData // 保存当前数据状态
+
+      // --- 3. 数据处理函数 ---
+      const genreOrder = [
+        'Action',
+        'Adventure',
+        'Animation',
+        'Biography',
+        'Comedy',
+        'Crime',
+        'Documentary',
+        'Drama',
+        'Family',
+        'Fantasy',
+        'History',
+        'Horror',
+        'Music',
+        'Musical',
+        'Mystery',
+        'Romance',
+        'Sci-Fi',
+        'Sport',
+        'Thriller',
+        'War',
+        'Western',
+      ]
+      function processDataForDynamicPartitions(sourceData) {
+        const allNodes = []
+        const groupedData = d3.group(sourceData, (d) => d.format)
+        const partitionTotals = new Map()
+        let totalValue = 0
+        sourceData.forEach((d) => {
+          const value = +d.value
+          totalValue += value
+          partitionTotals.set(d.format, (partitionTotals.get(d.format) || 0) + value)
+        })
+        const formatOrder = ['D', 'F', 'D|F']
+        let currentX = 0
+        for (const format of formatOrder) {
+          if (!groupedData.has(format)) continue
+          const proportion = (partitionTotals.get(format) || 0) / totalValue
+          const partitionW = proportion * width
+          const genres = groupedData.get(format)
+          const completeGenres = genreOrder.map(
+            (genre) =>
+              genres.find((d) => d.genre === genre) || { genre: genre, value: 0, format: format },
+          )
+          const hierarchyData = {
+            name: format,
+            children: completeGenres.map((d) => ({
+              name: d.genre,
+              value: +d.value,
+              format: d.format,
+              key: `${d.format}-${d.genre}`,
+            })),
+            key: format,
+          }
+          const root = d3.hierarchy(hierarchyData).sum((d) => d.value)
+          if (root.children) {
+            root.children.sort(
+              (a, b) => genreOrder.indexOf(a.data.name) - genreOrder.indexOf(b.data.name),
+            )
+          }
+          d3.treemap().size([partitionW, height]).padding(2).paddingTop(20)(root)
+          root.descendants().forEach((node) => {
+            node.x0 += currentX
+            node.x1 += currentX
+            node.depth = node.depth === 0 ? 1 : 2
+            allNodes.push(node)
+          })
+          currentX += partitionW
+        }
+        return allNodes
+      }
+
+      // --- 4. 绘图函数 ---
+
+      // **【新功能】** 无动画的初始绘制函数
+      function initialDraw(data, title) {
+        chartTitle.text(title)
+        currentData = data
+        const nodes = processDataForDynamicPartitions(data)
+        const nodeMap = new Map(nodes.map((d) => [d.data.key, d]))
+
+        const cells = svg.selectAll('g.cell').data(nodes, (d) => d.data.key)
+
+        const enterCells = cells.enter().append('g').attr('class', 'cell')
+
+        enterCells.attr('transform', (d) => `translate(${d.x0}, ${d.y0})`)
+
+        enterCells
+          .append('rect')
+          .attr('stroke', '#fff')
+          .attr('fill', (d) => color(d.depth === 1 ? d.data.name : d.parent.data.name))
+          .attr('width', (d) => d.x1 - d.x0)
+          .attr('height', (d) => d.y1 - d.y0)
+
+        // 绘制标签
+        const parentCells = enterCells.filter((d) => d.depth === 1)
+        parentCells
+          .append('text')
+          .attr('class', 'parent-label')
+          .attr('x', 4)
+          .attr('y', 14)
+          .text((d) => d.data.name)
+        const leafCells = enterCells.filter((d) => d.depth === 2)
+        leafCells
+          .append('text')
+          .attr('class', 'node-label')
+          .attr('x', 4)
+          .attr('y', 14)
+          .text((d) => d.data.name)
+          .style('display', (d) =>
+            nodeMap.get(d.data.key).x1 - nodeMap.get(d.data.key).x0 < 20 ? 'none' : 'inline',
+          )
+        leafCells
+          .append('text')
+          .attr('class', 'node-label')
+          .attr('x', 4)
+          .attr('y', 28)
+          .text((d) => `(${d.data.value})`)
+          .style('display', (d) => {
+            const node = nodeMap.get(d.data.key)
+            return node.x1 - node.x0 < 20 || node.y1 - node.y0 < 35 ? 'none' : 'inline'
+          })
+
+        // Tooltip
+        leafCells
+          .on('mouseover', function (event, d) {
+            tooltip
+              .style('opacity', 0.9)
+              .html(
+                `<div class="tooltip-format">${d.parent.data.name}</div><div>类型: ${d.data.name}</div><div>数量: ${d.data.value}</div>`,
+              )
+              .style('left', event.pageX + 10 + 'px')
+              .style('top', event.pageY - 28 + 'px')
+          })
+          .on('mouseout', function (d) {
+            tooltip.style('opacity', 0)
+          })
+      }
+
+      // 带动画的更新函数
+      function updateWithAnimation(data, title) {
+        chartTitle.text(title)
+
+        // 绘制痕迹
+        const initialNodesForTrace = processDataForDynamicPartitions(currentData)
+        const traces = svg.append('g').attr('class', 'traces')
+        traces
+          .selectAll('rect')
+          .data(initialNodesForTrace.filter((d) => d.depth > 0))
+          .enter()
+          .append('rect')
+          .attr('transform', (d) => `translate(${d.x0}, ${d.y0})`)
+          .attr('width', (d) => d.x1 - d.x0)
+          .attr('height', (d) => d.y1 - d.y0)
+          .attr('fill', 'none')
+          .attr('stroke', 'grey')
+          .attr('stroke-opacity', 0.45)
+          .attr('stroke-width', 1)
+          .attr('stroke-dasharray', '3 3')
+        // 保留痕迹，不再自动移除
+
+        const targetNodes = processDataForDynamicPartitions(data)
+        const targetNodeMap = new Map(targetNodes.map((d) => [d.data.key, d]))
+
+        const transition = d3.transition().duration(5000).ease(d3.easeCubicInOut)
+        const cells = svg.selectAll('g.cell').data(targetNodes, (d) => d.data.key)
+
+        // EXIT, ENTER, UPDATE 逻辑 (与前一版动画部分相同)
+        cells
+          .exit()
+          .transition(transition)
+          .call((g) => g.select('rect').attr('width', 0).attr('height', 0))
+          .call((g) => g.selectAll('text').attr('fill-opacity', 0))
+          .remove()
+        const enterCells = cells
+          .enter()
+          .append('g')
+          .attr('class', 'cell')
+          .attr('transform', (d) => {
+            const initialNode = new Map(initialNodesForTrace.map((n) => [n.data.key, n])).get(
+              d.data.key,
+            )
+            return initialNode
+              ? `translate(${initialNode.x0}, ${initialNode.y0})`
+              : `translate(${d.x0}, ${d.y0})`
+          })
+        enterCells
+          .append('rect')
+          .attr('stroke', '#fff')
+          .attr('fill', (d) => color(d.depth === 1 ? d.data.name : d.parent.data.name))
+          .attr('height', (d) => d.y1 - d.y0)
+          .attr('width', 0)
+        const allCells = enterCells.merge(cells)
+        allCells.transition(transition).attr('transform', (d) => `translate(${d.x0}, ${d.y0})`)
+        allCells
+          .select('rect')
+          .transition(transition)
+          .attr('width', (d) => d.x1 - d.x0)
+          .attr('height', (d) => d.y1 - d.y0)
+        allCells.selectAll('text').remove()
+        const parentCells = allCells.filter((d) => d.depth === 1)
+        parentCells
+          .append('text')
+          .attr('class', 'parent-label')
+          .attr('x', 4)
+          .attr('y', 14)
+          .text((d) => d.data.name)
+          .attr('fill-opacity', 0)
+          .transition(transition)
+          .attr('fill-opacity', 1)
+        const leafCells = allCells.filter((d) => d.depth === 2)
+        leafCells
+          .append('text')
+          .attr('class', 'node-label')
+          .attr('x', 4)
+          .attr('y', 14)
+          .text((d) => d.data.name)
+          .style('display', (d) =>
+            targetNodeMap.get(d.data.key).x1 - targetNodeMap.get(d.data.key).x0 < 20
+              ? 'none'
+              : 'inline',
+          )
+          .attr('fill-opacity', 0)
+          .transition(transition)
+          .attr('fill-opacity', 1)
+        leafCells
+          .append('text')
+          .attr('class', 'node-label')
+          .attr('x', 4)
+          .attr('y', 28)
+          .text((d) => `(${d.data.value})`)
+          .style('display', (d) => {
+            const node = targetNodeMap.get(d.data.key)
+            return node.x1 - node.x0 < 20 || node.y1 - node.y0 < 35 ? 'none' : 'inline'
+          })
+          .attr('fill-opacity', 0)
+          .transition(transition)
+          .attr('fill-opacity', 1)
+        leafCells
+          .on('mouseover', function (event, d) {
+            tooltip
+              .style('opacity', 0.9)
+              .html(
+                `<div class="tooltip-format">${d.parent.data.name}</div><div>类型: ${d.data.name}</div><div>数量: ${d.data.value}</div>`,
+              )
+              .style('left', event.pageX + 10 + 'px')
+              .style('top', event.pageY - 28 + 'px')
+          })
+          .on('mouseout', function (d) {
+            tooltip.style('opacity', 0)
+          })
+
+        currentData = data
+      }
+
+      // --- 5. 自动播放流程 ---
+      // **【核心改动】** 调用无动画的 initialDraw 函数进行初始渲染
+      initialDraw(data_2006_2008, '电影数据Treemap (2006-2008)')
+
+      // 8秒后自动播放动画到 15-17
+      setTimeout(() => {
+        updateWithAnimation(data_2015_2017, '电影数据Treemap (2015-2017)')
+      }, 8000) // 延迟8000毫秒
+    </script>
+  </body>
+</html>

@@ -1,0 +1,316 @@
+<template>
+  <div class="destination-map-staging-task">
+    <!-- 页面标题 -->
+    <h2 class="page-title">Destination Map + Staging (3/3)</h2>
+
+    <!-- 主内容区域：左右两列布局 -->
+    <div class="content-container">
+      <!-- 左侧：任务问题区域 -->
+      <div class="task-section">
+        <h3 class="event-description">
+          Staging Event: The lines on the map appear in groups, based on where people are moving
+          <em>TO</em>.
+        </h3>
+
+        <h2 class="task-title">
+          Task 3: For the migration routes between <em>Europe</em> and
+          <em>Central & Southern Asia</em>, which direction has more people moving?
+        </h2>
+
+        <div class="options-section">
+          <div class="option" v-for="(option, index) in options" :key="index">
+            <input
+              type="radio"
+              :id="`option-${index}`"
+              :value="option.value"
+              v-model="selectedAnswer"
+              class="option-radio"
+            />
+            <label :for="`option-${index}`" class="option-label">
+              <span class="option-letter">({{ option.letter }})</span>
+              <span v-html="option.text"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 按钮区域 -->
+        <div class="button-control">
+          <button
+            class="confirm-btn"
+            @click="handleConfirm(null, selectedAnswer, '/destination-map-tracing-1')"
+            :disabled="!selectedAnswer"
+          >
+            <span class="button-text">Confirm</span>
+          </button>
+          <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
+            <span class="button-text">Play Animation</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 右侧：图表区域 -->
+      <div class="chart-area">
+        <div class="chart-display">
+          <div class="chart-wrapper">
+            <iframe
+              src="/src/All/Destination_Map/map_staging.html"
+              class="chart-iframe"
+              frameborder="0"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useTaskTimer } from '@/composables/useTaskTimer'
+
+const router = useRouter()
+const selectedAnswer = ref('')
+
+const { handlePlayAnimation, handleConfirm } = useTaskTimer(
+  'destination-map-staging-3',
+  'Destination Map + Staging (3/3)',
+)
+
+const options = [
+  {
+    letter: 'A',
+    value: 'A',
+    text: 'More people are moving from <em>Central & Southern Asia</em> to <em>Europe</em>.',
+  },
+  {
+    letter: 'B',
+    value: 'B',
+    text: 'More people are moving from <em>Europe</em> to <em>Central & Southern Asia</em>.',
+  },
+  {
+    letter: 'C',
+    value: 'C',
+    text: 'The number of people moving in both directions is about the same.',
+  },
+  {
+    letter: 'D',
+    value: 'D',
+    text: 'There are no migration routes between these two regions.',
+  },
+]
+
+const playAnimation = () => {
+  const iframe = document.querySelector('.chart-iframe')
+  if (iframe && iframe.contentWindow && iframe.contentWindow.playHighlightAnimation) {
+    iframe.contentWindow.playHighlightAnimation()
+  }
+}
+
+// confirmAnswer 功能已由 handleConfirm 替代
+</script>
+
+<style scoped>
+.destination-map-staging-task {
+  width: 100%;
+  padding: 0 0 60px 0;
+  margin: 0;
+  position: relative;
+}
+
+.page-title {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  color: #1f1f1f;
+  margin: 0 0 10px 0;
+  padding: 0;
+  text-align: left;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.content-container {
+  display: flex;
+  gap: 0;
+  margin-bottom: 40px;
+  margin-top: 0;
+  align-items: flex-start;
+}
+
+.task-section {
+  flex: 0 0 280px;
+  min-width: 280px;
+  margin-top: 30px;
+}
+
+.chart-area {
+  flex: 1;
+  min-width: 800px;
+  width: calc(100vw - 320px);
+  margin-top: 30px;
+}
+
+.chart-display {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.chart-wrapper {
+  width: 100%;
+  margin-left: 40px;
+}
+
+.chart-iframe {
+  width: 100%;
+  height: 660px;
+  display: block;
+  border: none;
+  overflow: hidden;
+}
+
+.button-control {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.play-animation-btn {
+  width: 160px;
+  height: 50px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.play-animation-btn:hover {
+  background-color: #333;
+}
+
+.play-animation-btn:active {
+  transform: translateY(1px);
+}
+
+.event-description {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #545454;
+  margin: 10px 0 20px 0;
+  text-align: left;
+  font-style: italic;
+}
+
+.event-description em {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.task-title {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #1f1f1f;
+  margin: 0 0 10px 0;
+  text-align: left;
+}
+
+.task-title em {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.options-section {
+  margin-bottom: 0;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 6px;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.option:hover {
+  background-color: #f5f5f5;
+}
+
+.option-radio {
+  margin-right: 12px;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.option-label {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #545454;
+  cursor: pointer;
+  text-align: left;
+}
+
+.option-label em {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.option-letter {
+  font-weight: 600;
+  color: #1f1f1f;
+  margin-right: 8px;
+}
+
+.confirm-btn {
+  width: 120px;
+  height: 50px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-btn:hover:not(:disabled) {
+  background-color: #333;
+}
+
+.confirm-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.confirm-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.button-text {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #ffffff;
+}
+</style>

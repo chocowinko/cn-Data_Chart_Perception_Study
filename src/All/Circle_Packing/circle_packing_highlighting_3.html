@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Circle Packing - Highlighting 3</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        color: #333;
+        overflow: hidden;
+      }
+      #chart-container {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.85);
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        pointer-events: none;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart-container">
+      <svg id="chart" width="100%" height="100%"></svg>
+    </div>
+
+    <script>
+      const CSV_URL = 'asia_europe_emissions_hierarchical.csv'
+      const colorScale = d3.scaleOrdinal().domain(['Asia', 'Europe']).range(['#FFA07A', '#5DADE2'])
+      let root, svg, allNodes, allLabels
+
+      function playHighlightAnimation() {
+        highlightMedianCountries()
+      }
+
+      d3.csv(CSV_URL)
+        .then((data) => {
+          const filt = data.filter(
+            (d) =>
+              (d.continent === 'Asia' &&
+                [
+                  'Western Asia',
+                  'South-eastern Asia',
+                  'Southern Asia',
+                  'Central Asia',
+                  'Eastern Asia',
+                ].includes(d.sub_region)) ||
+              (d.continent === 'Europe' &&
+                ['Eastern Europe', 'Northern Europe', 'Southern Europe', 'Western Europe'].includes(
+                  d.sub_region,
+                )),
+          )
+          const contTot = d3.rollup(
+            filt,
+            (v) => d3.sum(v, (d) => +d.emissions),
+            (d) => d.continent,
+          )
+          const subTot = d3.rollup(
+            filt,
+            (v) => d3.sum(v, (d) => +d.emissions),
+            (d) => d.continent + d.sub_region,
+          )
+          const couMap = new Map(filt.map((d) => [d.country, +d.emissions]))
+
+          const hier = {
+            name: 'World',
+            children: Array.from(contTot.keys()).map((c) => ({
+              name: c,
+              value: contTot.get(c),
+              children: Array.from(
+                d3
+                  .group(
+                    filt.filter((d) => d.continent === c),
+                    (d) => d.sub_region,
+                  )
+                  .entries(),
+              ).map(([s, sDat]) => ({
+                name: s,
+                value: subTot.get(c + s),
+                children: sDat.map((d) => ({
+                  name: d.country,
+                  value: couMap.get(d.country),
+                })),
+              })),
+            })),
+          }
+          createViz(hier)
+        })
+        .catch((err) => console.error(err))
+
+      function createViz(hier) {
+        d3.select('#chart').selectAll('*').remove()
+        const box = document.getElementById('chart-container')
+        const w = box.clientWidth,
+          h = box.clientHeight
+        svg = d3
+          .select('#chart')
+          .attr('viewBox', `0 0 ${w} ${h}`)
+          .append('g')
+          .attr('transform', `translate(${w / 2 - 50},${h / 2 - 120})`)
+
+        const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0)
+
+        const pack = d3.pack().size([w, h]).padding(3)
+        root = d3
+          .hierarchy(hier)
+          .sum((d) => d.value || 0)
+          .sort((a, b) => b.value - a.value)
+        pack(root)
+        const nodes = root.children
+
+        allNodes = svg
+          .selectAll('circle')
+          .data(nodes.flatMap((d) => d.descendants()))
+          .enter()
+          .append('circle')
+          .attr('r', (d) => d.r)
+          .attr('cx', (d) => d.x - w / 2)
+          .attr('cy', (d) => d.y - h / 2)
+          .attr('fill', (d) => {
+            if (d.depth === 1) return colorScale(d.data.name)
+            if (d.depth === 2) return d3.color(colorScale(d.parent.data.name)).brighter(0.5)
+            return d3.color(colorScale(d.parent.parent.data.name)).brighter(1)
+          })
+          .attr('opacity', 0.85)
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 1.2)
+          .on('mouseover', (e, d) => {
+            tooltip
+              .html(`<strong>${d.data.name}</strong><br>${d.data.value.toFixed(2)} tCO₂e`)
+              .style('left', e.pageX + 10 + 'px')
+              .style('top', e.pageY - 10 + 'px')
+              .transition()
+              .duration(200)
+              .style('opacity', 0.9)
+          })
+          .on('mouseout', () => tooltip.transition().duration(200).style('opacity', 0))
+
+        allLabels = svg
+          .selectAll('text.label')
+          .data(nodes.flatMap((d) => d.descendants()))
+          .enter()
+          .append('text')
+          .attr('class', 'label')
+          .attr('opacity', 1)
+          .each(function (d) {
+            const sel = d3.select(this)
+            const labelText =
+              d.data.name.length > 15 ? d.data.name.substring(0, 15) + '…' : d.data.name
+
+            if (d.depth === 1) {
+              // 大洲标签 - Asia和Europe往上移
+              sel.text(labelText)
+              sel
+                .attr('x', d.x - w / 2)
+                .attr('y', d.y - h / 2 - d.r - 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-weight', '500')
+                .attr('font-size', Math.max(14, Math.min(24, d.r * 0.4)))
+                .attr('fill', '#000')
+            } else if (d.depth === 2) {
+              // 次区域标签 - 根据名称调整位置
+              sel.text(labelText)
+              let xOffset = 0
+              let yOffset = -5
+              let textAnchor = 'middle'
+              let yBase = d.y - h / 2 - d.r // 默认在圆圈顶部外侧
+
+              // South-eastern Asia往下移
+              if (d.data.name === 'South-eastern Asia') {
+                yOffset = 10
+              }
+              // Eastern Asia移到左边并下移，右移10px
+              else if (d.data.name === 'Eastern Asia') {
+                xOffset = -d.r
+                yBase = d.y - h / 2 // 在圆心高度
+                yOffset = 20
+                textAnchor = 'end'
+              }
+              // Northern Europe左移并下移
+              else if (d.data.name === 'Northern Europe') {
+                xOffset = -50
+                yOffset = 5
+              }
+              // Southern Europe下移
+              else if (d.data.name === 'Southern Europe') {
+                yOffset = 10
+              }
+              // Eastern Europe移到左边并右移10px
+              else if (d.data.name === 'Eastern Europe') {
+                xOffset = -d.r
+                yBase = d.y - h / 2 // 在圆心高度
+                yOffset = 0
+                textAnchor = 'end'
+              }
+              // Western Asia左上方
+              else if (d.data.name === 'Western Asia') {
+                xOffset = -50
+                yOffset = -5
+              }
+
+              sel
+                .attr('x', d.x - w / 2 + xOffset)
+                .attr('y', yBase + yOffset)
+                .attr('text-anchor', textAnchor)
+                .attr('font-weight', '500')
+                .attr('font-size', Math.max(11, Math.min(16, d.r * 0.45)))
+                .attr('fill', '#000')
+            } else {
+              // 国家标签 - 显示所有国家
+              sel.text(labelText)
+              sel
+                .attr('x', d.x - w / 2)
+                .attr('y', d.y - h / 2)
+                .attr('text-anchor', 'middle')
+                .attr('dominant-baseline', 'middle')
+                .attr('font-size', Math.max(7, Math.min(12, d.r * 0.4)))
+                .attr('fill', '#333')
+            }
+          })
+      }
+
+      function highlightMedianCountries() {
+        // 先降低所有元素的透明度
+        allNodes
+          .transition()
+          .duration(200)
+          .attr('opacity', 0.2)
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 1.2)
+        allLabels.transition().duration(200).attr('opacity', 0.2)
+
+        // 找到欧洲4个次区域中排放量处于中位数的国家
+        const europeRegions = [
+          'Eastern Europe',
+          'Northern Europe',
+          'Southern Europe',
+          'Western Europe',
+        ]
+        const medianCountries = []
+
+        europeRegions.forEach((rName) => {
+          const regionNode = root.descendants().find((d) => d.data.name === rName)
+          if (!regionNode || !regionNode.children) return
+
+          // 获取该区域所有国家并按排放量排序
+          const countries = regionNode.children.slice().sort((a, b) => a.value - b.value)
+
+          // 计算中位数位置
+          const n = countries.length
+          const medianIndex = Math.floor((n - 1) / 2)
+
+          // 获取中位数国家
+          const medianCountry = countries[medianIndex]
+          medianCountries.push(medianCountry)
+        })
+
+        // 高亮所有中位数国家
+        allNodes
+          .filter((d) => medianCountries.includes(d))
+          .transition()
+          .duration(500)
+          .attr('opacity', 1)
+          .attr('stroke', '#FFD700')
+          .attr('stroke-width', 3)
+
+        allLabels
+          .filter((d) => medianCountries.includes(d))
+          .transition()
+          .duration(500)
+          .attr('opacity', 1)
+      }
+
+      // 暴露函数给外部调用
+      window.playHighlightAnimation = playHighlightAnimation
+    </script>
+  </body>
+</html>

@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Energy Flow Sankey Diagram</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: transparent;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .container {
+        width: 100%;
+        height: auto;
+        background: transparent;
+        position: relative;
+        overflow: hidden;
+        padding: 0;
+      }
+
+      h1 {
+        position: static;
+        color: #333;
+        margin: 0 0 10px 0;
+        font-size: 18px;
+        font-weight: 600;
+        text-align: left;
+      }
+
+      .chart-container {
+        width: 100%;
+        height: auto;
+        padding-top: 20px;
+        overflow: visible;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+
+      .info-panel {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        border-left: 4px solid #007bff;
+      }
+
+      .info-panel h3 {
+        margin-top: 0;
+        color: #007bff;
+      }
+
+      svg {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Analysis of UK Energy Sources and Consumption</h1>
+      <div class="chart-container" id="chart-container"></div>
+    </div>
+
+    <script>
+      // Animated Sankey Chart Function
+      function AnimatedSankeyChart(
+        {
+          nodes, // an iterable of node objects (typically [{id}, …]); implied by links if missing
+          links, // an iterable of link objects (typically [{source, target}, …])
+        },
+        {
+          format = ',', // a function or format specifier for values in titles
+          align = 'justify', // convenience shorthand for nodeAlign
+          nodeId = (d) => d.id, // given d in nodes, returns a unique identifier (string)
+          nodeGroup, // given d in nodes, returns an (ordinal) value for color
+          nodeGroups, // an array of ordinal values representing the node groups
+          nodeLabel, // given d in (computed) nodes, text to label the associated rect
+          nodeTitle = (d) => `${d.id}\n${format(d.value)}`, // given d in (computed) nodes, hover text
+          nodeAlign = align, // Sankey node alignment strategy: left, right, justify, center
+          nodeSort, // comparator function to order nodes
+          nodeWidth = 15, // width of node rects
+          nodePadding = 10, // vertical separation between adjacent nodes
+          nodeLabelPadding = 6, // horizontal separation between node and label
+          nodeStroke = 'currentColor', // stroke around node rects
+          nodeStrokeWidth, // width of stroke around node rects, in pixels
+          nodeStrokeOpacity, // opacity of stroke around node rects
+          nodeStrokeLinejoin, // line join for stroke around node rects
+          linkSource = ({ source }) => source, // given d in links, returns a node identifier string
+          linkTarget = ({ target }) => target, // given d in links, returns a node identifier string
+          linkValue = ({ value }) => value, // given d in links, returns the quantitative value
+          linkPath = d3.sankeyLinkHorizontal(), // given d in (computed) links, returns the SVG path
+          linkTitle = (d) => `${d.source.id} → ${d.target.id}\n${format(d.value)}`, // given d in (computed) links
+          linkColor = 'source-target', // source, target, source-target, or static color
+          linkStrokeOpacity = 0.6, // link stroke opacity
+          linkMixBlendMode = 'multiply', // link blending mode
+          colors = d3.schemeTableau10, // array of colors
+          width = 1200, // outer width, in pixels
+          height = 700, // outer height, in pixels
+          marginTop = 5, // top margin, in pixels
+          marginRight = 1, // right margin, in pixels
+          marginBottom = 5, // bottom margin, in pixels
+          marginLeft = 50, // left margin, in pixels
+        } = {},
+      ) {
+        // Convert nodeAlign from a name to a function (since d3-sankey is not part of core d3).
+        if (typeof nodeAlign !== 'function')
+          nodeAlign =
+            {
+              left: d3.sankeyLeft,
+              right: d3.sankeyRight,
+              center: d3.sankeyCenter,
+            }[nodeAlign] ?? d3.sankeyJustify
+
+        // Compute values.
+        const LS = d3.map(links, linkSource).map(intern)
+        const LT = d3.map(links, linkTarget).map(intern)
+        const LV = d3.map(links, linkValue)
+        if (nodes === undefined) nodes = Array.from(d3.union(LS, LT), (id) => ({ id }))
+        const N = d3.map(nodes, nodeId).map(intern)
+        const G = nodeGroup == null ? null : d3.map(nodes, nodeGroup).map(intern)
+
+        // Replace the input nodes and links with mutable objects for the simulation.
+        nodes = d3.map(nodes, (_, i) => ({ id: N[i] }))
+        links = d3.map(links, (_, i) => ({ source: LS[i], target: LT[i], value: LV[i] }))
+
+        // Force linkColor to use source coloring for better visibility
+        linkColor = 'source'
+
+        // Compute default domains.
+        if (G && nodeGroups === undefined) nodeGroups = G
+
+        // Construct the scales with custom color palette
+        const customColors = [
+          '#E8B4B8',
+          '#D4A5A5',
+          '#BEA4B4',
+          '#A5B8D4',
+          '#A5D4B8',
+          '#99C9DD',
+          '#8CA361',
+          '#A5A5D4',
+          '#A5D4A5',
+          '#F3AB98',
+          '#EEE8A9',
+          '#E8C5A0',
+          '#C5A0E8',
+          '#A0E8C5',
+          '#E8A0C5',
+          '#C5E8A0',
+          '#A0C5E8',
+          '#E8E8A0',
+          '#A0E8E8',
+          '#E8A0E8',
+        ]
+        const color =
+          nodeGroup == null
+            ? d3.scaleOrdinal(customColors)
+            : d3.scaleOrdinal(nodeGroups, customColors)
+
+        // Compute the Sankey layout.
+        d3
+          .sankey()
+          .nodeId(({ index: i }) => N[i])
+          .nodeAlign(nodeAlign)
+          .nodeWidth(nodeWidth)
+          .nodePadding(nodePadding)
+          .nodeSort(nodeSort)
+          .extent([
+            [marginLeft, marginTop],
+            [width - marginRight, height - marginBottom],
+          ])({ nodes, links })
+
+        // Compute titles and labels using layout nodes, so as to access aggregate values.
+        if (typeof format !== 'function') format = d3.format(format)
+        const Tl = nodeLabel === undefined ? N : nodeLabel == null ? null : d3.map(nodes, nodeLabel)
+        const Tt = nodeTitle == null ? null : d3.map(nodes, nodeTitle)
+        const Lt = linkTitle == null ? null : d3.map(links, linkTitle)
+
+        // A unique identifier for clip paths (to avoid conflicts).
+        const uid = `O-${Math.random().toString(16).slice(2)}`
+
+        const svg = d3
+          .create('svg')
+          .attr('width', width)
+          .attr('height', height)
+          .attr('viewBox', [0, 0, width, height])
+          .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
+
+        const node = svg
+          .append('g')
+          .attr('stroke', nodeStroke)
+          .attr('stroke-width', nodeStrokeWidth)
+          .attr('stroke-opacity', nodeStrokeOpacity)
+          .attr('stroke-linejoin', nodeStrokeLinejoin)
+          .selectAll('rect')
+          .data(nodes)
+          .join('rect')
+          .attr('x', (d) => d.x0)
+          .attr('y', (d) => d.y0)
+          .attr('height', (d) => d.y1 - d.y0)
+          .attr('width', (d) => d.x1 - d.x0)
+
+        // Apply colors to nodes - use node name as color key
+        node.attr('fill', (d) => color(d.id))
+        if (Tt) node.append('title').text(({ index: i }) => Tt[i])
+
+        const link = svg.append('g').attr('fill', 'none').selectAll('g').data(links).join('g')
+
+        // Remove gradient logic since we're using simple source coloring
+
+        link
+          .append('path')
+          .attr('d', linkPath)
+          .attr('stroke', (d) => color(d.source.id))
+          .attr('stroke-opacity', 0.6)
+          .attr('stroke-width', ({ width }) => Math.max(1, width))
+          .call(Lt ? (path) => path.append('title').text(({ index: i }) => Lt[i]) : () => {})
+
+        function intern(value) {
+          return value !== null && typeof value === 'object' ? value.valueOf() : value
+        }
+
+        // Add labels last to ensure they are on top
+        if (Tl) {
+          const labelGroup = svg
+            .append('g')
+            .attr('class', 'label-group')
+            .attr('font-family', 'sans-serif')
+            .attr('font-size', 10)
+            .style('pointer-events', 'none')
+            .style('z-index', '9999') // Highest z-index
+
+          labelGroup
+            .selectAll('text')
+            .data(nodes)
+            .join('text')
+            .attr('x', (d) =>
+              d.x0 < width / 2 ? d.x1 + nodeLabelPadding : d.x0 - nodeLabelPadding,
+            )
+            .attr('y', (d) => (d.y1 + d.y0) / 2)
+            .attr('dy', '0.35em')
+            .attr('text-anchor', (d) => (d.x0 < width / 2 ? 'start' : 'end'))
+            .attr('fill', '#333')
+            .attr('font-weight', '500')
+            .style('text-shadow', '1px 1px 2px rgba(255,255,255,0.8)')
+            .style('z-index', '9999')
+            .text(({ index: i }) => Tl[i])
+        }
+
+        return Object.assign(svg.node(), { scales: { color } })
+      }
+
+      // Function to parse CSV data
+      function parseCSV(csvText) {
+        const lines = csvText.split('\n')
+        const links = []
+        const nodeSet = new Set()
+
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim()
+          if (!line) continue
+
+          const [source, target, value] = line.split(',').map((item) => item.trim())
+          if (source && target && value) {
+            const numValue = parseFloat(value)
+            if (!isNaN(numValue)) {
+              links.push({
+                source: source,
+                target: target,
+                value: numValue,
+              })
+              nodeSet.add(source)
+              nodeSet.add(target)
+            }
+          }
+        }
+
+        const nodes = Array.from(nodeSet).map((name) => ({ id: name }))
+        return { nodes, links }
+      }
+
+      // Function to categorize nodes by their position in energy flow
+      function categorizeNodes(nodes, links) {
+        console.log(
+          'All nodes:',
+          nodes.map((n) => n.id),
+        )
+
+        const categories = {
+          sources: [], // Primary energy sources
+          intermediate1: [], // First level processing
+          intermediate2: [], // Second level processing
+          intermediate3: [], // Third level processing
+          intermediate4: [], // Fourth level processing
+          terminals: [], // Final consumers
+        }
+
+        // Define all node categories explicitly based on the CSV data
+        const nodeCategories = {
+          sources: [
+            "Agricultural 'waste'",
+            'Biofuel imports',
+            'Biomass imports',
+            'Coal imports',
+            'Coal reserves',
+            'Gas imports',
+            'Gas reserves',
+            'Geothermal',
+            'Hydro',
+            'Marine algae',
+            'Nuclear',
+            'Oil imports',
+            'Oil reserves',
+            'Other waste',
+            'Pumped heat',
+            'Solar',
+            'Tidal',
+            'UK land based bioenergy',
+            'Wave',
+            'Wind',
+          ],
+          intermediate1: ['Bio-conversion', 'Coal', 'Ngas', 'Oil', 'Solar PV', 'Solar Thermal'],
+          intermediate2: ['Gas', 'Liquid', 'Solid'],
+          intermediate3: ['Thermal generation'],
+          intermediate4: ['District heating', 'Electricity grid', 'H2', 'H2 conversion'],
+          terminals: [
+            'Agriculture',
+            'Domestic aviation',
+            'Heating and cooling - commercial',
+            'Heating and cooling - homes',
+            'Industry',
+            'International aviation',
+            'International shipping',
+            'Lighting & appliances - commercial',
+            'Lighting & appliances - homes',
+            'Losses',
+            'National navigation',
+            'Over generation / exports',
+            'Rail transport',
+            'Road transport',
+          ],
+        }
+
+        // Categorize each node
+        nodes.forEach((node) => {
+          let categorized = false
+
+          for (const [category, nodeList] of Object.entries(nodeCategories)) {
+            if (nodeList.includes(node.id)) {
+              categories[category].push(node)
+              categorized = true
+              break
+            }
+          }
+
+          if (!categorized) {
+            console.warn('Uncategorized node:', node.id)
+            // Default to terminals for safety
+            categories.terminals.push(node)
+          }
+        })
+
+        console.log('Categorized nodes:', {
+          sources: categories.sources.map((n) => n.id),
+          intermediate1: categories.intermediate1.map((n) => n.id),
+          intermediate2: categories.intermediate2.map((n) => n.id),
+          intermediate3: categories.intermediate3.map((n) => n.id),
+          intermediate4: categories.intermediate4.map((n) => n.id),
+          terminals: categories.terminals.map((n) => n.id),
+        })
+
+        return categories
+      }
+
+      // Function to get links for specific stage - simplified logic
+      function getLinksForStage(allLinks, fromNodes, toNodes) {
+        const fromIds = new Set(fromNodes.map((n) => n.id))
+        const toIds = new Set(toNodes.map((n) => n.id))
+
+        // Simplified condition: show link if either source OR target is in current stage
+        const stageLinks = allLinks.filter(
+          (link) => fromIds.has(link.source) || toIds.has(link.target),
+        )
+
+        console.log(
+          `Getting links where source in [${fromNodes.map((n) => n.id).join(', ')}] OR target in [${toNodes.map((n) => n.id).join(', ')}]: found ${stageLinks.length} links`,
+        )
+
+        return stageLinks
+      }
+
+      // Function to find complete path from source to all reachable targets
+      function findCompletePaths(sourceId, links) {
+        const paths = []
+
+        function traverse(currentNode, currentPath, visited = new Set()) {
+          // Avoid infinite loops
+          if (visited.has(currentNode)) return
+
+          const newVisited = new Set(visited)
+          newVisited.add(currentNode)
+
+          const outgoingLinks = links.filter((link) => link.source === currentNode)
+
+          if (outgoingLinks.length === 0) {
+            // Terminal node reached, save the complete path
+            if (currentPath.length > 0) {
+              paths.push([...currentPath])
+            }
+          } else {
+            outgoingLinks.forEach((link) => {
+              const newPath = [
+                ...currentPath,
+                {
+                  source: link.source,
+                  target: link.target,
+                  value: link.value,
+                },
+              ]
+              traverse(link.target, newPath, newVisited)
+            })
+          }
+        }
+
+        traverse(sourceId, [])
+        console.log(`Found ${paths.length} paths from ${sourceId}:`, paths)
+        return paths
+      }
+
+      // Dynamic path tracing function
+      async function tracePath(svg, pathSegments, sourceColor, duration = 3000) {
+        return new Promise((resolve) => {
+          const traceGroup = svg.append('g').attr('class', 'dynamic-trace')
+          let currentSegmentIndex = 0
+
+          function traceNextSegment() {
+            if (currentSegmentIndex >= pathSegments.length) {
+              resolve()
+              return
+            }
+
+            const segment = pathSegments[currentSegmentIndex]
+
+            // Find the corresponding link element
+            const linkElement = svg
+              .selectAll('path')
+              .filter(
+                (d) =>
+                  d &&
+                  d.source &&
+                  d.target &&
+                  d.source.id === segment.source &&
+                  d.target.id === segment.target,
+              )
+              .node()
+
+            if (linkElement) {
+              const pathData = linkElement.getAttribute('d')
+              const pathLength = linkElement.getTotalLength()
+
+              // Create the traced path segment
+              const tracedPath = traceGroup
+                .append('path')
+                .attr('d', pathData)
+                .attr('stroke', sourceColor)
+                .attr('stroke-width', Math.max(3, segment.value / 50))
+                .attr('fill', 'none')
+                .attr('stroke-opacity', 0.9)
+                .style('filter', `drop-shadow(0 0 6px ${sourceColor})`)
+                .attr('stroke-dasharray', `${pathLength} ${pathLength}`)
+                .attr('stroke-dashoffset', pathLength)
+
+              // Animate the path drawing
+              tracedPath
+                .transition()
+                .duration(duration / pathSegments.length)
+                .ease(d3.easeLinear)
+                .attr('stroke-dashoffset', 0)
+                .on('end', () => {
+                  // Highlight the target node briefly
+                  svg
+                    .selectAll('rect')
+                    .filter((d) => d.id === segment.target)
+                    .transition()
+                    .duration(200)
+                    .style('fill', sourceColor)
+                    .style('opacity', 1)
+                    .transition()
+                    .duration(300)
+                    .style('fill', null)
+
+                  currentSegmentIndex++
+                  setTimeout(traceNextSegment, 100) // Small delay between segments
+                })
+            } else {
+              currentSegmentIndex++
+              traceNextSegment()
+            }
+          }
+
+          traceNextSegment()
+        })
+      }
+
+      // Animated rendering function
+      async function animateChart(chartData, container) {
+        // Create the base chart structure
+        const chart = AnimatedSankeyChart(chartData, {
+          nodeLabel: (d) => d.id,
+          nodeAlign: 'justify',
+          linkColor: 'source',
+          format: ',.0f',
+          width: 1200,
+          height: 650,
+        })
+
+        container.appendChild(chart)
+
+        const svg = d3.select(chart)
+        const allNodes = svg.selectAll('rect')
+        const allLinks = svg.selectAll('path')
+        const allLabels = svg.selectAll('text')
+
+        // Show complete static chart initially
+        allNodes.style('opacity', 1)
+        allLinks.style('opacity', 0.1) // Show all links initially
+        allLabels.style('opacity', 1)
+
+        // Define source nodes for animation
+        const sourceNodes = ['Nuclear', 'Wind', 'Hydro']
+
+        // Define custom colors for animated sources
+        const sourceColors = {
+          Nuclear: '#89CD0B', // Green
+          Wind: '#B2789E', // Purple
+          Hydro: '#C54D53', // Red
+        }
+
+        // Wait a moment to show the static chart
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        console.log('Starting animated paths for specified sources...')
+
+        // Find all paths that originate from the specified sources
+        const animatedPaths = new Set()
+
+        function findAllPathsFromSource(sourceId, links, visited = new Set()) {
+          if (visited.has(sourceId)) return
+          visited.add(sourceId)
+
+          const outgoingLinks = links.filter((link) => link.source === sourceId)
+          outgoingLinks.forEach((link) => {
+            animatedPaths.add(`${link.source}-${link.target}`)
+            findAllPathsFromSource(link.target, links, visited)
+          })
+        }
+
+        // Build complete path networks for each source
+        sourceNodes.forEach((source) => {
+          findAllPathsFromSource(source, chartData.links)
+        })
+
+        console.log(`Found ${animatedPaths.size} paths to animate`)
+
+        // Store original colors and prepare animated links
+        const originalColors = new Map()
+        const animatedLinks = []
+
+        allLinks.each(function (d) {
+          const originalColor = d3.select(this).style('stroke')
+          const pathKey = `${d.source.id}-${d.target.id}`
+          originalColors.set(pathKey, originalColor)
+
+          // Check if this link should be animated
+          if (animatedPaths.has(pathKey)) {
+            animatedLinks.push({
+              element: this,
+              data: d,
+              pathKey: pathKey,
+              originalColor: originalColor,
+            })
+            // Don't change opacity - keep background at 0.1
+          }
+        })
+
+        console.log(`Prepared ${animatedLinks.length} links for animation`)
+
+        // Create overlay paths for animation
+        const overlayGroup = svg.append('g').attr('class', 'animation-overlay')
+        const overlayPaths = []
+
+        // Ensure labels are always on top from the start
+        svg.select('.label-group').raise()
+        svg.select('.star-markers').raise()
+
+        animatedLinks.forEach(({ element, data, pathKey, originalColor }) => {
+          const originalPath = d3.select(element)
+          const pathData = originalPath.attr('d')
+
+          // Create overlay path for animation
+          const overlayPath = overlayGroup
+            .append('path')
+            .attr('d', pathData)
+            .attr('stroke', originalColor)
+            .attr('stroke-width', Math.max(1, data.width))
+            .attr('fill', 'none')
+            .style('opacity', 0)
+
+          overlayPaths.push({
+            element: overlayPath.node(),
+            data: data,
+            pathKey: pathKey,
+            originalColor: originalColor,
+          })
+        })
+
+        // From left to right drawing animation
+        setTimeout(() => {
+          console.log('Starting left-to-right drawing animation...')
+
+          // Group by source
+          const sourceGroups = {
+            Nuclear: overlayPaths.filter(({ data }) => data.source.id === 'Nuclear'),
+            Wind: overlayPaths.filter(({ data }) => data.source.id === 'Wind'),
+            Hydro: overlayPaths.filter(({ data }) => data.source.id === 'Hydro'),
+            ThermalGeneration: overlayPaths.filter(
+              ({ data }) => data.source.id === 'Thermal generation',
+            ),
+            DistrictHeating: overlayPaths.filter(
+              ({ data }) => data.source.id === 'District heating',
+            ),
+            ElectricityGrid: overlayPaths.filter(
+              ({ data }) => data.source.id === 'Electricity grid',
+            ),
+            Other: overlayPaths.filter(
+              ({ data }) =>
+                ![
+                  'Nuclear',
+                  'Wind',
+                  'Hydro',
+                  'Thermal generation',
+                  'District heating',
+                  'Electricity grid',
+                ].includes(data.source.id),
+            ),
+          }
+
+          // Draw path function
+          function drawPath(element, delay = 0) {
+            const path = d3.select(element)
+            const totalLength = element.getTotalLength()
+
+            path
+              .style('opacity', 1)
+              .style('stroke-dasharray', `${totalLength} ${totalLength}`)
+              .style('stroke-dashoffset', totalLength)
+              .transition()
+              .delay(delay)
+              .duration(1500)
+              .ease(d3.easeLinear)
+              .style('stroke-dashoffset', 0)
+              .on('start', function () {
+                // Ensure labels stay on top during each path animation
+                svg.select('.label-group').raise()
+                svg.select('.star-markers').raise()
+              })
+          }
+
+          // Stage 1: Three sources start drawing simultaneously
+          ;['Nuclear', 'Wind', 'Hydro'].forEach((source) => {
+            sourceGroups[source].forEach(({ element }, pathIndex) => {
+              drawPath(element, pathIndex * 200)
+            })
+          })
+
+          // Stage 2: Thermal generation
+          setTimeout(() => {
+            sourceGroups['ThermalGeneration'].forEach(({ element }, index) => {
+              drawPath(element, index * 200)
+            })
+          }, 1800)
+
+          // Stage 3: District heating and Electricity grid
+          setTimeout(() => {
+            sourceGroups['DistrictHeating'].forEach(({ element }, index) => {
+              drawPath(element, index * 200)
+            })
+            sourceGroups['ElectricityGrid'].forEach(({ element }, index) => {
+              drawPath(element, index * 200)
+            })
+          }, 4000)
+
+          // Stage 4: Other paths with delay
+          setTimeout(() => {
+            sourceGroups['Other'].forEach(({ element }, index) => {
+              drawPath(element, index * 300)
+            })
+          }, 4200)
+
+          // Keep labels on top continuously
+          const keepLabelsOnTop = setInterval(() => {
+            svg.select('.label-group').raise()
+            svg.select('.star-markers').raise()
+          }, 100)
+
+          // Stop continuous raising after 6 seconds
+          setTimeout(() => {
+            clearInterval(keepLabelsOnTop)
+            svg.select('.label-group').raise()
+            svg.select('.star-markers').raise()
+          }, 6000)
+        }, 1000)
+
+        // sourceNodes already defined above
+
+        // Add clickable star markers for the three source nodes
+        setTimeout(() => {
+          const starGroup = svg.append('g').attr('class', 'star-markers')
+
+          const nodeData = svg.selectAll('rect').data()
+
+          nodeData.forEach((d, i) => {
+            if (sourceNodes.includes(d.id)) {
+              console.log('Adding interactive star for:', d.id, 'at position:', d.x0, d.y0)
+
+              const x = Math.max(15, d.x0 - 20)
+              const y = (d.y0 + d.y1) / 2
+
+              // Add clickable star marker
+              const star = starGroup
+                .append('text')
+                .attr('x', x)
+                .attr('y', y + 5)
+                .attr('font-size', '16px')
+                .attr('fill', '#FFD700')
+                .attr('stroke', '#FF6B35')
+                .attr('stroke-width', 0.5)
+                .attr('text-anchor', 'middle')
+                .style('cursor', 'pointer')
+                .text('★')
+                .on('click', async function () {
+                  console.log(`Tracing paths from ${d.id}`)
+                  await startDynamicTracing(d.id)
+                })
+
+              // Add hover effects
+              star
+                .on('mouseover', function () {
+                  d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr('font-size', '20px')
+                    .attr('fill', sourceColors[d.id])
+                })
+                .on('mouseout', function () {
+                  d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr('font-size', '16px')
+                    .attr('fill', '#FFD700')
+                })
+            }
+          })
+        }, 100)
+
+        // Dynamic tracing function for a specific source
+        async function startDynamicTracing(sourceId) {
+          console.log(`Starting dynamic tracing from ${sourceId}`)
+
+          // Clear any existing traces
+          svg.selectAll('.dynamic-trace').remove()
+
+          // Dim background even more during tracing
+          allLinks.transition().duration(500).style('opacity', 0.05)
+          allNodes
+            .filter((d) => d.id !== sourceId)
+            .transition()
+            .duration(500)
+            .style('opacity', 0.3)
+
+          // Highlight the source node
+          const sourceNode = allNodes.filter((d) => d.id === sourceId)
+          sourceNode
+            .transition()
+            .duration(500)
+            .style('fill', sourceColors[sourceId])
+            .style('opacity', 1)
+
+          // Find all complete paths from this source
+          const completePaths = findCompletePaths(sourceId, chartData.links)
+          console.log(`Found ${completePaths.length} complete paths from ${sourceId}`)
+
+          if (completePaths.length === 0) {
+            console.warn(
+              `No paths found from ${sourceId}. Available links:`,
+              chartData.links.filter((link) => link.source === sourceId),
+            )
+
+            // Restore background visibility
+            allLinks.transition().duration(1000).style('opacity', 0.1)
+            allNodes.transition().duration(1000).style('opacity', 1)
+            sourceNode.transition().duration(1000).style('fill', null)
+            return
+          }
+
+          // Trace each path sequentially with delays
+          for (let i = 0; i < completePaths.length; i++) {
+            const path = completePaths[i]
+            console.log(
+              `Tracing path ${i + 1}/${completePaths.length}:`,
+              path.map((p) => `${p.source}->${p.target}`).join(' -> '),
+            )
+
+            // Start tracing this path
+            await tracePath(svg, path, sourceColors[sourceId], 2000)
+
+            // Small delay between paths
+            await new Promise((resolve) => setTimeout(resolve, 300))
+          }
+
+          console.log(`Completed tracing all paths from ${sourceId}`)
+
+          // After tracing, restore background visibility slightly
+          setTimeout(() => {
+            allLinks.transition().duration(1000).style('opacity', 0.1)
+            allNodes.transition().duration(1000).style('opacity', 1)
+            sourceNode.transition().duration(1000).style('fill', null)
+          }, 1000)
+        }
+
+        // Wait a moment to show the static chart
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        console.log('Chart ready. Click on a star (★) to trace paths from that energy source.')
+
+        // Ensure labels and stars are always on top
+        svg.select('.label-group').raise()
+        svg.select('.star-markers').raise()
+      }
+
+      // Global variable to store energy data
+      let globalEnergyData = null
+
+      // Load CSV data and create chart
+      async function loadDataAndCreateChart() {
+        try {
+          const response = await fetch('energy.csv')
+          const csvText = await response.text()
+          globalEnergyData = parseCSV(csvText)
+
+          // Don't auto-start animation
+          // const container = document.getElementById('chart-container')
+          // await animateChart(globalEnergyData, container)
+        } catch (error) {
+          console.error('Failed to load CSV file:', error)
+          document.getElementById('chart-container').innerHTML =
+            '<p style="text-align: center; color: #e74c3c; padding: 50px;">Unable to load data file. Please ensure energy.csv is in the same directory.</p>'
+        }
+      }
+
+      // Expose function for parent window to call
+      window.playHighlightAnimation = async function () {
+        if (!globalEnergyData) {
+          console.error('Energy data not loaded yet')
+          return
+        }
+
+        // Clear existing chart
+        const container = document.getElementById('chart-container')
+        container.innerHTML = ''
+
+        // Start animation
+        await animateChart(globalEnergyData, container)
+      }
+
+      // Initialize when page loads
+      document.addEventListener('DOMContentLoaded', loadDataAndCreateChart)
+    </script>
+  </body>
+</html>

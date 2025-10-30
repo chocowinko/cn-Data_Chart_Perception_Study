@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Student Contact Network - Staged Construction</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background-color: transparent;
+      }
+      .overlay-controls {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 10;
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      h1 {
+        color: #333;
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .controls,
+      #info-panel {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .controls button {
+        font-size: 16px;
+        padding: 8px 15px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 150px;
+        text-align: center;
+      }
+      .controls button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      #start-staging {
+        background-color: #28a745;
+        color: white;
+        border-color: #28a745;
+      }
+      #reset {
+        background-color: #f8f9fa;
+        color: #333;
+      }
+      #info-panel {
+        font-size: 14px;
+        line-height: 1.5;
+        min-width: 220px;
+      }
+      #network-svg {
+        position: absolute;
+        top: -150px;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+      .community-legend {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        font-size: 12px;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        margin: 3px 0;
+      }
+      .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 6px;
+      }
+      .node-tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 5px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        pointer-events: none;
+        z-index: 1000;
+      }
+      #legend {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+      }
+      #legend h2 {
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+      }
+      .color-box {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border-radius: 3px;
+        margin-right: 8px;
+        border: 1px solid #ccc;
+      }
+      .chart-title {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        z-index: 5;
+        color: #2c3e50;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="overlay-controls">
+      <h1>Student Contact Network - Staging</h1>
+      <div class="controls">
+        <button id="start-staging">Start Staging</button>
+        <button id="reset">Reset View</button>
+      </div>
+      <div id="info-panel">Loading data...</div>
+    </div>
+    <h1 class="chart-title">
+      Student Contact Frequency Network - Three-Level Relationship Visualization
+    </h1>
+    <svg id="network-svg"></svg>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      const svg = d3
+        .select('#network-svg')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('preserveAspectRatio', 'xMinYMin meet')
+      const infoPanel = d3.select('#info-panel')
+      const startButton = document.getElementById('start-staging')
+      const resetButton = document.getElementById('reset')
+
+      let simulationTimers = []
+      let globalGraphData = null
+      let mainGroup
+      let clusterThresholds = null // 存储K-Means聚类结果的阈值
+
+      // --- 颜色映射 ---
+      const colorMap = {
+        0: '#E2D874',
+        1: '#B4C7DE',
+        2: '#4592BB',
+        3: '#5AB3A6',
+        4: '#CA6E72',
+        5: '#CFBAAF',
+        6: '#E7A6AC',
+        7: '#B2789E',
+        8: '#F29076',
+      }
+
+      // --- 1D K-Means 聚类算法实现 ---
+      function kMeans1D(data, k = 3, maxIterations = 100) {
+        if (data.length === 0) return { centroids: [], clusters: [] }
+
+        // 初始化质心：使用数据的分位数作为初始质心
+        const sortedData = [...data].sort((a, b) => a - b)
+        const centroids = []
+        for (let i = 0; i < k; i++) {
+          const index = Math.floor(((sortedData.length - 1) * i) / (k - 1))
+          centroids.push(sortedData[index])
+        }
+
+        let clusters = new Array(k).fill().map(() => [])
+        let converged = false
+        let iterations = 0
+
+        while (!converged && iterations < maxIterations) {
+          // 清空聚类
+          clusters = new Array(k).fill().map(() => [])
+
+          // 分配每个数据点到最近的质心
+          data.forEach((point) => {
+            let minDistance = Infinity
+            let closestCluster = 0
+
+            centroids.forEach((centroid, i) => {
+              const distance = Math.abs(point - centroid)
+              if (distance < minDistance) {
+                minDistance = distance
+                closestCluster = i
+              }
+            })
+
+            clusters[closestCluster].push(point)
+          })
+
+          // 更新质心
+          const newCentroids = clusters.map((cluster) => {
+            if (cluster.length === 0) return centroids[clusters.indexOf(cluster)]
+            return cluster.reduce((sum, val) => sum + val, 0) / cluster.length
+          })
+
+          // 检查收敛
+          converged = centroids.every((centroid, i) => Math.abs(centroid - newCentroids[i]) < 0.001)
+
+          centroids.splice(0, centroids.length, ...newCentroids)
+          iterations++
+        }
+
+        return { centroids: centroids.sort((a, b) => a - b), clusters }
+      }
+
+      // --- 计算聚类阈值 ---
+      function calculateClusterThresholds(links) {
+        const weights = links.map((link) => link.value)
+        const { centroids } = kMeans1D(weights, 3)
+
+        // 计算聚类边界：使用相邻质心的中点作为阈值
+        const thresholds = {
+          weak: centroids[1], // 弱关系和中等关系的分界点
+          strong: centroids[2], // 中等关系和强关系的分界点
+        }
+
+        console.log('K-Means聚类结果:')
+        console.log('质心:', centroids)
+        console.log('阈值:', thresholds)
+
+        return thresholds
+      }
+
+      // 加载数据：graph + 布局 + 节点 group
+      Promise.all([
+        d3.json('network_data_for_broadcast.json'),
+        d3.json('layout_positions.json'),
+        d3.csv('network_nodes.csv'),
+      ])
+        .then(function ([graph, layouts, nodesCsv]) {
+          const groupMap = new Map(nodesCsv.map((d) => [d.id, +d.group]))
+          graph.nodes.forEach((node) => {
+            node.group = groupMap.get(node.id) || 0
+            const position = layouts[node.id]
+            node.x = position ? position.x * 0.667 : 0
+            node.y = position ? position.y * 0.667 : 0
+          })
+
+          globalGraphData = graph
+
+          // 计算基于K-Means的聚类阈值
+          clusterThresholds = calculateClusterThresholds(graph.links)
+
+          // 计算社群统计信息
+          const communityStats = {}
+          graph.nodes.forEach((node) => {
+            if (!communityStats[node.group]) {
+              communityStats[node.group] = 0
+            }
+            communityStats[node.group]++
+          })
+
+          const statsText = Object.keys(communityStats)
+            .sort((a, b) => a - b)
+            .map((group) => `Community ${group}: ${communityStats[group]} members`)
+            .join('<br>')
+
+          infoPanel.html(
+            `Data loaded successfully.<br>K-Means clustering analysis completed.<br><br><strong>Community Distribution:</strong><br>${statsText}<br><br>Click button to start staging.`,
+          )
+          drawInitialGraphStructure(graph)
+        })
+        .catch((error) => {
+          console.error('Error loading data:', error)
+          infoPanel.html(`<span style="color: red;">Unable to load data files.</span>`)
+        })
+
+      // 修改：绘制初始图表结构，包括预设的连线图层
+      function drawInitialGraphStructure(graph) {
+        svg.selectAll('*').remove()
+        mainGroup = svg.append('g')
+
+        // --- 核心改动：预先定义连线图层顺序 ---
+        // 按照 "弱 -> 中 -> 强" 的顺序添加 g 元素，这样强关系的线条就会在最上层
+        const linkLayers = mainGroup.append('g').attr('class', 'link-layers')
+        linkLayers.append('g').attr('class', 'stage-three-layer') // 弱关系 (底层)
+        linkLayers.append('g').attr('class', 'stage-two-layer') // 普通关系 (中层)
+        linkLayers.append('g').attr('class', 'stage-one-layer') // 强关系 (顶层)
+
+        // 节点层在连线层之后添加，确保节点在所有连线之上
+        const nodeGroup = mainGroup.append('g').attr('class', 'nodes')
+
+        const node = nodeGroup
+          .selectAll('g')
+          .data(graph.nodes)
+          .enter()
+          .append('g')
+          .attr('transform', (d) => `translate(${d.x},${d.y})`)
+
+        node
+          .append('circle')
+          .attr('r', 13.33)
+          .style('fill', (d) => colorMap[d.group] || '#999')
+
+        node
+          .append('text')
+          .text((d) => d.id)
+          .attr('x', 16.67)
+          .attr('y', 6.67)
+          .style('fill', '#97847A')
+          .style('font-size', '16.67px')
+
+        // 添加社群标签 - 每个社群在其中心显示一次
+        const communityGroups = {}
+        graph.nodes.forEach((node) => {
+          if (!communityGroups[node.group]) {
+            communityGroups[node.group] = []
+          }
+          communityGroups[node.group].push(node)
+        })
+
+        // 为每个社群计算边界并添加标签
+        Object.keys(communityGroups).forEach((groupId) => {
+          const nodes = communityGroups[groupId]
+          const minX = Math.min(...nodes.map((n) => n.x))
+          const maxX = Math.max(...nodes.map((n) => n.x))
+          const minY = Math.min(...nodes.map((n) => n.y))
+          const maxY = Math.max(...nodes.map((n) => n.y))
+
+          // 计算社群中心
+          const centerX = 13.33 + (minX + maxX) / 2
+          const centerY = 26.67 + (minY + maxY) / 2
+
+          // 在社群的中心添加标签
+          mainGroup
+            .append('text')
+            .text(`Community ${groupId}`)
+            .attr('x', centerX)
+            .attr('y', centerY)
+            .style('fill', colorMap[groupId] || '#333')
+            .style('font-size', '12px')
+            .style('font-weight', 'bold')
+            .style('text-anchor', 'middle')
+            .style('dominant-baseline', 'middle')
+            .style('background', 'rgba(255,255,255,0.8)')
+            .style('padding', '1.33px 4px')
+            .style('border-radius', '2.67px')
+        })
+
+        // 固定 viewBox 大小（不随缩放变化）
+        let minX = Infinity,
+          maxX = -Infinity,
+          minY = Infinity,
+          maxY = -Infinity
+        graph.nodes.forEach((node) => {
+          // 使用原始坐标（未缩放）来计算 viewBox
+          const originalX = node.x / 0.667
+          const originalY = node.y / 0.667
+          minX = Math.min(minX, originalX)
+          maxX = Math.max(maxX, originalX)
+          minY = Math.min(minY, originalY)
+          maxY = Math.max(maxY, originalY)
+        })
+        const viewBoxWidth = maxX - minX
+        const viewBoxHeight = maxY - minY
+        const paddingX = viewBoxWidth * 0.15
+        const paddingY = viewBoxHeight * 0.15
+        svg.attr(
+          'viewBox',
+          `${minX - paddingX} ${minY - paddingY} ${viewBoxWidth + paddingX * 2} ${viewBoxHeight + paddingY * 2}`,
+        )
+      }
+
+      // 分阶段绘制连线 - 使用K-Means聚类结果
+      function startStagingAnimation() {
+        if (!clusterThresholds) {
+          infoPanel.html(
+            "<span style='color: red;'>Clustering analysis not completed. Please wait for data loading.</span>",
+          )
+          return
+        }
+
+        simulationTimers.forEach((timer) => clearTimeout(timer))
+        simulationTimers = []
+        // 修改：分别清空每个图层的内容
+        mainGroup.select('.stage-one-layer').html('')
+        mainGroup.select('.stage-two-layer').html('')
+        mainGroup.select('.stage-three-layer').html('')
+        disableButtons()
+
+        let currentDelay = 100
+
+        const timer1 = setTimeout(() => {
+          infoPanel.html(
+            `Stage 1: Drawing Core Strong Relationships<br>(Contact frequency ≥ ${Math.round(clusterThresholds.strong)})`,
+          )
+          // 使用K-Means聚类结果：强关系
+          drawLinks(
+            (d) => d.value >= clusterThresholds.strong,
+            '#c54c52',
+            4,
+            'stage-one',
+            '.stage-one-layer',
+          )
+        }, currentDelay)
+
+        currentDelay += 3000
+        const timer2 = setTimeout(() => {
+          infoPanel.html(
+            `Stage 2: Drawing Moderate Relationships<br>(${Math.round(clusterThresholds.weak)} ≤ frequency < ${Math.round(clusterThresholds.strong)})`,
+          )
+          // 使用K-Means聚类结果：中等关系
+          drawLinks(
+            (d) => d.value >= clusterThresholds.weak && d.value < clusterThresholds.strong,
+            '#DE999A',
+            2.67,
+            'stage-two',
+            '.stage-two-layer',
+          )
+        }, currentDelay)
+
+        currentDelay += 3000
+        const timer3 = setTimeout(() => {
+          infoPanel.html(
+            `Stage 3: Drawing Weak Sparse Relationships<br>(frequency < ${Math.round(clusterThresholds.weak)})`,
+          )
+          // 使用K-Means聚类结果：弱关系
+          drawLinks(
+            (d) => d.value < clusterThresholds.weak,
+            '#F3D9D6',
+            0.67,
+            'stage-three',
+            '.stage-three-layer',
+          )
+        }, currentDelay)
+
+        currentDelay += 3000
+        const timer4 = setTimeout(() => {
+          infoPanel.html(
+            `Network construction completed.<br><small>Based on K-Means clustering</small>`,
+          )
+          enableButtons()
+        }, currentDelay)
+
+        simulationTimers = [timer1, timer2, timer3, timer4]
+      }
+
+      // 修改：增加 layerSelector 参数，用于指定在哪个图层上绘制
+      function drawLinks(filter, color, strokeWidth, stageName, layerSelector) {
+        const nodeMap = new Map(globalGraphData.nodes.map((node) => [node.id, node]))
+        const linksToDraw = globalGraphData.links.filter(filter)
+
+        // 修改：选择指定的图层进行绘制
+        mainGroup
+          .select(layerSelector)
+          .selectAll(`line.${stageName}`)
+          .data(linksToDraw, (d) => `${d.source}-${d.target}`)
+          .enter()
+          .append('line')
+          .attr('class', stageName)
+          .attr('x1', (d) => nodeMap.get(d.source)?.x)
+          .attr('y1', (d) => nodeMap.get(d.source)?.y)
+          .attr('x2', (d) => nodeMap.get(d.source)?.x)
+          .attr('y2', (d) => nodeMap.get(d.source)?.y)
+          .style('stroke', color)
+          .style('stroke-width', strokeWidth)
+          .transition()
+          .duration(1000)
+          .attr('x2', (d) => nodeMap.get(d.target)?.x)
+          .attr('y2', (d) => nodeMap.get(d.target)?.y)
+      }
+
+      function disableButtons() {
+        startButton.disabled = true
+      }
+      function enableButtons() {
+        startButton.disabled = false
+      }
+
+      function resetAnimation() {
+        simulationTimers.forEach((timer) => clearTimeout(timer))
+        simulationTimers = []
+        if (mainGroup) {
+          // 修改：分别清空每个图层的内容
+          mainGroup.select('.stage-one-layer').html('')
+          mainGroup.select('.stage-two-layer').html('')
+          mainGroup.select('.stage-three-layer').html('')
+        }
+        infoPanel.text('View has been reset.')
+        enableButtons()
+      }
+
+      startButton.addEventListener('click', startStagingAnimation)
+      resetButton.addEventListener('click', resetAnimation)
+
+      // 暴露给外部调用的函数
+      window.playHighlightAnimation = startStagingAnimation
+    </script>
+  </body>
+</html>

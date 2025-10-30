@@ -1,0 +1,783 @@
+level1,level2,Year,Month,Quarter,Month_Name,Quarter_Name,value
+Furniture,Bookcases,2014,1,1,January,Q1,1010.0550000000001
+Furniture,Bookcases,2014,3,1,March,Q1,1706.446
+Furniture,Bookcases,2014,4,2,April,Q2,308.499
+Furniture,Bookcases,2014,5,2,May,Q2,640.631
+Furniture,Bookcases,2014,6,2,June,Q2,759.5735999999999
+Furniture,Bookcases,2014,7,3,July,Q3,1487.673
+Furniture,Bookcases,2014,8,3,August,Q3,794.2760000000001
+Furniture,Bookcases,2014,9,3,September,Q3,2394.4698
+Furniture,Bookcases,2014,10,4,October,Q4,616.998
+Furniture,Bookcases,2014,11,4,November,Q4,7263.7137
+Furniture,Bookcases,2014,12,4,December,Q4,3054.3424999999997
+Furniture,Bookcases,2015,1,1,January,Q1,1804.8476
+Furniture,Bookcases,2015,2,1,February,Q1,283.92
+Furniture,Bookcases,2015,3,1,March,Q1,2625.422
+Furniture,Bookcases,2015,4,2,April,Q2,875.71
+Furniture,Bookcases,2015,5,2,May,Q2,1916.8174999999999
+Furniture,Bookcases,2015,6,2,June,Q2,482.94
+Furniture,Bookcases,2015,7,3,July,Q3,2860.384
+Furniture,Bookcases,2015,8,3,August,Q3,3804.9642
+Furniture,Bookcases,2015,9,3,September,Q3,10685.208999999999
+Furniture,Bookcases,2015,10,4,October,Q4,2173.771
+Furniture,Bookcases,2015,11,4,November,Q4,8377.345
+Furniture,Bookcases,2015,12,4,December,Q4,2652.2422
+Furniture,Bookcases,2016,1,1,January,Q1,2239.536
+Furniture,Bookcases,2016,2,1,February,Q1,239.98
+Furniture,Bookcases,2016,3,1,March,Q1,1091.855
+Furniture,Bookcases,2016,4,2,April,Q2,1557.768
+Furniture,Bookcases,2016,6,2,June,Q2,2596.0429999999997
+Furniture,Bookcases,2016,7,3,July,Q3,2540.651
+Furniture,Bookcases,2016,8,3,August,Q3,562.2128
+Furniture,Bookcases,2016,9,3,September,Q3,6656.9959
+Furniture,Bookcases,2016,10,4,October,Q4,1376.448
+Furniture,Bookcases,2016,11,4,November,Q4,5797.2748
+Furniture,Bookcases,2016,12,4,December,Q4,1616.702
+Furniture,Bookcases,2017,1,1,January,Q1,297.92
+Furniture,Bookcases,2017,2,1,February,Q1,1125.7234
+Furniture,Bookcases,2017,3,1,March,Q1,1928.1928
+Furniture,Bookcases,2017,4,2,April,Q2,1978.5036
+Furniture,Bookcases,2017,5,2,May,Q2,3732.1331999999998
+Furniture,Bookcases,2017,6,2,June,Q2,5309.0727
+Furniture,Bookcases,2017,7,3,July,Q3,1700.2749999999999
+Furniture,Bookcases,2017,8,3,August,Q3,460.092
+Furniture,Bookcases,2017,9,3,September,Q3,3635.856
+Furniture,Bookcases,2017,10,4,October,Q4,4079.7262
+Furniture,Bookcases,2017,11,4,November,Q4,2122.687
+Furniture,Bookcases,2017,12,4,December,Q4,3654.0978
+Furniture,Chairs,2014,1,1,January,Q1,4187.700000000001
+Furniture,Chairs,2014,2,1,February,Q1,190.45800000000003
+Furniture,Chairs,2014,3,1,March,Q1,5713.142
+Furniture,Chairs,2014,4,2,April,Q2,3210.6659999999997
+Furniture,Chairs,2014,5,2,May,Q2,3675.109
+Furniture,Chairs,2014,6,2,June,Q2,6456.001
+Furniture,Chairs,2014,7,3,July,Q3,6364.94
+Furniture,Chairs,2014,8,3,August,Q3,2590.242
+Furniture,Chairs,2014,9,3,September,Q3,13849.185
+Furniture,Chairs,2014,10,4,October,Q4,6486.605
+Furniture,Chairs,2014,11,4,November,Q4,7282.554
+Furniture,Chairs,2014,12,4,December,Q4,17234.974000000002
+Furniture,Chairs,2015,1,1,January,Q1,3246.794
+Furniture,Chairs,2015,2,1,February,Q1,2114.886
+Furniture,Chairs,2015,3,1,March,Q1,4085.233
+Furniture,Chairs,2015,4,2,April,Q2,4271.621
+Furniture,Chairs,2015,5,2,May,Q2,5681.933
+Furniture,Chairs,2015,6,2,June,Q2,3937.888
+Furniture,Chairs,2015,7,3,July,Q3,7313.561
+Furniture,Chairs,2015,8,3,August,Q3,1439.0140000000001
+Furniture,Chairs,2015,9,3,September,Q3,9519.923999999999
+Furniture,Chairs,2015,10,4,October,Q4,7103.532
+Furniture,Chairs,2015,11,4,November,Q4,12743.158
+Furniture,Chairs,2015,12,4,December,Q4,10276.985
+Furniture,Chairs,2016,1,1,January,Q1,1602.2240000000002
+Furniture,Chairs,2016,2,1,February,Q1,1725.464
+Furniture,Chairs,2016,3,1,March,Q1,6021.038
+Furniture,Chairs,2016,4,2,April,Q2,8945.012
+Furniture,Chairs,2016,5,2,May,Q2,7399.477
+Furniture,Chairs,2016,6,2,June,Q2,2634.76
+Furniture,Chairs,2016,7,3,July,Q3,5368.102
+Furniture,Chairs,2016,8,3,August,Q3,4891.534
+Furniture,Chairs,2016,9,3,September,Q3,11296.44
+Furniture,Chairs,2016,10,4,October,Q4,5910.879
+Furniture,Chairs,2016,11,4,November,Q4,13173.083
+Furniture,Chairs,2016,12,4,December,Q4,14950.632
+Furniture,Chairs,2017,1,1,January,Q1,2248.451
+Furniture,Chairs,2017,2,1,February,Q1,3552.132
+Furniture,Chairs,2017,3,1,March,Q1,5524.914
+Furniture,Chairs,2017,4,2,April,Q2,2099.286
+Furniture,Chairs,2017,5,2,May,Q2,9137.311
+Furniture,Chairs,2017,6,2,June,Q2,8494.718
+Furniture,Chairs,2017,7,3,July,Q3,3969.748
+Furniture,Chairs,2017,8,3,August,Q3,9419.014000000001
+Furniture,Chairs,2017,9,3,September,Q3,16911.668999999998
+Furniture,Chairs,2017,10,4,October,Q4,4669.434
+Furniture,Chairs,2017,11,4,November,Q4,14561.218
+Furniture,Chairs,2017,12,4,December,Q4,14966.458
+Furniture,Furnishings,2014,1,1,January,Q1,711.77
+Furniture,Furnishings,2014,2,1,February,Q1,392.98
+Furniture,Furnishings,2014,3,1,March,Q1,480.128
+Furniture,Furnishings,2014,4,2,April,Q2,984.046
+Furniture,Furnishings,2014,5,2,May,Q2,780.1659999999999
+Furniture,Furnishings,2014,6,2,June,Q2,432.75
+Furniture,Furnishings,2014,7,3,July,Q3,902.622
+Furniture,Furnishings,2014,8,3,August,Q3,997.758
+Furniture,Furnishings,2014,9,3,September,Q3,2960.956
+Furniture,Furnishings,2014,10,4,October,Q4,621.812
+Furniture,Furnishings,2014,11,4,November,Q4,2483.762
+Furniture,Furnishings,2014,12,4,December,Q4,2077.484
+Furniture,Furnishings,2015,1,1,January,Q1,1270.114
+Furniture,Furnishings,2015,2,1,February,Q1,206.10399999999998
+Furniture,Furnishings,2015,3,1,March,Q1,1435.958
+Furniture,Furnishings,2015,4,2,April,Q2,2993.1879999999996
+Furniture,Furnishings,2015,5,2,May,Q2,1532.194
+Furniture,Furnishings,2015,6,2,June,Q2,2496.926
+Furniture,Furnishings,2015,7,3,July,Q3,1458.112
+Furniture,Furnishings,2015,8,3,August,Q3,800.252
+Furniture,Furnishings,2015,9,3,September,Q3,2199.624
+Furniture,Furnishings,2015,10,4,October,Q4,616.76
+Furniture,Furnishings,2015,11,4,November,Q4,3549.8779999999997
+Furniture,Furnishings,2015,12,4,December,Q4,2530.602
+Furniture,Furnishings,2016,1,1,January,Q1,1066.514
+Furniture,Furnishings,2016,2,1,February,Q1,851.948
+Furniture,Furnishings,2016,3,1,March,Q1,2279.726
+Furniture,Furnishings,2016,4,2,April,Q2,887.5840000000001
+Furniture,Furnishings,2016,5,2,May,Q2,2844.208
+Furniture,Furnishings,2016,6,2,June,Q2,1537.424
+Furniture,Furnishings,2016,7,3,July,Q3,1866.558
+Furniture,Furnishings,2016,8,3,August,Q3,810.554
+Furniture,Furnishings,2016,9,3,September,Q3,3661.826
+Furniture,Furnishings,2016,10,4,October,Q4,2484.482
+Furniture,Furnishings,2016,11,4,November,Q4,4034.778
+Furniture,Furnishings,2016,12,4,December,Q4,5548.522
+Furniture,Furnishings,2017,1,1,January,Q1,931.224
+Furniture,Furnishings,2017,2,1,February,Q1,864.642
+Furniture,Furnishings,2017,3,1,March,Q1,963.234
+Furniture,Furnishings,2017,4,2,April,Q2,2673.544
+Furniture,Furnishings,2017,5,2,May,Q2,1736.86
+Furniture,Furnishings,2017,6,2,June,Q2,1456.374
+Furniture,Furnishings,2017,7,3,July,Q3,3381.76
+Furniture,Furnishings,2017,8,3,August,Q3,1425.03
+Furniture,Furnishings,2017,9,3,September,Q3,2982.504
+Furniture,Furnishings,2017,10,4,October,Q4,1724.132
+Furniture,Furnishings,2017,11,4,November,Q4,6714.122
+Furniture,Furnishings,2017,12,4,December,Q4,4061.668
+Furniture,Tables,2014,1,1,January,Q1,333.0
+Furniture,Tables,2014,2,1,February,Q1,1256.22
+Furniture,Tables,2014,3,1,March,Q1,6674.24
+Furniture,Tables,2014,4,2,April,Q2,3441.626
+Furniture,Tables,2014,5,2,May,Q2,1816.881
+Furniture,Tables,2014,6,2,June,Q2,5557.8009999999995
+Furniture,Tables,2014,7,3,July,Q3,2065.816
+Furniture,Tables,2014,8,3,August,Q3,2938.0705
+Furniture,Tables,2014,9,3,September,Q3,4611.87
+Furniture,Tables,2014,10,4,October,Q4,4578.832
+Furniture,Tables,2014,11,4,November,Q4,4534.843
+Furniture,Tables,2014,12,4,December,Q4,8279.166
+Furniture,Tables,2015,1,1,January,Q1,5418.186000000001
+Furniture,Tables,2015,2,1,February,Q1,529.464
+Furniture,Tables,2015,3,1,March,Q1,4353.17
+Furniture,Tables,2015,4,2,April,Q2,2335.1795
+Furniture,Tables,2015,5,2,May,Q2,244.006
+Furniture,Tables,2015,6,2,June,Q2,796.425
+Furniture,Tables,2015,7,3,July,Q3,2042.3629999999998
+Furniture,Tables,2015,8,3,August,Q3,3594.362
+Furniture,Tables,2015,9,3,September,Q3,3868.266
+Furniture,Tables,2015,10,4,October,Q4,2132.5605
+Furniture,Tables,2015,11,4,November,Q4,6210.4515
+Furniture,Tables,2015,12,4,December,Q4,7625.99
+Furniture,Tables,2016,1,1,January,Q1,2714.469
+Furniture,Tables,2016,2,1,February,Q1,1108.159
+Furniture,Tables,2016,3,1,March,Q1,3408.473
+Furniture,Tables,2016,4,2,April,Q2,1821.726
+Furniture,Tables,2016,5,2,May,Q2,4876.15
+Furniture,Tables,2016,6,2,June,Q2,6302.345
+Furniture,Tables,2016,7,3,July,Q3,3293.208
+Furniture,Tables,2016,8,3,August,Q3,6218.931500000001
+Furniture,Tables,2016,9,3,September,Q3,5647.619000000001
+Furniture,Tables,2016,10,4,October,Q4,2100.768
+Furniture,Tables,2016,11,4,November,Q4,8778.493
+Furniture,Tables,2016,12,4,December,Q4,14562.859
+Furniture,Tables,2017,1,1,January,Q1,2486.437
+Furniture,Tables,2017,2,1,February,Q1,1323.8400000000001
+Furniture,Tables,2017,3,1,March,Q1,2477.1040000000003
+Furniture,Tables,2017,4,2,April,Q2,2314.6245
+Furniture,Tables,2017,5,2,May,Q2,2351.254
+Furniture,Tables,2017,6,2,June,Q2,3748.422
+Furniture,Tables,2017,7,3,July,Q3,2761.239
+Furniture,Tables,2017,8,3,August,Q3,4137.738
+Furniture,Tables,2017,9,3,September,Q3,5498.177000000001
+Furniture,Tables,2017,10,4,October,Q4,11410.776
+Furniture,Tables,2017,11,4,November,Q4,13658.688
+Furniture,Tables,2017,12,4,December,Q4,8725.243
+Office Supplies,Appliances,2014,1,1,January,Q1,312.58000000000004
+Office Supplies,Appliances,2014,2,1,February,Q1,89.91999999999999
+Office Supplies,Appliances,2014,3,1,March,Q1,502.962
+Office Supplies,Appliances,2014,4,2,April,Q2,532.58
+Office Supplies,Appliances,2014,5,2,May,Q2,918.596
+Office Supplies,Appliances,2014,6,2,June,Q2,2275.246
+Office Supplies,Appliances,2014,7,3,July,Q3,81.74
+Office Supplies,Appliances,2014,8,3,August,Q3,2096.753
+Office Supplies,Appliances,2014,9,3,September,Q3,2413.264
+Office Supplies,Appliances,2014,10,4,October,Q4,430.792
+Office Supplies,Appliances,2014,11,4,November,Q4,2633.8320000000003
+Office Supplies,Appliances,2014,12,4,December,Q4,3025.36
+Office Supplies,Appliances,2015,1,1,January,Q1,250.8
+Office Supplies,Appliances,2015,2,1,February,Q1,568.32
+Office Supplies,Appliances,2015,3,1,March,Q1,1300.684
+Office Supplies,Appliances,2015,4,2,April,Q2,4355.624
+Office Supplies,Appliances,2015,5,2,May,Q2,2111.9739999999997
+Office Supplies,Appliances,2015,6,2,June,Q2,143.128
+Office Supplies,Appliances,2015,7,3,July,Q3,150.356
+Office Supplies,Appliances,2015,8,3,August,Q3,1005.5
+Office Supplies,Appliances,2015,9,3,September,Q3,2165.732
+Office Supplies,Appliances,2015,10,4,October,Q4,2428.8070000000002
+Office Supplies,Appliances,2015,11,4,November,Q4,6611.966
+Office Supplies,Appliances,2015,12,4,December,Q4,2148.398
+Office Supplies,Appliances,2016,1,1,January,Q1,64.864
+Office Supplies,Appliances,2016,2,1,February,Q1,753.264
+Office Supplies,Appliances,2016,3,1,March,Q1,2456.368
+Office Supplies,Appliances,2016,4,2,April,Q2,508.416
+Office Supplies,Appliances,2016,5,2,May,Q2,1917.6680000000001
+Office Supplies,Appliances,2016,6,2,June,Q2,1901.362
+Office Supplies,Appliances,2016,7,3,July,Q3,2380.596
+Office Supplies,Appliances,2016,8,3,August,Q3,2854.78
+Office Supplies,Appliances,2016,9,3,September,Q3,2526.412
+Office Supplies,Appliances,2016,10,4,October,Q4,2956.47
+Office Supplies,Appliances,2016,11,4,November,Q4,2978.064
+Office Supplies,Appliances,2016,12,4,December,Q4,4752.051
+Office Supplies,Appliances,2017,1,1,January,Q1,2548.0
+Office Supplies,Appliances,2017,2,1,February,Q1,3521.482
+Office Supplies,Appliances,2017,3,1,March,Q1,2473.614
+Office Supplies,Appliances,2017,4,2,April,Q2,645.166
+Office Supplies,Appliances,2017,5,2,May,Q2,2577.712
+Office Supplies,Appliances,2017,6,2,June,Q2,3159.7239999999997
+Office Supplies,Appliances,2017,7,3,July,Q3,1210.562
+Office Supplies,Appliances,2017,8,3,August,Q3,7104.626
+Office Supplies,Appliances,2017,9,3,September,Q3,3087.62
+Office Supplies,Appliances,2017,10,4,October,Q4,3335.528
+Office Supplies,Appliances,2017,11,4,November,Q4,6746.07
+Office Supplies,Appliances,2017,12,4,December,Q4,6516.828
+Office Supplies,Art,2014,1,1,January,Q1,176.99
+Office Supplies,Art,2014,2,1,February,Q1,73.664
+Office Supplies,Art,2014,3,1,March,Q1,413.26800000000003
+Office Supplies,Art,2014,4,2,April,Q2,567.9159999999999
+Office Supplies,Art,2014,5,2,May,Q2,288.22
+Office Supplies,Art,2014,6,2,June,Q2,686.112
+Office Supplies,Art,2014,7,3,July,Q3,256.04
+Office Supplies,Art,2014,8,3,August,Q3,203.66199999999998
+Office Supplies,Art,2014,9,3,September,Q3,759.86
+Office Supplies,Art,2014,10,4,October,Q4,553.526
+Office Supplies,Art,2014,11,4,November,Q4,613.616
+Office Supplies,Art,2014,12,4,December,Q4,1465.108
+Office Supplies,Art,2015,1,1,January,Q1,149.344
+Office Supplies,Art,2015,2,1,February,Q1,413.25399999999996
+Office Supplies,Art,2015,3,1,March,Q1,137.596
+Office Supplies,Art,2015,4,2,April,Q2,477.23400000000004
+Office Supplies,Art,2015,5,2,May,Q2,696.32
+Office Supplies,Art,2015,6,2,June,Q2,394.318
+Office Supplies,Art,2015,7,3,July,Q3,234.112
+Office Supplies,Art,2015,8,3,August,Q3,402.138
+Office Supplies,Art,2015,9,3,September,Q3,1120.568
+Office Supplies,Art,2015,10,4,October,Q4,273.25
+Office Supplies,Art,2015,11,4,November,Q4,1026.654
+Office Supplies,Art,2015,12,4,December,Q4,912.046
+Office Supplies,Art,2016,1,1,January,Q1,153.706
+Office Supplies,Art,2016,2,1,February,Q1,383.264
+Office Supplies,Art,2016,3,1,March,Q1,309.026
+Office Supplies,Art,2016,4,2,April,Q2,743.716
+Office Supplies,Art,2016,5,2,May,Q2,606.292
+Office Supplies,Art,2016,6,2,June,Q2,118.166
+Office Supplies,Art,2016,7,3,July,Q3,708.95
+Office Supplies,Art,2016,8,3,August,Q3,351.474
+Office Supplies,Art,2016,9,3,September,Q3,809.268
+Office Supplies,Art,2016,10,4,October,Q4,454.04200000000003
+Office Supplies,Art,2016,11,4,November,Q4,926.722
+Office Supplies,Art,2016,12,4,December,Q4,396.282
+Office Supplies,Art,2017,1,1,January,Q1,434.33
+Office Supplies,Art,2017,2,1,February,Q1,247.33200000000002
+Office Supplies,Art,2017,3,1,March,Q1,442.084
+Office Supplies,Art,2017,4,2,April,Q2,618.294
+Office Supplies,Art,2017,5,2,May,Q2,639.998
+Office Supplies,Art,2017,6,2,June,Q2,1019.1
+Office Supplies,Art,2017,7,3,July,Q3,866.838
+Office Supplies,Art,2017,8,3,August,Q3,732.86
+Office Supplies,Art,2017,9,3,September,Q3,970.674
+Office Supplies,Art,2017,10,4,October,Q4,642.238
+Office Supplies,Art,2017,11,4,November,Q4,1387.042
+Office Supplies,Art,2017,12,4,December,Q4,862.278
+Office Supplies,Binders,2014,1,1,January,Q1,814.508
+Office Supplies,Binders,2014,2,1,February,Q1,339.262
+Office Supplies,Binders,2014,3,1,March,Q1,1525.675
+Office Supplies,Binders,2014,4,2,April,Q2,985.7520000000001
+Office Supplies,Binders,2014,5,2,May,Q2,4372.304
+Office Supplies,Binders,2014,6,2,June,Q2,4275.793
+Office Supplies,Binders,2014,7,3,July,Q3,2934.492
+Office Supplies,Binders,2014,8,3,August,Q3,4251.387
+Office Supplies,Binders,2014,9,3,September,Q3,12743.616
+Office Supplies,Binders,2014,10,4,October,Q4,480.156
+Office Supplies,Binders,2014,11,4,November,Q4,6342.268
+Office Supplies,Binders,2014,12,4,December,Q4,4423.052
+Office Supplies,Binders,2015,1,1,January,Q1,206.574
+Office Supplies,Binders,2015,2,1,February,Q1,2669.275
+Office Supplies,Binders,2015,3,1,March,Q1,8393.597
+Office Supplies,Binders,2015,4,2,April,Q2,4720.428
+Office Supplies,Binders,2015,5,2,May,Q2,692.436
+Office Supplies,Binders,2015,6,2,June,Q2,5805.269
+Office Supplies,Binders,2015,7,3,July,Q3,1195.295
+Office Supplies,Binders,2015,8,3,August,Q3,2237.322
+Office Supplies,Binders,2015,9,3,September,Q3,2862.997
+Office Supplies,Binders,2015,10,4,October,Q4,762.279
+Office Supplies,Binders,2015,11,4,November,Q4,3095.42
+Office Supplies,Binders,2015,12,4,December,Q4,4812.206
+Office Supplies,Binders,2016,1,1,January,Q1,1756.296
+Office Supplies,Binders,2016,2,1,February,Q1,601.722
+Office Supplies,Binders,2016,3,1,March,Q1,1183.975
+Office Supplies,Binders,2016,4,2,April,Q2,2743.159
+Office Supplies,Binders,2016,5,2,May,Q2,1166.08
+Office Supplies,Binders,2016,6,2,June,Q2,778.658
+Office Supplies,Binders,2016,7,3,July,Q3,1955.974
+Office Supplies,Binders,2016,8,3,August,Q3,1068.08
+Office Supplies,Binders,2016,9,3,September,Q3,9579.859999999999
+Office Supplies,Binders,2016,10,4,October,Q4,6694.875999999999
+Office Supplies,Binders,2016,11,4,November,Q4,4929.398
+Office Supplies,Binders,2016,12,4,December,Q4,17225.247
+Office Supplies,Binders,2017,1,1,January,Q1,9436.823
+Office Supplies,Binders,2017,2,1,February,Q1,626.722
+Office Supplies,Binders,2017,3,1,March,Q1,2785.488
+Office Supplies,Binders,2017,4,2,April,Q2,4915.515
+Office Supplies,Binders,2017,5,2,May,Q2,2928.624
+Office Supplies,Binders,2017,6,2,June,Q2,2427.041
+Office Supplies,Binders,2017,7,3,July,Q3,2471.588
+Office Supplies,Binders,2017,8,3,August,Q3,12873.224
+Office Supplies,Binders,2017,9,3,September,Q3,12157.035
+Office Supplies,Binders,2017,10,4,October,Q4,10139.318000000001
+Office Supplies,Binders,2017,11,4,November,Q4,6490.565
+Office Supplies,Binders,2017,12,4,December,Q4,5536.102
+Office Supplies,Envelopes,2014,1,1,January,Q1,194.36
+Office Supplies,Envelopes,2014,3,1,March,Q1,353.20000000000005
+Office Supplies,Envelopes,2014,4,2,April,Q2,408.35200000000003
+Office Supplies,Envelopes,2014,5,2,May,Q2,214.194
+Office Supplies,Envelopes,2014,6,2,June,Q2,95.56
+Office Supplies,Envelopes,2014,7,3,July,Q3,136.864
+Office Supplies,Envelopes,2014,8,3,August,Q3,203.332
+Office Supplies,Envelopes,2014,9,3,September,Q3,381.372
+Office Supplies,Envelopes,2014,10,4,October,Q4,340.512
+Office Supplies,Envelopes,2014,11,4,November,Q4,1062.82
+Office Supplies,Envelopes,2014,12,4,December,Q4,465.184
+Office Supplies,Envelopes,2015,1,1,January,Q1,17.48
+Office Supplies,Envelopes,2015,2,1,February,Q1,385.66999999999996
+Office Supplies,Envelopes,2015,3,1,March,Q1,194.19799999999998
+Office Supplies,Envelopes,2015,4,2,April,Q2,202.3
+Office Supplies,Envelopes,2015,5,2,May,Q2,417.838
+Office Supplies,Envelopes,2015,6,2,June,Q2,221.65
+Office Supplies,Envelopes,2015,7,3,July,Q3,510.32
+Office Supplies,Envelopes,2015,9,3,September,Q3,670.42
+Office Supplies,Envelopes,2015,10,4,October,Q4,455.844
+Office Supplies,Envelopes,2015,11,4,November,Q4,518.116
+Office Supplies,Envelopes,2015,12,4,December,Q4,918.352
+Office Supplies,Envelopes,2016,1,1,January,Q1,217.57999999999998
+Office Supplies,Envelopes,2016,2,1,February,Q1,272.25600000000003
+Office Supplies,Envelopes,2016,3,1,March,Q1,592.104
+Office Supplies,Envelopes,2016,4,2,April,Q2,177.042
+Office Supplies,Envelopes,2016,5,2,May,Q2,124.74600000000001
+Office Supplies,Envelopes,2016,6,2,June,Q2,115.02
+Office Supplies,Envelopes,2016,7,3,July,Q3,494.996
+Office Supplies,Envelopes,2016,8,3,August,Q3,362.588
+Office Supplies,Envelopes,2016,9,3,September,Q3,729.1179999999999
+Office Supplies,Envelopes,2016,10,4,October,Q4,176.948
+Office Supplies,Envelopes,2016,11,4,November,Q4,807.56
+Office Supplies,Envelopes,2016,12,4,December,Q4,659.932
+Office Supplies,Envelopes,2017,1,1,January,Q1,320.476
+Office Supplies,Envelopes,2017,2,1,February,Q1,10.64
+Office Supplies,Envelopes,2017,3,1,March,Q1,517.016
+Office Supplies,Envelopes,2017,4,2,April,Q2,157.588
+Office Supplies,Envelopes,2017,5,2,May,Q2,339.28200000000004
+Office Supplies,Envelopes,2017,6,2,June,Q2,81.52799999999999
+Office Supplies,Envelopes,2017,7,3,July,Q3,57.9
+Office Supplies,Envelopes,2017,8,3,August,Q3,135.16
+Office Supplies,Envelopes,2017,9,3,September,Q3,395.64
+Office Supplies,Envelopes,2017,10,4,October,Q4,429.85200000000003
+Office Supplies,Envelopes,2017,11,4,November,Q4,518.6320000000001
+Office Supplies,Envelopes,2017,12,4,December,Q4,414.86
+Office Supplies,Fasteners,2014,1,1,January,Q1,37.06
+Office Supplies,Fasteners,2014,2,1,February,Q1,12.35
+Office Supplies,Fasteners,2014,3,1,March,Q1,48.239999999999995
+Office Supplies,Fasteners,2014,4,2,April,Q2,101.684
+Office Supplies,Fasteners,2014,5,2,May,Q2,12.576
+Office Supplies,Fasteners,2014,6,2,June,Q2,45.292
+Office Supplies,Fasteners,2014,7,3,July,Q3,24.348
+Office Supplies,Fasteners,2014,8,3,August,Q3,85.87
+Office Supplies,Fasteners,2014,9,3,September,Q3,95.478
+Office Supplies,Fasteners,2014,10,4,October,Q4,51.988
+Office Supplies,Fasteners,2014,11,4,November,Q4,68.6
+Office Supplies,Fasteners,2014,12,4,December,Q4,77.842
+Office Supplies,Fasteners,2015,2,1,February,Q1,5.81
+Office Supplies,Fasteners,2015,3,1,March,Q1,68.428
+Office Supplies,Fasteners,2015,4,2,April,Q2,30.28
+Office Supplies,Fasteners,2015,5,2,May,Q2,31.599999999999998
+Office Supplies,Fasteners,2015,6,2,June,Q2,10.39
+Office Supplies,Fasteners,2015,7,3,July,Q3,51.172
+Office Supplies,Fasteners,2015,8,3,August,Q3,22.682000000000002
+Office Supplies,Fasteners,2015,9,3,September,Q3,62.572
+Office Supplies,Fasteners,2015,10,4,October,Q4,17.45
+Office Supplies,Fasteners,2015,11,4,November,Q4,150.788
+Office Supplies,Fasteners,2015,12,4,December,Q4,94.052
+Office Supplies,Fasteners,2016,1,1,January,Q1,7.56
+Office Supplies,Fasteners,2016,2,1,February,Q1,72.276
+Office Supplies,Fasteners,2016,3,1,March,Q1,8.288
+Office Supplies,Fasteners,2016,4,2,April,Q2,98.65
+Office Supplies,Fasteners,2016,5,2,May,Q2,21.052
+Office Supplies,Fasteners,2016,6,2,June,Q2,31.508
+Office Supplies,Fasteners,2016,7,3,July,Q3,92.19200000000001
+Office Supplies,Fasteners,2016,8,3,August,Q3,67.002
+Office Supplies,Fasteners,2016,9,3,September,Q3,88.916
+Office Supplies,Fasteners,2016,10,4,October,Q4,183.968
+Office Supplies,Fasteners,2016,11,4,November,Q4,192.40800000000002
+Office Supplies,Fasteners,2016,12,4,December,Q4,96.31400000000001
+Office Supplies,Fasteners,2017,1,1,January,Q1,43.04
+Office Supplies,Fasteners,2017,2,1,February,Q1,68.876
+Office Supplies,Fasteners,2017,3,1,March,Q1,24.68
+Office Supplies,Fasteners,2017,4,2,April,Q2,27.79
+Office Supplies,Fasteners,2017,5,2,May,Q2,44.074
+Office Supplies,Fasteners,2017,6,2,June,Q2,28.314
+Office Supplies,Fasteners,2017,7,3,July,Q3,13.796
+Office Supplies,Fasteners,2017,8,3,August,Q3,67.696
+Office Supplies,Fasteners,2017,9,3,September,Q3,158.728
+Office Supplies,Fasteners,2017,10,4,October,Q4,72.356
+Office Supplies,Fasteners,2017,11,4,November,Q4,138.212
+Office Supplies,Fasteners,2017,12,4,December,Q4,170.032
+Office Supplies,Labels,2014,1,1,January,Q1,44.746
+Office Supplies,Labels,2014,2,1,February,Q1,36.876
+Office Supplies,Labels,2014,3,1,March,Q1,173.59
+Office Supplies,Labels,2014,4,2,April,Q2,78.992
+Office Supplies,Labels,2014,5,2,May,Q2,57.44
+Office Supplies,Labels,2014,6,2,June,Q2,607.726
+Office Supplies,Labels,2014,7,3,July,Q3,194.79
+Office Supplies,Labels,2014,8,3,August,Q3,41.376
+Office Supplies,Labels,2014,9,3,September,Q3,381.536
+Office Supplies,Labels,2014,10,4,October,Q4,99.102
+Office Supplies,Labels,2014,11,4,November,Q4,609.482
+Office Supplies,Labels,2014,12,4,December,Q4,515.738
+Office Supplies,Labels,2015,1,1,January,Q1,48.12
+Office Supplies,Labels,2015,2,1,February,Q1,201.256
+Office Supplies,Labels,2015,3,1,March,Q1,532.338
+Office Supplies,Labels,2015,4,2,April,Q2,121.01400000000001
+Office Supplies,Labels,2015,5,2,May,Q2,240.766
+Office Supplies,Labels,2015,6,2,June,Q2,61.706
+Office Supplies,Labels,2015,7,3,July,Q3,325.368
+Office Supplies,Labels,2015,8,3,August,Q3,134.01
+Office Supplies,Labels,2015,9,3,September,Q3,217.224
+Office Supplies,Labels,2015,10,4,October,Q4,610.774
+Office Supplies,Labels,2015,11,4,November,Q4,122.1
+Office Supplies,Labels,2015,12,4,December,Q4,341.786
+Office Supplies,Labels,2016,1,1,January,Q1,91.06
+Office Supplies,Labels,2016,2,1,February,Q1,31.23
+Office Supplies,Labels,2016,3,1,March,Q1,10.08
+Office Supplies,Labels,2016,4,2,April,Q2,36.412
+Office Supplies,Labels,2016,5,2,May,Q2,178.594
+Office Supplies,Labels,2016,6,2,June,Q2,357.286
+Office Supplies,Labels,2016,7,3,July,Q3,187.894
+Office Supplies,Labels,2016,8,3,August,Q3,302.162
+Office Supplies,Labels,2016,9,3,September,Q3,336.286
+Office Supplies,Labels,2016,10,4,October,Q4,145.752
+Office Supplies,Labels,2016,11,4,November,Q4,910.692
+Office Supplies,Labels,2016,12,4,December,Q4,239.792
+Office Supplies,Labels,2017,1,1,January,Q1,22.74
+Office Supplies,Labels,2017,2,1,February,Q1,30.52
+Office Supplies,Labels,2017,3,1,March,Q1,224.1
+Office Supplies,Labels,2017,4,2,April,Q2,193.614
+Office Supplies,Labels,2017,5,2,May,Q2,386.318
+Office Supplies,Labels,2017,6,2,June,Q2,180.292
+Office Supplies,Labels,2017,7,3,July,Q3,983.9639999999999
+Office Supplies,Labels,2017,8,3,August,Q3,398.924
+Office Supplies,Labels,2017,9,3,September,Q3,561.25
+Office Supplies,Labels,2017,10,4,October,Q4,392.85
+Office Supplies,Labels,2017,11,4,November,Q4,207.928
+Office Supplies,Labels,2017,12,4,December,Q4,278.716
+Office Supplies,Paper,2014,1,1,January,Q1,242.02
+Office Supplies,Paper,2014,2,1,February,Q1,138.488
+Office Supplies,Paper,2014,3,1,March,Q1,1200.322
+Office Supplies,Paper,2014,4,2,April,Q2,625.432
+Office Supplies,Paper,2014,5,2,May,Q2,479.112
+Office Supplies,Paper,2014,6,2,June,Q2,1090.19
+Office Supplies,Paper,2014,7,3,July,Q3,796.332
+Office Supplies,Paper,2014,8,3,August,Q3,2017.384
+Office Supplies,Paper,2014,9,3,September,Q3,1445.358
+Office Supplies,Paper,2014,10,4,October,Q4,990.846
+Office Supplies,Paper,2014,11,4,November,Q4,3743.76
+Office Supplies,Paper,2014,12,4,December,Q4,2065.712
+Office Supplies,Paper,2015,1,1,January,Q1,496.802
+Office Supplies,Paper,2015,2,1,February,Q1,229.76
+Office Supplies,Paper,2015,3,1,March,Q1,1590.27
+Office Supplies,Paper,2015,4,2,April,Q2,454.856
+Office Supplies,Paper,2015,5,2,May,Q2,1297.708
+Office Supplies,Paper,2015,6,2,June,Q2,680.1999999999999
+Office Supplies,Paper,2015,7,3,July,Q3,447.098
+Office Supplies,Paper,2015,8,3,August,Q3,1404.728
+Office Supplies,Paper,2015,9,3,September,Q3,2176.3379999999997
+Office Supplies,Paper,2015,10,4,October,Q4,658.218
+Office Supplies,Paper,2015,11,4,November,Q4,2884.77
+Office Supplies,Paper,2015,12,4,December,Q4,2966.89
+Office Supplies,Paper,2016,1,1,January,Q1,596.1759999999999
+Office Supplies,Paper,2016,2,1,February,Q1,1194.202
+Office Supplies,Paper,2016,3,1,March,Q1,943.8399999999999
+Office Supplies,Paper,2016,4,2,April,Q2,1291.32
+Office Supplies,Paper,2016,5,2,May,Q2,2671.61
+Office Supplies,Paper,2016,6,2,June,Q2,2747.13
+Office Supplies,Paper,2016,7,3,July,Q3,1473.19
+Office Supplies,Paper,2016,8,3,August,Q3,1111.094
+Office Supplies,Paper,2016,9,3,September,Q3,2476.556
+Office Supplies,Paper,2016,10,4,October,Q4,1501.19
+Office Supplies,Paper,2016,11,4,November,Q4,2328.776
+Office Supplies,Paper,2016,12,4,December,Q4,2326.81
+Office Supplies,Paper,2017,1,1,January,Q1,928.624
+Office Supplies,Paper,2017,2,1,February,Q1,1250.208
+Office Supplies,Paper,2017,3,1,March,Q1,2551.1
+Office Supplies,Paper,2017,4,2,April,Q2,1592.536
+Office Supplies,Paper,2017,5,2,May,Q2,1764.78
+Office Supplies,Paper,2017,6,2,June,Q2,2204.674
+Office Supplies,Paper,2017,7,3,July,Q3,1463.58
+Office Supplies,Paper,2017,8,3,August,Q3,1989.9579999999999
+Office Supplies,Paper,2017,9,3,September,Q3,4591.304
+Office Supplies,Paper,2017,10,4,October,Q4,1846.6299999999999
+Office Supplies,Paper,2017,11,4,November,Q4,3620.614
+Office Supplies,Paper,2017,12,4,December,Q4,3890.71
+Office Supplies,Storage,2014,1,1,January,Q1,3028.816
+Office Supplies,Storage,2014,2,1,February,Q1,142.54399999999998
+Office Supplies,Storage,2014,3,1,March,Q1,4370.0019999999995
+Office Supplies,Storage,2014,4,2,April,Q2,3680.012
+Office Supplies,Storage,2014,5,2,May,Q2,712.9019999999999
+Office Supplies,Storage,2014,6,2,June,Q2,3849.514
+Office Supplies,Storage,2014,7,3,July,Q3,2452.732
+Office Supplies,Storage,2014,8,3,August,Q3,2322.73
+Office Supplies,Storage,2014,9,3,September,Q3,8810.224
+Office Supplies,Storage,2014,10,4,October,Q4,3739.5860000000002
+Office Supplies,Storage,2014,11,4,November,Q4,11338.644
+Office Supplies,Storage,2014,12,4,December,Q4,5881.336
+Office Supplies,Storage,2015,1,1,January,Q1,550.7
+Office Supplies,Storage,2015,2,1,February,Q1,894.722
+Office Supplies,Storage,2015,3,1,March,Q1,3632.076
+Office Supplies,Storage,2015,4,2,April,Q2,2178.102
+Office Supplies,Storage,2015,5,2,May,Q2,3112.76
+Office Supplies,Storage,2015,6,2,June,Q2,3331.0860000000002
+Office Supplies,Storage,2015,7,3,July,Q3,1753.628
+Office Supplies,Storage,2015,8,3,August,Q3,6437.58
+Office Supplies,Storage,2015,9,3,September,Q3,9116.038
+Office Supplies,Storage,2015,10,4,October,Q4,3356.024
+Office Supplies,Storage,2015,11,4,November,Q4,6715.596
+Office Supplies,Storage,2015,12,4,December,Q4,3969.9359999999997
+Office Supplies,Storage,2016,1,1,January,Q1,2412.44
+Office Supplies,Storage,2016,2,1,February,Q1,3460.426
+Office Supplies,Storage,2016,3,1,March,Q1,2975.238
+Office Supplies,Storage,2016,4,2,April,Q2,3921.082
+Office Supplies,Storage,2016,5,2,May,Q2,6159.59
+Office Supplies,Storage,2016,6,2,June,Q2,3724.41
+Office Supplies,Storage,2016,7,3,July,Q3,5389.852
+Office Supplies,Storage,2016,8,3,August,Q3,2443.578
+Office Supplies,Storage,2016,9,3,September,Q3,6613.862
+Office Supplies,Storage,2016,10,4,October,Q4,4039.972
+Office Supplies,Storage,2016,11,4,November,Q4,7057.632
+Office Supplies,Storage,2016,12,4,December,Q4,10590.618
+Office Supplies,Storage,2017,1,1,January,Q1,3225.846
+Office Supplies,Storage,2017,2,1,February,Q1,1626.972
+Office Supplies,Storage,2017,3,1,March,Q1,3815.452
+Office Supplies,Storage,2017,4,2,April,Q2,6026.468
+Office Supplies,Storage,2017,5,2,May,Q2,4684.724
+Office Supplies,Storage,2017,6,2,June,Q2,7700.652
+Office Supplies,Storage,2017,7,3,July,Q3,2894.584
+Office Supplies,Storage,2017,8,3,August,Q3,6538.934
+Office Supplies,Storage,2017,9,3,September,Q3,4947.344
+Office Supplies,Storage,2017,10,4,October,Q4,6104.2880000000005
+Office Supplies,Storage,2017,11,4,November,Q4,11911.276
+Office Supplies,Storage,2017,12,4,December,Q4,10201.078
+Office Supplies,Supplies,2014,2,1,February,Q1,238.62
+Office Supplies,Supplies,2014,3,1,March,Q1,18.62
+Office Supplies,Supplies,2014,4,2,April,Q2,4174.354
+Office Supplies,Supplies,2014,5,2,May,Q2,80.28
+Office Supplies,Supplies,2014,6,2,June,Q2,27.604
+Office Supplies,Supplies,2014,7,3,July,Q3,8243.869999999999
+Office Supplies,Supplies,2014,8,3,August,Q3,156.968
+Office Supplies,Supplies,2014,9,3,September,Q3,392.59000000000003
+Office Supplies,Supplies,2014,10,4,October,Q4,524.62
+Office Supplies,Supplies,2014,11,4,November,Q4,449.414
+Office Supplies,Supplies,2014,12,4,December,Q4,87.13
+Office Supplies,Supplies,2015,1,1,January,Q1,88.96
+Office Supplies,Supplies,2015,3,1,March,Q1,33.36
+Office Supplies,Supplies,2015,4,2,April,Q2,18.72
+Office Supplies,Supplies,2015,5,2,May,Q2,512.334
+Office Supplies,Supplies,2015,7,3,July,Q3,52.59
+Office Supplies,Supplies,2015,8,3,August,Q3,91.148
+Office Supplies,Supplies,2015,9,3,September,Q3,913.878
+Office Supplies,Supplies,2015,10,4,October,Q4,110.76400000000001
+Office Supplies,Supplies,2015,11,4,November,Q4,92.72
+Office Supplies,Supplies,2015,12,4,December,Q4,38.008
+Office Supplies,Supplies,2016,2,1,February,Q1,25.71
+Office Supplies,Supplies,2016,3,1,March,Q1,8868.012
+Office Supplies,Supplies,2016,4,2,April,Q2,1127.6499999999999
+Office Supplies,Supplies,2016,5,2,May,Q2,189.57
+Office Supplies,Supplies,2016,6,2,June,Q2,1128.27
+Office Supplies,Supplies,2016,7,3,July,Q3,240.8
+Office Supplies,Supplies,2016,8,3,August,Q3,398.98199999999997
+Office Supplies,Supplies,2016,9,3,September,Q3,103.46
+Office Supplies,Supplies,2016,10,4,October,Q4,128.576
+Office Supplies,Supplies,2016,11,4,November,Q4,356.026
+Office Supplies,Supplies,2016,12,4,December,Q4,1710.52
+Office Supplies,Supplies,2017,1,1,January,Q1,4314.41
+Office Supplies,Supplies,2017,2,1,February,Q1,25.02
+Office Supplies,Supplies,2017,3,1,March,Q1,1716.7520000000002
+Office Supplies,Supplies,2017,4,2,April,Q2,895.22
+Office Supplies,Supplies,2017,5,2,May,Q2,371.452
+Office Supplies,Supplies,2017,6,2,June,Q2,110.714
+Office Supplies,Supplies,2017,7,3,July,Q3,278.656
+Office Supplies,Supplies,2017,8,3,August,Q3,218.47
+Office Supplies,Supplies,2017,9,3,September,Q3,5026.248
+Office Supplies,Supplies,2017,10,4,October,Q4,74.132
+Office Supplies,Supplies,2017,11,4,November,Q4,451.998
+Office Supplies,Supplies,2017,12,4,December,Q4,2566.3379999999997
+Technology,Accessories,2014,1,1,January,Q1,827.8900000000001
+Technology,Accessories,2014,2,1,February,Q1,1120.99
+Technology,Accessories,2014,3,1,March,Q1,1108.934
+Technology,Accessories,2014,4,2,April,Q2,2545.99
+Technology,Accessories,2014,5,2,May,Q2,695.49
+Technology,Accessories,2014,6,2,June,Q2,667.0400000000001
+Technology,Accessories,2014,7,3,July,Q3,3308.692
+Technology,Accessories,2014,8,3,August,Q3,1937.734
+Technology,Accessories,2014,9,3,September,Q3,2459.558
+Technology,Accessories,2014,10,4,October,Q4,1767.51
+Technology,Accessories,2014,11,4,November,Q4,3228.314
+Technology,Accessories,2014,12,4,December,Q4,5346.13
+Technology,Accessories,2015,1,1,January,Q1,498.368
+Technology,Accessories,2015,2,1,February,Q1,1450.086
+Technology,Accessories,2015,3,1,March,Q1,1201.274
+Technology,Accessories,2015,4,2,April,Q2,1647.03
+Technology,Accessories,2015,5,2,May,Q2,1198.056
+Technology,Accessories,2015,6,2,June,Q2,1755.162
+Technology,Accessories,2015,7,3,July,Q3,5025.0
+Technology,Accessories,2015,8,3,August,Q3,1372.454
+Technology,Accessories,2015,9,3,September,Q3,5576.43
+Technology,Accessories,2015,10,4,October,Q4,2624.458
+Technology,Accessories,2015,11,4,November,Q4,6256.722
+Technology,Accessories,2015,12,4,December,Q4,11918.92
+Technology,Accessories,2016,1,1,January,Q1,2025.738
+Technology,Accessories,2016,2,1,February,Q1,361.03
+Technology,Accessories,2016,3,1,March,Q1,2504.158
+Technology,Accessories,2016,4,2,April,Q2,1616.4560000000001
+Technology,Accessories,2016,5,2,May,Q2,3968.754
+Technology,Accessories,2016,6,2,June,Q2,1637.348
+Technology,Accessories,2016,7,3,July,Q3,1203.9660000000001
+Technology,Accessories,2016,8,3,August,Q3,4104.318
+Technology,Accessories,2016,9,3,September,Q3,7137.128
+Technology,Accessories,2016,10,4,October,Q4,3503.112
+Technology,Accessories,2016,11,4,November,Q4,8081.376
+Technology,Accessories,2016,12,4,December,Q4,5752.47
+Technology,Accessories,2017,1,1,January,Q1,2125.91
+Technology,Accessories,2017,2,1,February,Q1,2437.17
+Technology,Accessories,2017,3,1,March,Q1,3952.272
+Technology,Accessories,2017,4,2,April,Q2,2142.232
+Technology,Accessories,2017,5,2,May,Q2,3750.8
+Technology,Accessories,2017,6,2,June,Q2,4848.834
+Technology,Accessories,2017,7,3,July,Q3,7588.76
+Technology,Accessories,2017,8,3,August,Q3,4961.638
+Technology,Accessories,2017,9,3,September,Q3,9727.238
+Technology,Accessories,2017,10,4,October,Q4,5032.062
+Technology,Accessories,2017,11,4,November,Q4,8390.32
+Technology,Accessories,2017,12,4,December,Q4,4988.996
+Technology,Copiers,2014,5,2,May,Q2,2999.93
+Technology,Copiers,2014,7,3,July,Q3,559.992
+Technology,Copiers,2014,8,3,August,Q3,1749.9660000000001
+Technology,Copiers,2014,9,3,September,Q3,1799.97
+Technology,Copiers,2014,10,4,October,Q4,1999.96
+Technology,Copiers,2014,12,4,December,Q4,1739.9640000000002
+Technology,Copiers,2015,3,1,March,Q1,4269.914
+Technology,Copiers,2015,4,2,April,Q2,2679.916
+Technology,Copiers,2015,5,2,May,Q2,2799.944
+Technology,Copiers,2015,6,2,June,Q2,899.97
+Technology,Copiers,2015,8,3,August,Q3,2799.96
+Technology,Copiers,2015,9,3,September,Q3,2319.952
+Technology,Copiers,2015,10,4,October,Q4,919.9680000000001
+Technology,Copiers,2015,11,4,November,Q4,1589.972
+Technology,Copiers,2015,12,4,December,Q4,7899.854
+Technology,Copiers,2016,1,1,January,Q1,959.968
+Technology,Copiers,2016,4,2,April,Q2,1199.976
+Technology,Copiers,2016,5,2,May,Q2,9239.964
+Technology,Copiers,2016,7,3,July,Q3,5739.886
+Technology,Copiers,2016,9,3,September,Q3,5879.836
+Technology,Copiers,2016,10,4,October,Q4,22899.86
+Technology,Copiers,2016,11,4,November,Q4,1199.976
+Technology,Copiers,2016,12,4,December,Q4,2479.944
+Technology,Copiers,2017,1,1,January,Q1,2999.95
+Technology,Copiers,2017,3,1,March,Q1,21319.822
+Technology,Copiers,2017,5,2,May,Q2,3359.952
+Technology,Copiers,2017,7,3,July,Q3,3479.9139999999998
+Technology,Copiers,2017,8,3,August,Q3,1179.9740000000002
+Technology,Copiers,2017,9,3,September,Q3,319.984
+Technology,Copiers,2017,10,4,October,Q4,11199.968
+Technology,Copiers,2017,11,4,November,Q4,12359.936
+Technology,Copiers,2017,12,4,December,Q4,6679.888000000001
+Technology,Machines,2014,3,1,March,Q1,25314.658
+Technology,Machines,2014,4,2,April,Q2,287.968
+Technology,Machines,2014,6,2,June,Q2,691.761
+Technology,Machines,2014,9,3,September,Q3,22420.282
+Technology,Machines,2014,10,4,October,Q4,101.994
+Technology,Machines,2014,11,4,November,Q4,5438.798
+Technology,Machines,2014,12,4,December,Q4,7767.912
+Technology,Machines,2015,1,1,January,Q1,3107.976
+Technology,Machines,2015,4,2,April,Q2,1451.8960000000002
+Technology,Machines,2015,5,2,May,Q2,3372.86
+Technology,Machines,2015,7,3,July,Q3,464.97
+Technology,Machines,2015,8,3,August,Q3,3878.376
+Technology,Machines,2015,9,3,September,Q3,629.93
+Technology,Machines,2015,10,4,October,Q4,1095.7939999999999
+Technology,Machines,2015,11,4,November,Q4,7850.483
+Technology,Machines,2015,12,4,December,Q4,5911.411999999999
+Technology,Machines,2016,2,1,February,Q1,8749.95
+Technology,Machines,2016,3,1,March,Q1,8994.54
+Technology,Machines,2016,4,2,April,Q2,9099.93
+Technology,Machines,2016,5,2,May,Q2,7551.663
+Technology,Machines,2016,6,2,June,Q2,7621.804000000001
+Technology,Machines,2016,7,3,July,Q3,607.466
+Technology,Machines,2016,8,3,August,Q3,943.152
+Technology,Machines,2016,9,3,September,Q3,1758.9
+Technology,Machines,2016,10,4,October,Q4,1541.31
+Technology,Machines,2016,11,4,November,Q4,8756.641
+Technology,Machines,2016,12,4,December,Q4,281.53000000000003
+Technology,Machines,2017,1,1,January,Q1,4106.655
+Technology,Machines,2017,2,1,February,Q1,239.984
+Technology,Machines,2017,3,1,March,Q1,742.706
+Technology,Machines,2017,4,2,April,Q2,7349.969000000001
+Technology,Machines,2017,5,2,May,Q2,343.2
+Technology,Machines,2017,6,2,June,Q2,3868.96
+Technology,Machines,2017,7,3,July,Q3,2992.332
+Technology,Machines,2017,8,3,August,Q3,1439.982
+Technology,Machines,2017,9,3,September,Q3,1576.545
+Technology,Machines,2017,10,4,October,Q4,7873.995000000001
+Technology,Machines,2017,11,4,November,Q4,11761.377
+Technology,Machines,2017,12,4,December,Q4,1248.97
+Technology,Phones,2014,1,1,January,Q1,2315.4
+Technology,Phones,2014,2,1,February,Q1,487.52
+Technology,Phones,2014,3,1,March,Q1,6087.581999999999
+Technology,Phones,2014,4,2,April,Q2,6361.476000000001
+Technology,Phones,2014,5,2,May,Q2,5904.456
+Technology,Phones,2014,6,2,June,Q2,7077.164
+Technology,Phones,2014,7,3,July,Q3,4135.45
+Technology,Phones,2014,8,3,August,Q3,5521.96
+Technology,Phones,2014,9,3,September,Q3,3857.762
+Technology,Phones,2014,10,4,October,Q4,8068.554
+Technology,Phones,2014,11,4,November,Q4,21534.296000000002
+Technology,Phones,2014,12,4,December,Q4,6039.186
+Technology,Phones,2015,1,1,January,Q1,1019.01
+Technology,Phones,2015,2,1,February,Q1,1998.884
+Technology,Phones,2015,3,1,March,Q1,4872.734
+Technology,Phones,2015,4,2,April,Q2,5382.110000000001
+Technology,Phones,2015,5,2,May,Q2,4272.14
+Technology,Phones,2015,6,2,June,Q2,3780.234
+Technology,Phones,2015,7,3,July,Q3,4880.996
+Technology,Phones,2015,8,3,August,Q3,7473.842000000001
+Technology,Phones,2015,9,3,September,Q3,10490.816
+Technology,Phones,2015,10,4,October,Q4,6064.67
+Technology,Phones,2015,11,4,November,Q4,8176.424
+Technology,Phones,2015,12,4,December,Q4,9901.842
+Technology,Phones,2016,1,1,January,Q1,2634.36
+Technology,Phones,2016,2,1,February,Q1,3147.934
+Technology,Phones,2016,3,1,March,Q1,10069.154
+Technology,Phones,2016,4,2,April,Q2,2974.14
+Technology,Phones,2016,5,2,May,Q2,8072.31
+Technology,Phones,2016,6,2,June,Q2,7113.0
+Technology,Phones,2016,7,3,July,Q3,5717.682
+Technology,Phones,2016,8,3,August,Q3,4624.932
+Technology,Phones,2016,9,3,September,Q3,8107.542
+Technology,Phones,2016,10,4,October,Q4,3589.092
+Technology,Phones,2016,11,4,November,Q4,9103.066
+Technology,Phones,2016,12,4,December,Q4,13808.818
+Technology,Phones,2017,1,1,January,Q1,7500.5380000000005
+Technology,Phones,2017,2,1,February,Q1,3349.87
+Technology,Phones,2017,3,1,March,Q1,7413.822
+Technology,Phones,2017,4,2,April,Q2,2891.186
+Technology,Phones,2017,5,2,May,Q2,6112.636
+Technology,Phones,2017,6,2,June,Q2,8343.306
+Technology,Phones,2017,7,3,July,Q3,9148.92
+Technology,Phones,2017,8,3,August,Q3,10037.568000000001
+Technology,Phones,2017,9,3,September,Q3,15318.836
+Technology,Phones,2017,10,4,October,Q4,8749.638
+Technology,Phones,2017,11,4,November,Q4,17407.14
+Technology,Phones,2017,12,4,December,Q4,9067.056

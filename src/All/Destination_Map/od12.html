@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>全球迁移流追踪动画</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+    <style>
+        html,body{margin:0;padding:0;font-family:Arial,sans-serif;background:#f0f2f5;}
+        .container{max-width:100%;margin:20px auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.1);}
+        h1{text-align:center;color:#2c3e50;margin-bottom:15px;}
+        #controls{margin:15px 0;text-align:center;}
+        button{background:#3498db;color:#fff;border:none;padding:10px 20px;margin:0 5px;border-radius:6px;cursor:pointer;
+            transition: background-color 0.3s;}
+        button:hover {
+            background-color: #2980b9;
+        }
+        #chart-container{position:relative;width:100%;height:600px;margin:auto;border: 1px solid #ccc;overflow:hidden;}
+        #loading {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+        #status {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        svg{position:relative;z-index:1;background:transparent;}
+        .link{fill:none;stroke-opacity:.8;}
+        .node{stroke:#fff;stroke-width:2px;cursor:pointer;}
+        .node-label{font-size:12px;font-weight:600;text-anchor:middle;pointer-events:none;fill:#333;}
+        .dynamic-traj {
+            fill: none;
+            stroke-linecap: round;
+            stroke-opacity: 0.9;
+        }
+        .traj-3d {
+            fill: none;
+            stroke-linecap: round;
+        }
+        .traj-shadow {
+            fill: none;
+            stroke-linecap: round;
+            stroke-opacity: 0.3;
+        }
+        .world-map {
+            fill: #d9d9d9;
+            stroke: #bfbfbf;
+            stroke-width: 0.5;
+            opacity: 0.5;
+        }
+        .label-bg {
+            fill: rgba(255, 255, 255, 0.8);
+            stroke: #ddd;
+            stroke-width: 1;
+            rx: 4;
+            ry: 4;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>全球迁移流追踪动画</h1>
+    <div id="controls">
+        <button onclick="showAllTrajectories()">显示轨迹</button>
+        <button onclick="startStagedAnimation()">分步动画</button>
+        <button onclick="clearAllAnimations()">清除所有轨迹</button>
+    </div>
+    <div id="chart-container">
+        <div id="loading">正在加载数据...</div>
+        <svg id="map" width="100%" height="600"></svg>
+    </div>
+    <div id="status"></div>
+</div>
+
+<script>
+    /* ---------- 1. 全局变量与常量 ---------- */
+    let dataLoaded = null;
+    let links = [];
+    let currentAnimation = null;
+    let thicknessScale;
+
+    const regions = ["EUROPE", "NORTHERN AMERICA", "Central and Southern Asia", "Latin America and the Caribbean", "Oceania (excluding Australia and New Zealand)", "Sub-Saharan Africa", "Eastern and South-Eastern Asia"];
+    const chineseNames = {
+        "EUROPE": "欧洲",
+        "NORTHERN AMERICA": "北美",
+        "Central and Southern Asia": "中亚/南亚",
+        "Latin America and the Caribbean": "拉丁美洲",
+        "Oceania (excluding Australia and New Zealand)": "大洋洲",
+        "Sub-Saharan Africa": "撒哈拉以南非洲",
+        "Eastern and South-Eastern Asia": "东亚/东南亚"
+    };
+
+    const regionColors = {
+        "EUROPE": "#e74c3c",
+        "NORTHERN AMERICA": "#3498db",
+        "Central and Southern Asia": "#2ecc71",
+        "Latin America and the Caribbean": "#f39c12",
+        "Oceania (excluding Australia and New Zealand)": "#9b59b6",
+        "Sub-Saharan Africa": "#1abc9c",
+        "Eastern and South-Eastern Asia": "#d35400"
+    };
+
+    // 动态获取SVG宽度并设置投影
+    let svgWidth, svgHeight = 600;
+    let projection, pos;
+
+    function initializeProjection() {
+        const svg = document.getElementById('map');
+        svgWidth = svg.getBoundingClientRect().width;
+        
+        projection = d3.geoMercator()
+            .scale(svgWidth * 0.14) // 根据宽度动态调整缩放
+            .translate([svgWidth / 2, svgHeight / 2]);
+
+        pos = {
+            "EUROPE": projection([15, 50]),
+            "NORTHERN AMERICA": projection([-100, 45]),
+            "Central and Southern Asia": projection([70, 30]),
+            "Latin America and the Caribbean": projection([-70, -20]),
+            "Oceania (excluding Australia and New Zealand)": projection([140, -20]),
+            "Sub-Saharan Africa": projection([20, -10]),
+            "Eastern and South-Eastern Asia": projection([110, 20])
+        };
+    }
+
+
+    /* ---------- 2. 数据处理与初始化 ---------- */
+    const svg = d3.select("#map");
+    
+    // 添加SVG定义（3D效果渐变）
+    const defs = svg.append("defs");
+    
+    // 创建3D立体渐变定义函数
+    function create3DGradient(id, color) {
+        // 主渐变（从亮到暗，模拟圆柱体效果）
+        const gradient = defs.append("linearGradient")
+            .attr("id", id)
+            .attr("x1", "0%")
+            .attr("y1", "0%")
+            .attr("x2", "0%")
+            .attr("y2", "100%");
+        
+        // 亮部（顶部高光）
+        gradient.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", d3.color(color).brighter(1.5))
+            .attr("stop-opacity", 0.9);
+        
+        // 中间色
+        gradient.append("stop")
+            .attr("offset", "30%")
+            .attr("stop-color", color)
+            .attr("stop-opacity", 1);
+        
+        // 暗部（底部阴影）
+        gradient.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", d3.color(color).darker(1.5))
+            .attr("stop-opacity", 0.8);
+        
+        return gradient;
+    }
+    
+    // 为每个区域创建3D渐变
+    Object.keys(regionColors).forEach(region => {
+        create3DGradient(`gradient3d-${region.replace(/\s+/g, '-')}`, regionColors[region]);
+    });
+    
+    const mapGroup = svg.append("g").attr("id", "map-group");
+    const linkGroup = svg.append("g").attr("id", "link-group");
+    const nodeGroup = svg.append("g").attr("id", "node-group");
+    const labelGroup = svg.append("g").attr("id", "label-group");
+    const loadingDiv = document.getElementById('loading');
+    const statusDiv = document.getElementById('status');
+
+    function initialize() {
+        initializeProjection(); // 初始化投影
+        drawWorldMap();
+        d3.csv("imbig_data.csv").then(data => {
+            loadingDiv.style.display = 'none';
+            processData(data);
+        }).catch(error => {
+            console.error('加载或解析数据时出错:', error);
+            loadingDiv.textContent = '加载数据失败，请检查文件。';
+            loadingDiv.style.color = 'red';
+        });
+    }
+
+    function drawWorldMap() {
+        const path = d3.geoPath().projection(projection);
+        d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(worldData => {
+            mapGroup.selectAll("path")
+                .data(topojson.feature(worldData, worldData.objects.countries).features)
+                .enter().append("path")
+                .attr("d", path)
+                .attr("class", "world-map");
+        }).catch(error => {
+            console.error('加载地图数据时出错:', error);
+        });
+    }
+
+    function processData(data) {
+        dataLoaded = data;
+        links = [];
+        data.forEach(row => {
+            const src = row["Origin Region"];
+            regions.forEach(tgt => {
+                const value = +row[tgt];
+                if (value > 0 && src !== tgt) {
+                    links.push({
+                        source: src,
+                        target: tgt,
+                        value: value,
+                        color: regionColors[tgt]
+                    });
+                }
+            });
+        });
+
+        const maxValue = d3.max(links, d => d.value);
+        thicknessScale = d3.scalePow().exponent(0.5).domain([0, maxValue]).range([1, 20]);
+
+        drawStaticElements();
+    }
+
+    /* ---------- 3. 绘制静态元素 ---------- */
+    function drawStaticElements() {
+        const nodes = regions.map(r => ({id: r, x: pos[r][0], y: pos[r][1]}));
+
+        linkGroup.selectAll(".link.static").remove();
+        nodeGroup.selectAll(".node").remove();
+        labelGroup.selectAll(".node-label").remove();
+        labelGroup.selectAll(".label-bg").remove();
+
+        nodeGroup.selectAll(".node")
+            .data(nodes)
+            .enter().append("circle")
+            .attr("class", "node")
+            .attr("r", 8)
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .attr("fill", "#2c3e50");
+
+        labelGroup.selectAll(".label-bg")
+            .data(nodes)
+            .enter().append("rect")
+            .attr("class", "label-bg")
+            .attr("x", d => d.x - 45)
+            .attr("y", d => d.y - 25)
+            .attr("width", 90)
+            .attr("height", 20);
+
+        labelGroup.selectAll(".node-label")
+            .data(nodes)
+            .enter().append("text")
+            .attr("class", "node-label")
+            .attr("x", d => d.x)
+            .attr("y", d => d.y - 10)
+            .text(d => chineseNames[d.id] || d.id);
+    }
+
+    /* ---------- 4. 动画功能：分步显示 ---------- */
+    function startStagedAnimation() {
+        if (!dataLoaded) {
+            console.warn("数据尚未加载完毕，请稍候。");
+            return;
+        }
+        clearAllAnimations();
+        statusDiv.textContent = "动画开始：显示流向欧洲的迁移路线";
+
+        const linksByTarget = {};
+        regions.forEach(region => {
+            linksByTarget[region] = links.filter(link => link.target === region);
+        });
+
+        const animationOrder = [
+            "EUROPE",
+            "NORTHERN AMERICA",
+            "Central and Southern Asia",
+            "Latin America and the Caribbean",
+            "Oceania (excluding Australia and New Zealand)",
+            "Sub-Saharan Africa",
+            "Eastern and South-Eastern Asia"
+        ];
+
+        let delay = 0;
+        const pauseDuration = 3000;
+
+        animationOrder.forEach((targetRegion, index) => {
+            setTimeout(() => {
+                statusDiv.textContent = `正在显示流向${chineseNames[targetRegion] || targetRegion}的迁移路线`;
+                showLinks(linksByTarget[targetRegion], regionColors[targetRegion]);
+
+                nodeGroup.selectAll(".node")
+                    .filter(d => d.id === targetRegion)
+                    .transition()
+                    .duration(500)
+                    .attr("fill", regionColors[targetRegion]);
+
+            }, delay);
+
+            delay += pauseDuration;
+
+            if (index === animationOrder.length - 1) {
+                setTimeout(() => {
+                    statusDiv.textContent = "动画完成：所有迁移路线已显示";
+                }, delay);
+            }
+        });
+    }
+
+    /* ---------- 5. 动画功能：显示所有轨迹 ---------- */
+    function showAllTrajectories() {
+        if (!dataLoaded) {
+            console.warn("数据尚未加载完毕，请稍候。");
+            return;
+        }
+        clearAllAnimations();
+        statusDiv.textContent = "正在显示所有迁移轨迹...";
+
+        // 显示所有链接
+        showLinks(links, "#3498db");
+        statusDiv.textContent = "所有迁移轨迹已显示";
+    }
+
+    function showLinks(linksToAnimate, color) {
+        linksToAnimate.forEach(link => {
+            const s = {x: pos[link.source][0], y: pos[link.source][1]};
+            const t = {x: pos[link.target][0], y: pos[link.target][1]};
+            const dx = t.x - s.x;
+            const dy = t.y - s.y;
+            const dr = Math.sqrt(dx * dx + dy * dy);
+
+            const pathData = `M${s.x},${s.y}A${dr},${dr} 0 0,1 ${t.x},${t.y}`;
+            const strokeWidth = thicknessScale(link.value);
+            
+            // 创建3D立体效果：底部阴影
+            const shadowPath = linkGroup.append("path")
+                .attr("class", "traj-shadow")
+                .attr("d", pathData)
+                .attr("stroke", d3.color(color).darker(2))
+                .attr("stroke-width", strokeWidth + 2)
+                .attr("transform", "translate(2, 2)");
+
+            // 主线条（使用3D渐变）
+            const gradientId = `gradient3d-${link.target.replace(/\s+/g, '-')}`;
+            const mainPath = linkGroup.append("path")
+                .attr("class", "traj-3d dynamic-traj")
+                .attr("d", pathData)
+                .attr("stroke", `url(#${gradientId})`)
+                .attr("stroke-width", strokeWidth);
+
+            // 顶部高光线条
+            const highlightPath = linkGroup.append("path")
+                .attr("class", "traj-3d")
+                .attr("d", pathData)
+                .attr("stroke", d3.color(color).brighter(2))
+                .attr("stroke-width", Math.max(1, strokeWidth * 0.3))
+                .attr("stroke-opacity", 0.6)
+                .attr("transform", "translate(-1, -1)");
+
+            // 动画效果
+            [shadowPath, mainPath, highlightPath].forEach(path => {
+                const length = path.node().getTotalLength();
+                path.attr("stroke-dasharray", length + " " + length)
+                    .attr("stroke-dashoffset", length)
+                    .transition()
+                    .duration(2000)
+                    .ease(d3.easeLinear)
+                    .attr("stroke-dashoffset", 0);
+            });
+        });
+    }
+    
+    function clearAllAnimations() {
+        linkGroup.selectAll(".dynamic-traj").remove();
+        linkGroup.selectAll(".traj-3d").remove();
+        linkGroup.selectAll(".traj-shadow").remove();
+        nodeGroup.selectAll(".node").transition().duration(500).attr("fill", "#2c3e50");
+        statusDiv.textContent = "";
+    }
+
+    // 窗口大小改变时重新初始化投影
+    window.addEventListener('resize', function() {
+        initializeProjection();
+        // 清除现有内容并重新绘制
+        mapGroup.selectAll("*").remove();
+        nodeGroup.selectAll("*").remove();
+        labelGroup.selectAll("*").remove();
+        drawWorldMap();
+        if (dataLoaded) {
+            drawStaticElements();
+        }
+    });
+
+    initialize();
+
+</script>
+{{ ... }}
+</html>
