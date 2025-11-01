@@ -255,7 +255,7 @@ const initScatterplot = () => {
 
 .main-title {
   width: 100%;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 35.5556px;
@@ -272,7 +272,7 @@ const initScatterplot = () => {
 }
 
 .description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17.7778px;
@@ -283,7 +283,7 @@ const initScatterplot = () => {
 }
 
 .features-list {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17.7778px;
@@ -356,7 +356,7 @@ const initScatterplot = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

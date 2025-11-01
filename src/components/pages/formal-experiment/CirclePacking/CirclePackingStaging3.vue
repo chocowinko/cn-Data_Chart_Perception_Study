@@ -1,20 +1,17 @@
 <template>
   <div class="circle-packing-staging">
-    <h2 class="page-title">Circle Packing + Staging (3/3)</h2>
+    <h2 class="page-title">圆堆积图 + 分阶段 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: The visualization builds progressively from <em>continents</em> →
-          <em>subregions</em> → <em>countries</em>.
+          分阶段事件：可视化从大陆 → 次区域 → 国家逐步构建。
         </h3>
 
         <h2 class="task-title">
-          Task 3: In the <em>Western Asia</em> region, does the
-          <em>single largest country</em> account for more than half of the region's total
-          emissions?
+          任务 3：在西亚地区，单个最大的国家是否占该地区总排放量的一半以上？
         </h2>
 
         <div class="options-section">
@@ -40,10 +37,10 @@
             @click="handleConfirm(null, selectedAnswer, '/treemap-intro')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -51,7 +48,7 @@
       <!-- 右侧：图表区域 -->
       <div class="chart-area">
         <h1 class="chart-main-title">
-          Per Capita Greenhouse Gas Emissions: Asia and Europe Comparison
+          人均温室气体排放量：亚洲与欧洲对比
         </h1>
 
         <div class="chart-wrapper">
@@ -78,24 +75,24 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'circle-packing-staging-3',
-  'Circle Packing + Staging (3/3)',
+  '圆堆积图 + 分阶段 (3/3)',
   null,
 )
 
 const options = [
   {
-    label: '(A) <em>Yes</em>, it takes up more than half.',
+    label: '(A) 是的，占一半以上',
     value: 'A',
   },
   {
-    label: '(B) <em>No</em>, it takes up less than half.',
+    label: '(B) 不，占不到一半',
     value: 'B',
   },
   {
-    label: "(C) The country and the rest of the region are about the same size (it's about half).",
+    label: '(C) 该国与该地区其他部分大小相近（约占一半）',
     value: 'C',
   },
-  { label: "(D) It's hard to tell just by looking.", value: 'D' },
+  { label: '(D) 很难仅通过观察判断', value: 'D' },
 ]
 
 const playAnimation = () => {
@@ -116,7 +113,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -152,7 +149,7 @@ const playAnimation = () => {
 }
 
 .chart-main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -212,7 +209,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -229,7 +226,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -268,7 +265,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -312,7 +309,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

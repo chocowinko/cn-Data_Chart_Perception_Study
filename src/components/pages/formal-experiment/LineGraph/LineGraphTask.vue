@@ -1,20 +1,20 @@
 <template>
   <div class="line-graph-task">
-    <h1 class="main-title">Line Graph</h1>
+    <h1 class="main-title">折线图</h1>
 
     <div class="description-section">
       <p class="description">
-        This chart shows the monthly sales trends for several different product categories in 2024,in which,
+        此图表显示了2024年几个不同产品类别的月度销售趋势，其中：
       </p>
 
       <ul class="features-list">
         <li>
-          The horizontal axis (from left to right) represents the months, from January to December.
+          横轴（从左到右）代表月份，从一月到十二月。
         </li>
         <li>
-          The vertical axis (from bottom to top) represents monthly sales in 100 million yuan.
+          纵轴（从下到上）代表月度销售额，单位为亿元。
         </li>
-        <li>Each colored line represents the sales trend for a separate product category.</li>
+        <li>每条彩色线条代表一个独立产品类别的销售趋势。</li>
       </ul>
     </div>
 
@@ -22,14 +22,14 @@
       <div class="chart-container">
         <img
           src="/WechatIMG5571.jpg"
-          alt="2024 Product Category Sales Volatility Analysis"
+          alt="2024年产品类别销售波动分析"
           class="static-chart-image"
         />
       </div>
     </div>
 
     <button class="start-button" @click="goToTask2">
-      <span class="button-text">Start</span>
+      <span class="button-text">开始</span>
     </button>
   </div>
 </template>
@@ -54,7 +54,7 @@ const goToTask2 = () => {
 }
 
 .main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 35.5556px;
@@ -75,7 +75,7 @@ const goToTask2 = () => {
 }
 
 .description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17.7778px;
@@ -85,7 +85,7 @@ const goToTask2 = () => {
 }
 
 .features-list {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17.7778px;
@@ -152,7 +152,7 @@ const goToTask2 = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

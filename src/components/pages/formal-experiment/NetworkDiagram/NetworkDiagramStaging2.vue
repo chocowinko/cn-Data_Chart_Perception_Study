@@ -1,14 +1,13 @@
 <template>
   <div class="network-diagram-staging">
-    <h2 class="page-title">Network Diagram + Staging (2/3)</h2>
+    <h2 class="page-title">网络图 + 分阶段 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          Task 2: In the <em>second stage</em>, how many independent communities (small groups with more than
-          one person) have appeared?</h2>
+          任务 2：在第二阶段，出现了多少个独立社群（多于一人的小组）？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -33,10 +32,10 @@
             @click="handleConfirm(null, selectedAnswer, '/network-diagram-staging-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -67,7 +66,7 @@ const chartIframe = ref(null)
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'network-diagram-staging-2',
-  'Network Diagram + Staging (2/3)',
+  '网络图 + 分阶段 (2/3)',
 )
 
 const options = [
@@ -99,7 +98,7 @@ const playAnimation = () => {
 
 .page-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -181,7 +180,7 @@ const playAnimation = () => {
 
 .task-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -222,7 +221,7 @@ const playAnimation = () => {
 
 .option-label {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -268,7 +267,7 @@ const playAnimation = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;

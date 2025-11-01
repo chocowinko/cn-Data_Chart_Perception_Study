@@ -1,20 +1,18 @@
 <template>
   <div class="line-graph-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Line Graph + Highlighting (1/3)</h2>
+    <h2 class="page-title">折线图 + 高亮 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: The peak point (highest sales) for each product line throughout the
-          year.
+          高亮事件：突出显示每条产品线全年中的峰值点（最高销售额）。
         </h3>
 
         <h2 class="task-title">
-          Task 1: After all peak sales points are highlighted, which description best describes
-          their timing?
+          任务1：所有销售峰值点被高亮后，以下哪个描述最能概括其出现的时间？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/line-graph-highlighting-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -66,29 +64,29 @@ const selectedAnswer = ref('')
 // 初始化计时器
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'line-graph-highlighting-1',
-  'Line Graph + Highlighting (1/3)',
+  '折线图 + 高亮 (1/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'All peak points are concentrated in <em>January-June</em>.',
+    text: '所有峰值点都集中在一月至六月。',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'All peak points are concentrated in <em>July-December</em>.',
+    text: '所有峰值点都集中在七月至十二月。',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'Peak points are evenly split between <em>January-June</em> and <em>July-December</em>.',
+    text: '峰值点在一月至六月和七月至十二月之间均匀分布。',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'Peak points are scattered throughout the year with no clear pattern.',
+    text: '峰值点全年分散，无明显规律。',
   },
 ]
 
@@ -110,7 +108,7 @@ h1 {
     margin-bottom: -10px;
     font-size: 18px;
     font-weight: 600;
-    font-family: Roboto, sans-serif;
+    font-family: PingFang SC, sans-serif;
 }
 .chart-container {
     position: relative;
@@ -156,7 +154,7 @@ svg {
 }
 </style>
 <div class="container">
-    <h1>2024 Product Category Sales Volatility Analysis</h1>
+    <h1>2024年产品类别销售波动分析</h1>
     <div class="chart-container">
         <svg id="salesChart"></svg>
     </div>
@@ -197,26 +195,6 @@ function initChart() {
     ]
     const categories = {}
 
-    // Category mapping from Chinese to English
-    const categoryMap = {
-      粮油食品: 'Food & Oil',
-      饮料: 'Beverages',
-      烟酒: 'Tobacco & Alcohol',
-      服装鞋帽: 'Clothing & Footwear',
-      化妆品: 'Cosmetics',
-      金银珠宝: 'Jewelry',
-      日用品: 'Daily Necessities',
-      体育娱乐用品: 'Sports & Recreation',
-      家用电器和音像器材: 'Home Appliances & Audio Equipment',
-      中西药品: 'Medicine',
-      文化办公用品: 'Cultural & Office Supplies',
-      家具: 'Furniture',
-      通讯器材: 'Communication Equipment',
-      石油及制品: 'Petroleum & Products',
-      汽车: 'Automobiles',
-      建筑及装潢材料: 'Construction & Decoration Materials',
-    }
-
     for (let i = 3; i < lines.length; i++) {
       const line = lines[i].trim()
       if (!line) continue
@@ -224,7 +202,7 @@ function initChart() {
       if (values.length < 2) continue
       for (let j = 1; j < Math.min(values.length, headers.length); j++) {
         const originalCategoryName = headers[j].replace('(亿元)', '').trim()
-        const categoryName = categoryMap[originalCategoryName] || originalCategoryName
+        const categoryName = originalCategoryName
         const value = parseInt(values[j])
         if (!isNaN(value) && categoryName) {
           if (!categories[categoryName]) categories[categoryName] = []
@@ -246,7 +224,7 @@ function initChart() {
       document.getElementById('salesChart').style.display = 'none'
       const container = document.querySelector('.chart-container')
       container.innerHTML =
-        '<p style="text-align: center; color: #e74c3c; padding: 50px;">Unable to load data file</p>'
+        '<p style="text-align: center; color: #e74c3c; padding: 50px;">无法加载数据文件</p>'
     }
   }
 
@@ -322,7 +300,7 @@ function initChart() {
       .attr('x', width / 2)
       .attr('y', height + 40)
       .style('text-anchor', 'middle')
-      .text('Month')
+      .text('月份')
 
     g.append('text')
       .attr('class', 'axis-label')
@@ -330,7 +308,7 @@ function initChart() {
       .attr('x', -height / 2)
       .attr('y', -40)
       .style('text-anchor', 'middle')
-      .text('Sales (100 Million RMB)')
+      .text('销售额 (亿元)')
 
     const tooltip = d3.select('#tooltip')
 
@@ -476,7 +454,7 @@ function initChart() {
           tooltip.transition().duration(200).style('opacity', 0.9)
           tooltip
             .html(
-              `${item.category}: ${d} hundred million RMB<br/>Month: ${rawData.months[maxIndex]}`,
+              `${item.category}: ${d} 亿元<br/>月份: ${rawData.months[maxIndex]}`,
             )
             .style('left', event.pageX + 10 + 'px')
             .style('top', event.pageY - 28 + 'px')
@@ -530,7 +508,7 @@ const playAnimation = () => {
         tooltip.transition().duration(200).style('opacity', 0.9)
         tooltip
           .html(
-            `${item.category}: ${d} hundred million RMB<br/>Month: ${rawData.months[monthIndex]}`,
+            `${item.category}: ${d} 亿元<br/>月份: ${rawData.months[monthIndex]}`,
           )
           .style('left', event.pageX + 10 + 'px')
           .style('top', event.pageY - 28 + 'px')
@@ -560,7 +538,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -601,7 +579,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -618,7 +596,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -630,7 +608,7 @@ const playAnimation = () => {
 
 .task-title em {
   font-weight: 600;
-  font-style: italic;
+  font-style: normal;
 }
 
 .options-section {
@@ -657,7 +635,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -669,7 +647,7 @@ const playAnimation = () => {
 
 .option-label em {
   font-weight: 600;
-  font-style: italic;
+  font-style: normal;
 }
 
 .option-letter {
@@ -730,7 +708,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

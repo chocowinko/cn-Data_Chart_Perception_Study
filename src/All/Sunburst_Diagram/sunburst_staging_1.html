@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ECharts Coffee Flavor Wheel Sunburst Chart - English Version</title>
+    <title>咖啡风味轮旭日图 - 分阶段</title>
     <!-- Defines basic styles to make the chart fill the page -->
     <style>
       html,
@@ -32,6 +32,10 @@
 
     <!-- Your chart initialization script -->
     <script type="text/javascript">
+      // 中文翻译映射
+      const translations = {'Floral':'花香','Black Tea':'红茶','Chamomile':'洋甘菊','Rose':'玫瑰','Jasmine':'茉莉','Fruity':'果味','Berry':'浆果','Blackberry':'黑莓','Raspberry':'覆盆子','Blueberry':'蓝莓','Strawberry':'草莓','Dried Fruit':'干果','Raisin':'葡萄干','Prune':'西梅','Other Fruit':'其他水果','Coconut':'椰子','Cherry':'樱桃','Pomegranate':'石榴','Pineapple':'菠萝','Grape':'葡萄','Apple':'苹果','Peach':'桃子','Pear':'梨','Citrus Fruit':'柑橘类水果','Grapefruit':'葡萄柚','Orange':'橙子','Lemon':'柠檬','Lime':'青柠','Sour/\nFermented':'酸/发酵','Sour':'酸味','Sour Aromatics':'酸香','Acetic Acid':'醋酸','Butyric Acid':'丁酸','Isovaleric Acid':'异戊酸','Citric Acid':'柠檬酸','Malic Acid':'苹果酸','Alcohol/\nFermented':'酒精/发酵','Winey':'酒香','Whiskey':'威士忌','Fermented':'发酵','Overripe':'过熟','Green/\nVegetative':'绿色/植物味','Olive Oil':'橄榄油','Raw':'生的','Under-ripe':'未熟','Peapod':'豌豆荚','Fresh':'新鲜','Dark Green':'深绿','Vegetative':'植物味','Hay-like':'干草味','Herb-like':'草本味','Beany':'豆味','Other':'其他','Papery/Musty':'纸味/霉味','Stale':'陈腐','Cardboard':'纸板','Papery':'纸味','Woody':'木质','Moldy/Damp':'霉味/潮湿','Musty/Dusty':'霉味/灰尘','Musty/Earthy':'霉味/泥土','Animalic':'动物味','Meaty/Brothy':'肉味/汤味','Phenolic':'酚味','Chemical':'化学','Bitter':'苦味','Salty':'咸味','Medicinal':'药味','Petroleum':'石油','Skunky':'臭味','Rubber':'橡胶','Roasted':'烘焙味','Pipe Tobacco':'烟斗烟草','Tobacco':'烟草','Burnt':'焦味','Acrid':'辛辣','Ashy':'灰烬','Smoky':'烟熏','Brown Roast':'深度烘焙','Grain':'谷物','Malt':'麦芽','Spices':'香料味','Pungent':'刺激','Pepper':'胡椒','Brown Spice':'棕色香料','Anise':'八角','Nutmeg':'肉豆蔻','Cinnamon':'肉桂','Clove':'丁香','Nutty/\nCocoa':'坚果/可可','Nutty':'坚果味','Peanuts':'花生','Hazelnut':'榛子','Almond':'杏仁','Cocoa':'可可','Chocolate':'巧克力','Dark Chocolate':'黑巧克力','Sweet':'甜味','Brown Sugar':'红糖','Molasses':'糖蜜','Maple Syrup':'枫糖浆','Caramelized':'焦糖化','Honey':'蜂蜜','Vanilla':'香草','Vanillin':'香兰素','Overall Sweet':'整体甜','Sweet Aromatics':'甜香'};
+      function translate(text){return translations[text]||text;}
+
       var chartDom = document.getElementById('main')
       var myChart = echarts.init(chartDom)
       var option
@@ -354,21 +358,21 @@
                 r0: '15%',
                 r: '35%',
                 itemStyle: { borderWidth: 2, opacity: 0 },
-                label: { rotate: 'tangential', show: false },
+                label: { rotate: 'tangential', show: false, formatter: function(params) { return translate(params.name); } },
                 silent: true,
               },
               {
                 r0: '35%',
                 r: '70%',
                 itemStyle: { opacity: 0 },
-                label: { show: false },
+                label: { show: false, formatter: function(params) { return translate(params.name); } },
                 silent: true,
               },
               {
                 r0: '70%',
                 r: '72%',
                 itemStyle: { opacity: 0 },
-                label: { show: false },
+                label: { show: false, formatter: function(params) { return translate(params.name); } },
                 silent: true,
               },
             ],
@@ -387,21 +391,21 @@
                     r0: '15%',
                     r: '35%',
                     itemStyle: { borderWidth: 2, opacity: 1 },
-                    label: { rotate: 'tangential', show: true },
+                    label: { rotate: 'tangential', show: true, formatter: function(params) { return translate(params.name); } },
                     silent: true,
                   },
                   {
                     r0: '35%',
                     r: '70%',
                     itemStyle: { opacity: 0 },
-                    label: { show: false },
+                    label: { show: false, formatter: function(params) { return translate(params.name); } },
                     silent: true,
                   },
                   {
                     r0: '70%',
                     r: '72%',
                     itemStyle: { opacity: 0 },
-                    label: { show: false },
+                    label: { show: false, formatter: function(params) { return translate(params.name); } },
                     silent: true,
                   },
                 ],
@@ -422,21 +426,21 @@
                     r0: '15%',
                     r: '35%',
                     itemStyle: { borderWidth: 2, opacity: 1 },
-                    label: { rotate: 'tangential', show: true },
+                    label: { rotate: 'tangential', show: true, formatter: function(params) { return translate(params.name); } },
                     silent: true,
                   },
                   {
                     r0: '35%',
                     r: '70%',
                     itemStyle: { opacity: 1 },
-                    label: { align: 'right', show: true },
+                    label: { align: 'right', show: true, formatter: function(params) { return translate(params.name); } },
                     silent: true,
                   },
                   {
                     r0: '70%',
                     r: '72%',
                     itemStyle: { opacity: 0 },
-                    label: { show: false },
+                    label: { show: false, formatter: function(params) { return translate(params.name); } },
                     silent: true,
                   },
                 ],
@@ -457,21 +461,21 @@
                     r0: '15%',
                     r: '35%',
                     itemStyle: { borderWidth: 2, opacity: 1 },
-                    label: { rotate: 'tangential', show: true },
+                    label: { rotate: 'tangential', show: true, formatter: function(params) { return translate(params.name); } },
                     silent: true,
                   },
                   {
                     r0: '35%',
                     r: '70%',
                     itemStyle: { opacity: 1 },
-                    label: { align: 'right', show: true },
+                    label: { align: 'right', show: true, formatter: function(params) { return translate(params.name); } },
                     silent: true,
                   },
                   {
                     r0: '70%',
                     r: '72%',
                     itemStyle: { borderWidth: 3, opacity: 1 },
-                    label: { position: 'outside', padding: 3, show: true },
+                    label: { position: 'outside', padding: 3, show: true, formatter: function(params) { return translate(params.name); } },
                     silent: true,
                   },
                 ],

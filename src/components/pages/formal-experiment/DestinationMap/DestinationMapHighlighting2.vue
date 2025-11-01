@@ -1,21 +1,18 @@
 <template>
   <div class="destination-map-highlighting-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Destination Map + Highlighting (2/3)</h2>
+    <h2 class="page-title">目的地图 + 高亮 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighted Event: All routes flowing <em>INTO</em> <em>North America</em> are highlighted
-          in <em>blue</em>, and all routes flowing <em>OUT OF</em> <em>North America</em> are
-          highlighted in <em>red</em>.
+          高亮事件：所有流入北美洲的路线以蓝色高亮显示，所有流出北美洲的路线以红色高亮显示。
         </h3>
 
         <h2 class="task-title">
-          Task 2: When all routes related to <em>North America</em> are highlighted (inflow in
-          <em>blue</em>, outflow in <em>red</em>), what major pattern can we observe?
+          任务2：当所有与北美洲相关的路线都被高亮显示时（流入为蓝色，流出为红色），我们可以观察到什么主要模式？
         </h2>
 
         <div class="options-section">
@@ -41,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/destination-map-highlighting-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -74,29 +71,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'destination-map-highlighting-2',
-  'Destination Map + Highlighting (2/3)',
+  '目的地图 + 高亮 (2/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'The inflow (<em>blue</em>) and outflow (<em>red</em>) volumes appear roughly equal.',
+    text: '流入（蓝色）和流出（红色）的流量看起来大致相等。',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>North America</em> has almost no traffic exchange with other regions.',
+    text: '北美洲几乎没有与其他区域的交流。',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'The inflow volume appears much larger than the outflow volume.',
+    text: '流入量看起来远大于流出量。',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'The outflow volume appears much larger than the inflow volume.',
+    text: '流出量看起来远大于流入量。',
   },
 ]
 
@@ -119,7 +116,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -202,7 +199,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +216,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +255,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -306,7 +303,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

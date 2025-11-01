@@ -1,20 +1,18 @@
 <template>
   <div class="sankey-diagram-tracing-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Sankey Diagram + Tracing (2/3)</h2>
+    <h2 class="page-title">桑基图 + 追踪 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Tracing Event: Energy pathways from <em>Nuclear</em>, <em>Wind</em>, and
-          <em>Hydro</em> are traced step by step, showing their complete flow through the system.
+          追踪事件：核能、风能和水电的能源路径被逐步追踪，显示它们在系统中的完整流动。
         </h3>
 
         <h2 class="task-title">
-          Task 2: Looking at the flows coming out of the <em>Electricity grid</em> node, which
-          destination receives the most energy?
+          任务2：观察从电网节点流出的能源流，哪个目的地接收的能源最多？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/sankey-diagram-tracing-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -73,29 +71,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'sankey-diagram-tracing-2',
-  'Sankey Diagram + Tracing (2/3)',
+  '桑基图 + 追踪 (2/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '<em>Residential</em> (<em>homes</em>)',
+    text: '住宅（家庭）',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>Industry</em>',
+    text: '工业',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>Losses</em>',
+    text: '损耗',
   },
   {
     letter: 'D',
     value: 'D',
-    text: '<em>Other</em>',
+    text: '其他',
   },
 ]
 
@@ -118,7 +116,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -202,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -302,7 +300,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

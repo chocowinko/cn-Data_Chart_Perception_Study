@@ -1,20 +1,18 @@
 <template>
   <div class="circle-packing-intro">
-    <h1 class="main-title">Circle Packing</h1>
+    <h1 class="main-title">圆堆积图</h1>
 
     <div class="description-section">
       <p class="description">
-        This chart compares per capita greenhouse gas emissions across Asia and Europe, in which:
+        此图表比较亚洲和欧洲的人均温室气体排放量，其中：
       </p>
 
       <ul class="features-list">
         <li>
-          <strong>Hierarchy:</strong> Outer circles represent continents and subregions, while inner
-          circles represent individual countries.
+          <strong>层级结构：</strong>外圈代表大陆和次区域，内圈代表各个国家。
         </li>
         <li>
-          <strong>Area:</strong> The area of each country circle is proportional to its per capita
-          greenhouse gas emissions. Larger areas represent higher per capita emissions.
+          <strong>面积：</strong>每个国家圆圈的面积与其人均温室气体排放量成正比。面积越大表示人均排放量越高。
         </li>
       </ul>
     </div>
@@ -24,7 +22,7 @@
     </div>
 
     <button class="continue-button" @click="continueFormal">
-      <span class="button-text">Start</span>
+      <span class="button-text">开始</span>
     </button>
   </div>
 </template>
@@ -47,7 +45,7 @@ const continueFormal = () => {
 }
 
 .main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 32px;
@@ -62,7 +60,7 @@ const continueFormal = () => {
 }
 
 .description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -73,7 +71,7 @@ const continueFormal = () => {
 }
 
 .features-list {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -133,7 +131,7 @@ const continueFormal = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

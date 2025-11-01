@@ -138,7 +138,7 @@
       <div class="legend" id="legend"></div>
 
       <div id="chart-container">
-        <div id="loading">Loading data...</div>
+        <div id="loading"><span>加载数据中...</span></div>
         <svg id="map" width="100%" height="600"></svg>
       </div>
     </div>
@@ -159,13 +159,13 @@
         'Eastern and South-Eastern Asia',
       ]
       const regionNames = {
-        EUROPE: 'Europe',
-        'NORTHERN AMERICA': 'Northern America',
-        'Central and Southern Asia': 'Central & Southern Asia',
-        'Latin America and the Caribbean': 'Latin America',
-        'Oceania (excluding Australia and New Zealand)': 'Oceania',
-        'Sub-Saharan Africa': 'Sub-Saharan Africa',
-        'Eastern and South-Eastern Asia': 'Eastern & SE Asia',
+        EUROPE: '欧洲',
+        'NORTHERN AMERICA': '北美洲',
+        'Central and Southern Asia': '中南亚',
+        'Latin America and the Caribbean': '拉丁美洲',
+        'Oceania (excluding Australia and New Zealand)': '大洋洲',
+        'Sub-Saharan Africa': '撒哈拉以南非洲',
+        'Eastern and South-Eastern Asia': '东亚和东南亚',
       }
 
       const regionColors = {
@@ -224,7 +224,7 @@
           })
           .catch((error) => {
             console.error('Error loading or parsing data:', error)
-            loadingDiv.textContent = 'Failed to load data. Please check the file.'
+            loadingDiv.textContent = '数据加载失败，请检查文件。'
             loadingDiv.style.color = 'red'
           })
       }
@@ -337,7 +337,7 @@
               .attr('data-target', link.target)
               .append('title')
               .text(
-                `${regionNames[link.source]} → ${regionNames[link.target]}: ${link.value.toLocaleString()} people`,
+                `${regionNames[link.source]} → ${regionNames[link.target]}: ${link.value.toLocaleString()} 人`,
               )
 
             // 添加淡入动画，每条路线稍微错开

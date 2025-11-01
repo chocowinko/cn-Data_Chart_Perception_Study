@@ -1,18 +1,17 @@
 <template>
   <div class="treemap-highlighting">
-    <h2 class="page-title">Treemap + Highlighting (3/3)</h2>
+    <h2 class="page-title">树状图 + 高亮 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: Highlight all sub-categories within the <em>Furniture</em> category.
+          高亮事件：高亮显示家具类别中的所有子类别。
         </h3>
 
         <h2 class="task-title">
-          Task 3: From <em>2016</em> to <em>2017</em>, what happened to the best-selling product
-          within the <em>Furniture</em> category?
+          任务3：从2016年到2017年，家具类别中最畅销的产品发生了什么变化？
         </h2>
 
         <div class="options-section">
@@ -38,17 +37,17 @@
             @click="handleConfirm(null, selectedAnswer, '/treemap-staging-1')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
 
       <!-- 右侧：图表区域 -->
       <div class="chart-area">
-        <h1 class="chart-main-title">Superstore Sales Comparison: 2016 vs 2017</h1>
+        <h1 class="chart-main-title">超市销售额对比：2016年 vs 2017年</h1>
 
         <div class="chart-wrapper">
           <iframe
@@ -75,18 +74,17 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'treemap-highlighting-3',
-  'Treemap + Highlighting (3/3)',
+  '树状图 + 高亮 (3/3)',
 )
 
 const options = [
-  { label: '(A) <em>Chairs</em> was the best-seller in both years.', value: 'A' },
+  { label: '(A) 椅子在两年中都是最畅销的产品', value: 'A' },
   {
-    label:
-      '(B) In <em>2017</em>, <em>Tables</em> took over from <em>Chairs</em> as the new best-seller.',
+    label: '(B) 在2017年，桌子取代椅子成为新的最畅销产品',
     value: 'B',
   },
-  { label: '(C) <em>Bookcases</em> became the new best-seller in <em>2017</em>.', value: 'C' },
-  { label: '(D) The <em>top two</em> best-selling products swapped places.', value: 'D' },
+  { label: '(C) 书架在2017年成为新的最畅销产品', value: 'C' },
+  { label: '(D) 销量前两名的产品互换了位置', value: 'D' },
 ]
 
 const playAnimation = () => {
@@ -107,7 +105,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -144,7 +142,7 @@ const playAnimation = () => {
 }
 
 .chart-main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -205,7 +203,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -222,7 +220,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -261,7 +259,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -305,7 +303,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

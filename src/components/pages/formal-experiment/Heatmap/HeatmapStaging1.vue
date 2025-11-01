@@ -1,15 +1,14 @@
 <template>
   <div class="heatmap-staging-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Heatmap + Staging (1/3)</h2>
+    <h2 class="page-title">热力图 + 分阶段 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          Task 1: As the animation moves into <em>fall</em> (<em>September-November</em>), how do
-          the two cities start to cool down?
+          任务1：当动画进入秋季（9月至11月）时，两个城市如何开始降温？
         </h2>
 
         <div class="options-section">
@@ -35,10 +34,10 @@
             @click="handleConfirm(null, selectedAnswer, '/heatmap-staging-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -47,12 +46,12 @@
       <div class="chart-area">
         <div class="chart-display">
           <div class="main-container">
-            <h1 class="chart-main-title">Heat maps of Moscow and Copenhagen in 2019</h1>
+            <h1 class="chart-main-title">2019年莫斯科和哥本哈根热力图</h1>
 
             <!-- Moscow 热力图 -->
             <div class="chart-container" id="chart-container-moscow">
               <div class="chart-area-inner">
-                <h2 class="chart-title">Moscow</h2>
+                <h2 class="chart-title">莫斯科</h2>
                 <div id="axis-months-moscow" class="axis-months"></div>
                 <div id="axis-days-moscow" class="axis-days"></div>
                 <div id="chart-grid-moscow" class="chart-grid"></div>
@@ -63,7 +62,7 @@
             <!-- Copenhagen 热力图 -->
             <div class="chart-container" id="chart-container-copenhagen">
               <div class="chart-area-inner">
-                <h2 class="chart-title">Copenhagen</h2>
+                <h2 class="chart-title">哥本哈根</h2>
                 <div id="axis-months-copenhagen" class="axis-months"></div>
                 <div id="axis-days-copenhagen" class="axis-days"></div>
                 <div id="chart-grid-copenhagen" class="chart-grid"></div>
@@ -88,7 +87,7 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'heatmap-staging-1',
-  'Heatmap + Staging (1/3)',
+  '热力图 + 分阶段 (1/3)',
 )
 
 let isAnimationActive = true // 控制动画是否应该继续
@@ -97,22 +96,22 @@ const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'Both cities cooled at about the same rate.',
+    text: '两个城市的降温速度大致相同。',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>Moscow</em> was able to maintain its warm weather longer.',
+    text: '莫斯科能够保持温暖天气的时间更长。',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>Copenhagen</em> stayed warm for longer, and the blue colors (cold weather) showed up later for it.',
+    text: '哥本哈根保持温暖的时间更长，蓝色（寒冷天气）较晚出现。',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'Both cities experienced little cooling during the <em>autumn</em>.',
+    text: '两个城市在秋季几乎没有降温。',
   },
 ]
 
@@ -137,18 +136,18 @@ const initHeatmapStaging = async () => {
     const dataCopenhagen = new Map()
 
     const MONTH_NAMES = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
     ]
     const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
@@ -354,7 +353,7 @@ const initHeatmapStaging = async () => {
     const warnEl = document.getElementById('warn')
     if (warnEl) {
       warnEl.style.display = 'block'
-      warnEl.textContent = `Loading failed: ${err.message}. Please ensure moscow_copenhagen_tem.csv file is accessible.`
+      warnEl.textContent = `加载失败: ${err.message}。请确保 moscow_copenhagen_tem.csv 文件可访问。`
     }
   }
 }
@@ -389,7 +388,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -447,7 +446,7 @@ const playAnimation = () => {
   font-size: 18px;
   font-weight: 600;
   line-height: 24px;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   width: 100%;
 }
 
@@ -585,7 +584,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -624,7 +623,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -654,7 +653,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

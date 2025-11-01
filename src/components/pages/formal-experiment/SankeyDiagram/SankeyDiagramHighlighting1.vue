@@ -1,20 +1,18 @@
 <template>
   <div class="sankey-diagram-highlighting-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Sankey Diagram + Highlighting (1/3)</h2>
+    <h2 class="page-title">桑基图 + 高亮 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: The complete energy pathways to
-          <em>residential areas</em> (<em>homes</em>) are highlighted.
+          高亮事件：通往住宅区（家庭）的完整能源路径已高亮显示。
         </h3>
 
         <h2 class="task-title">
-          Task 1: When the chart highlights energy going to <em>homes</em>, which energy source
-          provides the smallest amount (has the narrowest flow)?
+          任务1：当图表高亮显示流向家庭的能源时，哪个能源来源提供的量最少（流最窄）？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/sankey-diagram-highlighting-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -73,29 +71,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'sankey-diagram-highlighting-1',
-  'Sankey Diagram + Highlighting (1/3)',
+  '桑基图 + 高亮 (1/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'Cannot determine; multiple sources have similar small flows.',
+    text: '无法确定；多个来源有相似的小流量。',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>Electricity grid</em>',
+    text: '电网',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>Gas</em>',
+    text: '天然气',
   },
   {
     letter: 'D',
     value: 'D',
-    text: '<em>Solar Thermal</em>',
+    text: '太阳能热',
   },
 ]
 
@@ -118,7 +116,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -202,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -302,7 +300,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

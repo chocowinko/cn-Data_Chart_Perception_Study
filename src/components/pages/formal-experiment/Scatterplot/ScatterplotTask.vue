@@ -1,20 +1,18 @@
 <template>
   <div class="scatterplot-task">
-    <h1 class="main-title">Scatterplot</h1>
+    <h1 class="main-title">散点图</h1>
 
     <div class="description-section">
       <p class="description">
-        This figure illustrates the relationship between daily average PM2.5 and ozone concentrations in Changping District, Beijing, on specific dates in 2016, in which:
+        该图展示了2016年北京市昌平区特定日期的PM2.5和臭氧日均浓度之间的关系，其中：
       </p>
 
       <ul class="features-list">
         <li>
-          The horizontal axis (from left to right) represents daily average ozone concentration,
-          measured in micrograms per cubic meter (μg/m³).
+          横轴（从左到右）表示臭氧日均浓度，单位为微克每立方米（μg/m³）。
         </li>
         <li>
-          The vertical axis (from bottom to top) represents daily average PM2.5 concentration, also
-          measured in micrograms per cubic meter (μg/m³).
+          纵轴（从下到上）表示PM2.5日均浓度，单位同样为微克每立方米（μg/m³）。
         </li>
       </ul>
     </div>
@@ -26,7 +24,7 @@
     </div>
 
     <button class="start-button" @click="goToTask">
-      <span class="button-text">Start</span>
+      <span class="button-text">开始</span>
     </button>
   </div>
 </template>
@@ -145,18 +143,18 @@ const initScatterplot = () => {
     ]
 
     const monthNames = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月',
     ]
 
     // Group data by month
@@ -195,24 +193,24 @@ const initScatterplot = () => {
 
     const layout = {
       title: {
-        text: '<b>2016 Daily Average PM2.5 and Ozone Concentration Scatterplot in Changping District, Beijing</b>',
+        text: '<b>2016年北京市昌平区PM2.5与臭氧日均浓度散点图</b>',
         font: {
           size: 18,
-          family: 'Roboto, sans-serif',
+          family: 'PingFang SC, sans-serif',
           color: '#2c3e50',
         },
         x: 0,
         xanchor: 'left',
       },
       xaxis: {
-        title: 'Daily Average Ozone Concentration (μg/m³)',
+        title: '臭氧日均浓度 (μg/m³)',
         title_font: { size: 14 },
         showgrid: true,
         gridwidth: 1,
         gridcolor: 'rgba(128,128,128,0.2)',
       },
       yaxis: {
-        title: 'Daily Average PM2.5 Concentration (μg/m³)',
+        title: 'PM2.5日均浓度 (μg/m³)',
         title_font: { size: 14 },
         showgrid: true,
         gridwidth: 1,
@@ -220,7 +218,7 @@ const initScatterplot = () => {
       },
       plot_bgcolor: 'white',
       paper_bgcolor: 'white',
-      font: { family: 'Roboto, sans-serif' },
+      font: { family: 'PingFang SC, sans-serif' },
       hovermode: false,
       showlegend: true,
       legend: {
@@ -258,7 +256,7 @@ const initScatterplot = () => {
     } catch (error) {
       console.error('Error loading data:', error)
       document.getElementById('scatterplot-chart').innerHTML =
-        '<div style="text-align: center; padding: 50px; color: #e74c3c;">Failed to load data</div>'
+        '<div style="text-align: center; padding: 50px; color: #e74c3c;">无法加载数据</div>'
     }
   }
 
@@ -275,7 +273,7 @@ const initScatterplot = () => {
 }
 
 .main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 35.5556px;
@@ -296,7 +294,7 @@ const initScatterplot = () => {
 }
 
 .description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17.7778px;
@@ -306,7 +304,7 @@ const initScatterplot = () => {
 }
 
 .features-list {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17.7778px;
@@ -373,7 +371,7 @@ const initScatterplot = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

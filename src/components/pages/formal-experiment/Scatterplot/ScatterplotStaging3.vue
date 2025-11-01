@@ -1,20 +1,18 @@
 <template>
   <div class="scatterplot-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Scatterplot + Staging (3/3)</h2>
+    <h2 class="page-title">散点图 + 分阶段 (3/3)</h2>
 
     <!-- 两栏布局容器 -->
     <div class="content-container">
       <!-- 左侧任务区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: Data points are introduced progressively month by month throughout the
-          year, from January to December.
+          分阶段事件：从一月到十二月，数据点逐月逐步呈现。
         </h3>
 
         <h2 class="task-title">
-          Task 3: During the animation, which month shows the highest ozone level of the entire
-          year?
+          任务3：在动画播放过程中，哪个月份展示了全年最高的臭氧浓度水平？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/scatterplot-tracing-1')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -66,7 +64,7 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'scatterplot-staging-3',
-  'Scatterplot + Staging (3/3)',
+  '散点图 + 分阶段 (3/3)',
 )
 let chartData = null
 let isInitialized = false
@@ -77,22 +75,22 @@ const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'January',
+    text: '一月',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'April',
+    text: '四月',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'July',
+    text: '七月',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'December',
+    text: '十二月',
   },
 ]
 
@@ -215,18 +213,18 @@ const initScatterplot = () => {
         // Only include even-numbered days
         const dateObj = new Date(day.year, day.month - 1, day.day)
         const monthNames = [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
+          '一月',
+          '二月',
+          '三月',
+          '四月',
+          '五月',
+          '六月',
+          '七月',
+          '八月',
+          '九月',
+          '十月',
+          '十一月',
+          '十二月',
         ]
         processedData.push({
           date: date,
@@ -263,26 +261,26 @@ const initScatterplot = () => {
     ]
 
     const monthNames = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月',
     ]
 
     const layout = {
       title: {
-        text: '<b>2016 Daily Average PM2.5 and Ozone Concentration Scatterplot in Changping District, Beijing</b>',
+        text: '<b>2016年北京市昌平区PM2.5与臭氧日均浓度散点图</b>',
         font: {
           size: 18,
-          family: 'Roboto, sans-serif',
+          family: 'PingFang SC, sans-serif',
           color: '#2c3e50',
         },
         x: 0,
@@ -291,7 +289,7 @@ const initScatterplot = () => {
         yanchor: 'top',
       },
       xaxis: {
-        title: 'Daily Average Ozone Concentration (μg/m³)',
+        title: '臭氧日均浓度 (μg/m³)',
         title_font: { size: 14 },
         showgrid: true,
         gridwidth: 1,
@@ -305,7 +303,7 @@ const initScatterplot = () => {
         ticktext: ['0', '20', '40', '60', '80', '100', '120', '140', '160', '180', '200'],
       },
       yaxis: {
-        title: 'Daily Average PM2.5 Concentration (μg/m³)',
+        title: 'PM2.5日均浓度 (μg/m³)',
         title_font: { size: 14 },
         showgrid: true,
         gridwidth: 1,
@@ -321,7 +319,7 @@ const initScatterplot = () => {
       },
       plot_bgcolor: 'white',
       paper_bgcolor: 'white',
-      font: { family: 'Roboto, sans-serif' },
+      font: { family: 'PingFang SC, sans-serif' },
       hovermode: false,
       showlegend: true,
       legend: {
@@ -400,7 +398,7 @@ const initScatterplot = () => {
     } catch (error) {
       console.error('Error loading data:', error)
       document.getElementById('scatterplot-chart').innerHTML =
-        '<div style="text-align: center; padding: 50px; color: #e74c3c;">Failed to load data</div>'
+        '<div style="text-align: center; padding: 50px; color: #e74c3c;">无法加载数据</div>'
     }
   }
 
@@ -463,7 +461,7 @@ const playAnimation = () => {
 
 .page-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -516,7 +514,7 @@ const playAnimation = () => {
 
 .event-description {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -530,7 +528,7 @@ const playAnimation = () => {
 
 .task-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -566,7 +564,7 @@ const playAnimation = () => {
 
 .option-label {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -636,7 +634,7 @@ const playAnimation = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;

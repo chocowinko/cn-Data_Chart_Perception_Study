@@ -1,15 +1,14 @@
 <template>
   <div class="heatmap-tracing-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Heatmap + Tracing (3/3)</h2>
+    <h2 class="page-title">热力图 + 追踪 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          Task 3: Focusing on <em>Copenhagen</em>, which season showed the most significant warming
-          trend from <em>2009</em> to <em>2019</em>?
+          任务3：聚焦哥本哈根，从2009年到2019年，哪个季节显示出最显著的变暖趋势？
         </h2>
 
         <div class="options-section">
@@ -35,10 +34,10 @@
             @click="handleConfirm(null, selectedAnswer, '/destination-map-intro')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -47,12 +46,12 @@
       <div class="chart-area">
         <div class="chart-display">
           <div class="main-container">
-            <h1 class="chart-main-title">Heat maps of Moscow and Copenhagen 2009-2019</h1>
+            <h1 class="chart-main-title">2009-2019年莫斯科和哥本哈根热力图</h1>
 
             <!-- Moscow 热力图 -->
             <div class="chart-container" id="chart-container-moscow">
               <div class="chart-area-inner">
-                <h2 class="chart-title">Moscow</h2>
+                <h2 class="chart-title">莫斯科</h2>
                 <div id="axis-months-moscow" class="axis-months"></div>
                 <div id="axis-days-moscow" class="axis-days"></div>
                 <div id="chart-grid-moscow" class="chart-grid"></div>
@@ -63,7 +62,7 @@
             <!-- Copenhagen 热力图 -->
             <div class="chart-container" id="chart-container-copenhagen">
               <div class="chart-area-inner">
-                <h2 class="chart-title">Copenhagen</h2>
+                <h2 class="chart-title">哥本哈根</h2>
                 <div id="axis-months-copenhagen" class="axis-months"></div>
                 <div id="axis-days-copenhagen" class="axis-days"></div>
                 <div id="chart-grid-copenhagen" class="chart-grid"></div>
@@ -88,29 +87,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'heatmap-tracing-3',
-  'Heatmap + Tracing (3/3)',
+  '热力图 + 追踪 (3/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '<em>Winter</em>',
+    text: '冬季',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>Spring</em>',
+    text: '春季',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>Summer</em>',
+    text: '夏季',
   },
   {
     letter: 'D',
     value: 'D',
-    text: '<em>Autumn</em>',
+    text: '秋季',
   },
 ]
 
@@ -135,18 +134,18 @@ const initHeatmapTracing = async () => {
     const dataCopenhagen2019 = new Map()
 
     const MONTH_NAMES = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
     ]
     const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
@@ -412,7 +411,7 @@ const initHeatmapTracing = async () => {
     const warnEl = document.getElementById('warn')
     if (warnEl) {
       warnEl.style.display = 'block'
-      warnEl.textContent = `Loading failed: ${err.message}. Please ensure moscow_copenhagen_tem.csv file is accessible.`
+      warnEl.textContent = `加载失败: ${err.message}。请确保 moscow_copenhagen_tem.csv 文件可访问。`
     }
   }
 }
@@ -445,7 +444,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -503,7 +502,7 @@ const playAnimation = () => {
   font-size: 18px;
   font-weight: 600;
   line-height: 24px;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   width: 100%;
 }
 
@@ -641,7 +640,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -680,7 +679,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -710,7 +709,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

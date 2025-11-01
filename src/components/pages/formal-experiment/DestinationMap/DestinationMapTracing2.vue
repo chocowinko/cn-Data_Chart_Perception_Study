@@ -1,22 +1,18 @@
 <template>
   <div class="destination-map-tracing-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Destination Map + Tracing (2/3)</h2>
+    <h2 class="page-title">目的地图 + 追踪 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Tracing Event: You have seen the map with all the routes. Now, we will pull out
-          <em>three</em> typical routes to look at them more closely. We will watch their complete,
-          step-by-step journeys.
+          追踪事件：您已经看到了包含所有路线的地图。现在，我们将提取三条典型路线以更仔细地观察它们。我们将观察它们完整的逐步旅程。
         </h3>
 
         <h2 class="task-title">
-          Task 2: After comprehensively evaluating the complete dynamic process of all
-          <em>three</em> routes, which one most clearly demonstrates a <em>"snowball"</em> pattern
-          (getting stronger as it progresses)?
+          任务2：在全面评估所有三条路线的完整动态过程后，哪一条最清楚地展示了"滚雪球"模式（随着进展变得越来越强）？
         </h2>
 
         <div class="options-section">
@@ -42,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/destination-map-tracing-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -76,29 +72,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'destination-map-tracing-2',
-  'Destination Map + Tracing (2/3)',
+  '目的地图 + 追踪 (2/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '<em>Route 1</em>: East to <em>Northern America</em>',
+    text: '路线1：东向北美',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>Route 2</em>: West to <em>Europe</em>',
+    text: '路线2：西向欧洲',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>Route 3</em>: Global Connecting Route',
+    text: '路线3：全球连接路线',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'None of the routes fit this pattern.',
+    text: '没有路线符合这种模式。',
   },
 ]
 
@@ -121,7 +117,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -204,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -221,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -260,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -308,7 +304,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

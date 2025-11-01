@@ -1,21 +1,18 @@
 <template>
   <div class="destination-map-tracing-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Destination Map + Tracing (3/3)</h2>
+    <h2 class="page-title">目的地图 + 追踪 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Tracing Event: You have seen the map with all the routes. Now, we will pull out
-          <em>three</em> typical routes to look at them more closely. We will watch their complete,
-          step-by-step journeys.
+          追踪事件：您已经看到了包含所有路线的地图。现在，我们将提取三条典型路线以更仔细地观察它们。我们将观察它们完整的逐步旅程。
         </h3>
 
         <h2 class="task-title">
-          Task 3: Among all multi-segment paths, which single step shows the largest increase in
-          traffic volume?
+          任务3：在所有多段路径中，哪一步显示出最大的流量增长？
         </h2>
 
         <div class="options-section">
@@ -41,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/sankey-diagram-intro')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -75,29 +72,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'destination-map-tracing-3',
-  'Destination Map + Tracing (3/3)',
+  '目的地图 + 追踪 (3/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'The step from <em>Europe</em> to <em>Northern America</em>',
+    text: '从欧洲到北美的这一步路线',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'The step from <em>Northern America</em> to <em>Latin America</em>',
+    text: '从北美到拉丁美洲的这一步路线',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'The first step from <em>Central & Southern Asia</em> to <em>Europe</em>',
+    text: '从中南亚到欧洲的第一段路线',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'None of the routes show traffic growth.',
+    text: '没有路线显示流量增长。',
   },
 ]
 
@@ -120,7 +117,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -203,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -220,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -259,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -307,7 +304,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

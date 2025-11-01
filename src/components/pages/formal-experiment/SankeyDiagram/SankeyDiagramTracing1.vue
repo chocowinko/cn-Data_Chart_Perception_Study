@@ -1,20 +1,18 @@
 <template>
   <div class="sankey-diagram-tracing-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Sankey Diagram + Tracing (1/3)</h2>
+    <h2 class="page-title">桑基图 + 追踪 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Tracing Event: We will now follow the energy flows for <em>Nuclear</em>, <em>Wind</em>,
-          and <em>Hydro</em> from start to finish.
+          追踪事件：我们现在将追踪核能、风能和水电的能源流，从开始到结束。
         </h3>
 
         <h2 class="task-title">
-          Task 1:Of these <em>three energy types</em>, which one loses the most energy before it
-          gets to the <em>Electricity grid</em> node?
+          任务1：在这三种能源类型中，哪一种在到达电网节点之前损失的能源最多？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/sankey-diagram-tracing-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -73,29 +71,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'sankey-diagram-tracing-1',
-  'Sankey Diagram + Tracing (1/3)',
+  '桑基图 + 追踪 (1/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '<em>Nuclear</em>',
+    text: '核能',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>Wind</em>',
+    text: '风能',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>Hydro</em>',
+    text: '水电',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'All <em>three</em> have no losses before entering the grid',
+    text: '三种能源在进入电网前都没有损失',
   },
 ]
 
@@ -118,7 +116,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -202,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -302,7 +300,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

@@ -1,21 +1,17 @@
 <template>
   <div class="treemap-staging">
-    <h2 class="page-title">Treemap + Staging (1/3)</h2>
+    <h2 class="page-title">树状图 + 分阶段 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: Staging Event: The animation shows the chart in <em>three stages</em>:
-          first by <em>main category</em>, then by
-          <em>specific product</em> (<em>sub-category</em>), and finally by
-          <em>customer type</em> (<em>segment</em>).
+          分阶段事件：动画分三个阶段展示图表：首先按主类别显示，然后按具体产品（子类别）显示，最后按客户类型（客户群）显示。
         </h3>
 
         <h2 class="task-title">
-          Task 1: When the chart shows only what <em>Consumer</em> customers bought, which specific
-          product (<em>sub-category</em>) is the best-seller?
+          任务1：当图表仅显示消费者客户购买的内容时，哪个具体产品（子类别）是最畅销的？
         </h2>
 
         <div class="options-section">
@@ -41,17 +37,17 @@
             @click="handleConfirm(null, selectedAnswer, '/treemap-staging-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
 
       <!-- 右侧：图表区域 -->
       <div class="chart-area">
-        <h1 class="chart-main-title">Superstore Sales Comparison: 2016 vs 2017</h1>
+        <h1 class="chart-main-title">超市销售额对比：2016年 vs 2017年</h1>
 
         <div class="chart-wrapper">
           <iframe
@@ -78,14 +74,14 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'treemap-staging-1',
-  'Treemap + Staging (1/3)',
+  '树状图 + 分阶段 (1/3)',
 )
 
 const options = [
-  { label: '(A) <em>Binders</em>', value: 'A' },
-  { label: '(B) <em>Chairs</em>', value: 'B' },
-  { label: '(C) <em>Phones</em>', value: 'C' },
-  { label: '(D) <em>Storage</em>', value: 'D' },
+  { label: '(A) 装订用品', value: 'A' },
+  { label: '(B) 椅子', value: 'B' },
+  { label: '(C) 手机', value: 'C' },
+  { label: '(D) 存储设备', value: 'D' },
 ]
 
 const playAnimation = () => {
@@ -106,7 +102,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -143,7 +139,7 @@ const playAnimation = () => {
 }
 
 .chart-main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -204,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -221,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -260,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -304,7 +300,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

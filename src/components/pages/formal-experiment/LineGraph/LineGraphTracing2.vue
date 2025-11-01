@@ -1,15 +1,14 @@
 <template>
   <div class="line-graph-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Line Graph + Tracing (2/3)</h2>
+    <h2 class="page-title">折线图 + 追踪 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          Task 2: As the animation plays, in which month does <em>Communication Equipment</em> first
-          overtake <em>Daily Necessities</em> in sales?
+          任务2：随着动画播放，通讯器材的销售额在哪个​​月份首次超过日用品？
         </h2>
 
         <div class="options-section">
@@ -35,10 +34,10 @@
             @click="handleConfirm(null, selectedAnswer, '/line-graph-tracing-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -59,29 +58,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'line-graph-tracing-2',
-  'Line Graph + Tracing (2/3)',
+  '折线图 + 追踪 (2/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '<em>March</em>',
+    text: '三月',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>May</em>',
+    text: '五月',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>July</em>',
+    text: '七月',
   },
   {
     letter: 'D',
     value: 'D',
-    text: '<em>September</em>',
+    text: '九月',
   },
 ]
 
@@ -102,7 +101,7 @@ h1 {
     margin-bottom: -10px;
     font-size: 18px;
     font-weight: 600;
-    font-family: Roboto, sans-serif;
+    font-family: PingFang SC, sans-serif;
 }
 .chart-container {
     position: relative;
@@ -145,7 +144,7 @@ svg {
 }
 </style>
 <div class="container">
-    <h1>2024 Product Category Sales Volatility Analysis</h1>
+    <h1>2024年产品类别销售波动分析</h1>
     <div class="chart-container">
         <svg id="salesChart"></svg>
     </div>
@@ -189,25 +188,6 @@ function initializeChart() {
     ]
     const categories = {}
 
-    const categoryMap = {
-      粮油食品: 'Food & Oil',
-      饮料: 'Beverages',
-      烟酒: 'Tobacco & Alcohol',
-      服装鞋帽: 'Clothing & Footwear',
-      化妆品: 'Cosmetics',
-      金银珠宝: 'Jewelry',
-      日用品: 'Daily Necessities',
-      体育娱乐用品: 'Sports & Recreation',
-      家用电器和音像器材: 'Home Appliances & Audio Equipment',
-      中西药品: 'Medicine',
-      文化办公用品: 'Cultural & Office Supplies',
-      家具: 'Furniture',
-      通讯器材: 'Communication Equipment',
-      石油及制品: 'Petroleum & Products',
-      汽车: 'Automobiles',
-      建筑及装潢材料: 'Construction & Decoration Materials',
-    }
-
     for (let i = 3; i < lines.length; i++) {
       const line = lines[i].trim()
       if (!line) continue
@@ -215,7 +195,7 @@ function initializeChart() {
       if (values.length < 2) continue
       for (let j = 1; j < Math.min(values.length, headers.length); j++) {
         const originalCategoryName = headers[j].replace('(亿元)', '').trim()
-        const categoryName = categoryMap[originalCategoryName] || originalCategoryName
+        const categoryName = originalCategoryName
         const value = parseInt(values[j])
         if (!isNaN(value) && categoryName) {
           if (!categories[categoryName]) categories[categoryName] = []
@@ -313,7 +293,7 @@ function initializeChart() {
       .attr('x', width / 2)
       .attr('y', height + 40)
       .style('text-anchor', 'middle')
-      .text('Month')
+      .text('月份')
 
     g.append('text')
       .attr('class', 'axis-label')
@@ -321,7 +301,7 @@ function initializeChart() {
       .attr('x', -height / 2)
       .attr('y', -40)
       .style('text-anchor', 'middle')
-      .text('Sales (100 Million RMB)')
+      .text('销售额 (亿元)')
 
     // 创建图例（静态显示，和staging页面一样）
     const legend = svg
@@ -381,7 +361,7 @@ function initializeChart() {
       document.getElementById('salesChart').style.display = 'none'
       const container = document.querySelector('.chart-container')
       container.innerHTML =
-        '<p style="text-align: center; color: #e74c3c; padding: 50px;">Unable to load data file</p>'
+        '<p style="text-align: center; color: #e74c3c; padding: 50px;">无法加载数据文件</p>'
     }
   }
 
@@ -463,7 +443,7 @@ const playAnimation = () => {
         tooltip.transition().duration(200).style('opacity', 0.9)
         tooltip
           .html(
-            `${item.category}: ${d} hundred million RMB<br/>Month: ${rawData.months[monthIndex]}`,
+            `${item.category}: ${d} 亿元<br/>月份: ${rawData.months[monthIndex]}`,
           )
           .style('left', event.pageX + 10 + 'px')
           .style('top', event.pageY - 28 + 'px')
@@ -488,7 +468,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -529,7 +509,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -541,7 +521,7 @@ const playAnimation = () => {
 
 .task-title em {
   font-weight: 500;
-  font-style: italic;
+  font-style: normal;
 }
 
 .options-section {
@@ -568,7 +548,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -580,7 +560,7 @@ const playAnimation = () => {
 
 .option-label em {
   font-weight: 600;
-  font-style: italic;
+  font-style: normal;
 }
 
 .option-letter {
@@ -641,7 +621,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

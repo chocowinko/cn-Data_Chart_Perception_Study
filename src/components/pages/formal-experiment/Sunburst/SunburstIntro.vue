@@ -1,32 +1,26 @@
 <template>
   <div class="sunburst-intro">
-    <h1 class="main-title">Sunburst Chart</h1>
+    <h1 class="main-title">旭日图</h1>
 
     <div class="description-section">
       <p class="description">
-        This chart is based on the World Coffee Research (WCR) Flavor Guide and shows the
-        hierarchical relationships of coffee flavors.
+        该图表基于世界咖啡研究（WCR）风味指南，展示了咖啡风味的层级关系。
       </p>
 
       <p class="description">
-        • <strong>Inner Ring:</strong> Represents the broadest flavor categories. This is the
-        highest level of classification (e.g., 'Fruity', 'Roasted').
+        • <strong>内圈：</strong> 代表最广泛的风味类别。这是最高层级的分类（例如"果味"、"烘焙味"）。
       </p>
 
       <p class="description">
-        • <strong>Middle Ring:</strong> Is a further breakdown of the inner categories, representing
-        flavor sub-groups (e.g., under 'Fruity', this is broken down into 'Berry', 'Citrus Fruit',
-        etc.).
+        • <strong>中圈：</strong> 是内圈类别的进一步细分，代表风味子组（例如，在"果味"下，细分为"浆果"、"柑橘类水果"等）。
       </p>
 
       <p class="description">
-        • <strong>Outer Ring:</strong> Represents the most specific flavor attributes. This is the
-        most detailed layer (e.g., under 'Citrus Fruit', this is broken down into 'Grapefruit',
-        'Orange', etc.).
+        • <strong>外圈：</strong> 代表最具体的风味属性。这是最详细的层级（例如，在"柑橘类水果"下，细分为"葡萄柚"、"橙子"等）。
       </p>
 
       <p class="description">
-        Colors are used to group similar flavor families , making the complex relationships easier to read.
+        颜色用于对相似的风味家族进行分组，使复杂的关系更容易理解。
       </p>
     </div>
 
@@ -40,7 +34,7 @@
     </div>
 
     <button class="continue-button" @click="continueFormal">
-      <span class="button-text">Start</span>
+      <span class="button-text">开始</span>
     </button>
   </div>
 </template>
@@ -63,7 +57,7 @@ const continueFormal = () => {
 }
 
 .main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 32px;
@@ -78,7 +72,7 @@ const continueFormal = () => {
 }
 
 .description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -89,7 +83,7 @@ const continueFormal = () => {
 }
 
 .features-list {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -152,7 +146,7 @@ const continueFormal = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

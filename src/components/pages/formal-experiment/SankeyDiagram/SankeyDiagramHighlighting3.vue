@@ -1,21 +1,18 @@
 <template>
   <div class="sankey-diagram-highlighting-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Sankey Diagram + Highlighting (3/3)</h2>
+    <h2 class="page-title">桑基图 + 高亮 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: All downstream pathways and related nodes from the <em>Gas</em> (<em
-            >natural gas</em
-          >) node are highlighted.
+          高亮事件：天然气节点的所有下游路径和相关节点被高亮显示。
         </h3>
 
         <h2 class="task-title">
-          Task 3: How many terminal categories (final destinations) does <em>Gas</em> flow to
-          directly, in a single step?
+          任务3：天然气直接流向多少个最终类别（终点目的地），一步到达？
         </h2>
 
         <div class="options-section">
@@ -41,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/sankey-diagram-staging-1')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -74,29 +71,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'sankey-diagram-highlighting-3',
-  'Sankey Diagram + Highlighting (3/3)',
+  '桑基图 + 高亮 (3/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '2 nodes',
+    text: '2个节点',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '3 nodes',
+    text: '3个节点',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '4 nodes',
+    text: '4个节点',
   },
   {
     letter: 'D',
     value: 'D',
-    text: '5 or more nodes',
+    text: '5个或更多节点',
   },
 ]
 
@@ -119,7 +116,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -203,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -220,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -259,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -303,7 +300,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

@@ -1,20 +1,18 @@
 <template>
   <div class="sankey-diagram-tracing-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Sankey Diagram + Tracing (3/3)</h2>
+    <h2 class="page-title">桑基图 + 追踪 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Tracing Event: Energy pathways from <em>Nuclear</em>, <em>Wind</em>, and
-          <em>Hydro</em> are traced step by step, showing their complete flow through the system.
+          追踪事件：核能、风能和水电的能源路径被逐步追踪，显示它们在系统中的完整流动。
         </h3>
 
         <h2 class="task-title">
-          Task 3: Follow the green <em>Nuclear</em> flow. In total, is more energy lost along the
-          way, or does more energy actually reach the final users?
+          任务3：追踪绿色的核能流。总体来说，是在途中损失的能源更多，还是实际到达最终用户的能源更多？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/network-diagram-intro')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -73,29 +71,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'sankey-diagram-tracing-3',
-  'Sankey Diagram + Tracing (3/3)',
+  '桑基图 + 追踪 (3/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'More energy reaches the final users.',
+    text: '更多的能源到达最终用户',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'More energy is lost along the way.',
+    text: '更多的能源在途中损失了',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'The amount of energy lost and the amount used are about the same.',
+    text: '损失的能源量和使用的能源量大致相同',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'All the energy is used, with none lost.',
+    text: '所有能源都被使用了，没有损失',
   },
 ]
 
@@ -118,7 +116,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -202,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -302,7 +300,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

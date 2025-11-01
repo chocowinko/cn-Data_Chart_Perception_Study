@@ -1,21 +1,18 @@
 <template>
   <div class="destination-map-staging-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Destination Map + Staging (2/3)</h2>
+    <h2 class="page-title">目的地图 + 分阶段 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: The lines on the map appear in groups, based on where people are moving
-          <em>TO</em>.
+          分阶段事件：地图上的线条按人们移动到哪里分组显示。
         </h3>
 
         <h2 class="task-title">
-          Task 2: Please compare two groups of major inbound routes: the thickest route to
-          <em>EUROPE</em> and the thickest route to <em>CENTRAL AND SOUTHERN ASIA</em>. Which one is
-          thicker?
+          任务2：请比较两组主要入境路线：到欧洲的最粗路线和到中南亚的最粗路线。哪条更粗？
         </h2>
 
         <div class="options-section">
@@ -41,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/destination-map-staging-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -75,29 +72,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'destination-map-staging-2',
-  'Destination Map + Staging (2/3)',
+  '目的地图 + 分阶段 (2/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'The thickest route to <em>Europe</em> is thicker.',
+    text: '到欧洲的最粗路线更粗。',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'The thickest route to <em>Central and Southern Asia</em> is thicker.',
+    text: '到中南亚的最粗路线更粗。',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'The two routes appear roughly the same thickness.',
+    text: '两条路线看起来粗细大致相同。',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'The routes are too complex to make an effective comparison.',
+    text: '路线太复杂，无法有效比较。',
   },
 ]
 
@@ -120,7 +117,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -203,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -220,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -259,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -307,7 +304,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

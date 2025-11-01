@@ -1,20 +1,18 @@
 <template>
   <div class="destination-map-highlighting-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Destination Map + Highlighting (1/3)</h2>
+    <h2 class="page-title">目的地图 + 高亮 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighted Event: All routes originating from <em>Central and Southern Asia</em> and
-          <em>Sub-Saharan Africa</em> are highlighted.
+          高亮事件：所有从中南亚和撒哈拉以南非洲出发的路线都已高亮显示。
         </h3>
 
         <h2 class="task-title">
-          Task 1: Among the highlighted routes, which line is the thickest (showing the most people
-          moving)?
+          任务1：在高亮显示的路线中，哪条线最粗（显示迁移人数最多）？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/destination-map-highlighting-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -75,29 +73,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'destination-map-highlighting-1',
-  'Destination Map + Highlighting (1/3)',
+  '目的地图 + 高亮 (1/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '<em>Europe</em>',
+    text: '中南亚——欧洲',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>North America</em>',
+    text: '中南亚——北美洲',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>Eastern and South-Eastern Asia</em>',
+    text: '撒哈拉以南非洲——东亚和东南亚',
   },
   {
     letter: 'D',
     value: 'D',
-    text: '<em>Latin America and the Caribbean</em>',
+    text: '撒哈拉以南非洲——拉丁美洲和加勒比地区',
   },
 ]
 
@@ -120,7 +118,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -203,7 +201,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -220,7 +218,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -259,7 +257,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -307,7 +305,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

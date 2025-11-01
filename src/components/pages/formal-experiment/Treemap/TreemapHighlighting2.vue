@@ -1,18 +1,17 @@
 <template>
   <div class="treemap-highlighting">
-    <h2 class="page-title">Treemap + Highlighting (2/3)</h2>
+    <h2 class="page-title">树状图 + 高亮 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: Highlight the <em>Binders</em> sub-category block.
+          高亮事件：高亮显示装订用品子类别区块。
         </h3>
 
         <h2 class="task-title">
-          Task 2: Given that <em>Binders</em> was one of the fastest-growing categories in
-          <em>2017</em>, which customer type was the main reason for this growth?
+          任务2：鉴于装订用品是2017年增长最快的类别之一，哪种客户类型是这一增长的主要原因？
         </h2>
 
         <div class="options-section">
@@ -38,17 +37,17 @@
             @click="handleConfirm(null, selectedAnswer, '/treemap-highlighting-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
 
       <!-- 右侧：图表区域 -->
       <div class="chart-area">
-        <h1 class="chart-main-title">Superstore Sales Comparison: 2016 vs 2017</h1>
+        <h1 class="chart-main-title">超市销售额对比：2016年 vs 2017年</h1>
 
         <div class="chart-wrapper">
           <iframe
@@ -75,15 +74,15 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'treemap-highlighting-2',
-  'Treemap + Highlighting (2/3)',
+  '树状图 + 高亮 (2/3)',
   null,
 )
 
 const options = [
-  { label: '(A) <em>Consumer</em> customers are the main source of growth', value: 'A' },
-  { label: '(B) <em>Home Office</em> customers are the main source of growth', value: 'B' },
-  { label: '(C) <em>Corporate</em> customers are the main source of growth', value: 'C' },
-  { label: '(D) All <em>three</em> customer types contributed about the same.', value: 'D' },
+  { label: '(A) 消费者客户是增长的主要来源', value: 'A' },
+  { label: '(B) 家庭办公客户是增长的主要来源', value: 'B' },
+  { label: '(C) 企业客户是增长的主要来源', value: 'C' },
+  { label: '(D) 三种客户类型的贡献大致相同', value: 'D' },
 ]
 
 const playAnimation = () => {
@@ -104,7 +103,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -141,7 +140,7 @@ const playAnimation = () => {
 }
 
 .chart-main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -202,7 +201,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +218,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +257,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -302,7 +301,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

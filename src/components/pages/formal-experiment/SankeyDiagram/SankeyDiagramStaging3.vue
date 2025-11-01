@@ -1,20 +1,18 @@
 <template>
   <div class="sankey-diagram-staging-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Sankey Diagram + Staging (3/3)</h2>
+    <h2 class="page-title">桑基图 + 分阶段 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: Energy flows are being constructed step by step, showing how energy sources
-          connect to intermediate nodes and finally to end consumers.
+          分阶段事件：能源流被逐步构建，显示能源来源如何连接到中间节点，最终到达终端消费者。
         </h3>
 
         <h2 class="task-title">
-          Task 3: The energy from <em>Solar</em>, before entering the electricity grid, passes
-          through which intermediate nodes?
+          任务3：太阳能在进入电网之前，会经过哪些中间节点？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/sankey-diagram-tracing-1')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -73,29 +71,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'sankey-diagram-staging-3',
-  'Sankey Diagram + Staging (3/3)',
+  '桑基图 + 分阶段 (3/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'Only through <em>Solar PV</em>',
+    text: '仅通过太阳能光伏',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'Only through <em>Solar Thermal</em>',
+    text: '仅通过太阳能热',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'Through both <em>Solar PV</em> and <em>Solar Thermal</em>',
+    text: '通过太阳能光伏和太阳能热两者',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'No intermediate nodes, flows directly into the electricity grid',
+    text: '没有中间节点，直接流入电网',
   },
 ]
 
@@ -118,7 +116,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -202,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -302,7 +300,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

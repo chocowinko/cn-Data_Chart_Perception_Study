@@ -1,21 +1,18 @@
 <template>
   <div class="destination-map-tracing-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Destination Map + Tracing (1/3)</h2>
+    <h2 class="page-title">目的地图 + 追踪 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Tracing Event: You have seen the map with all the routes. Now, we will pull out
-          <em>three</em> typical routes to look at them more closely. We will watch their complete,
-          step-by-step journeys.
+          追踪事件：您已经看到了包含所有路线的地图。现在，我们将提取三条典型路线以更仔细地观察它们。我们将观察它们完整的逐步旅程。
         </h3>
 
         <h2 class="task-title">
-          Task 1: At the beginning of the animation, what is the correct ranking of the initial flow
-          (line thickness) for the <em>three</em> routes?
+          任务1：在动画开始时，三条路线的初始流量（线条粗细）的正确排序是什么？
         </h2>
 
         <div class="options-section">
@@ -41,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/destination-map-tracing-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -75,29 +72,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'destination-map-tracing-1',
-  'Destination Map + Tracing (1/3)',
+  '目的地图 + 追踪 (1/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '<em>Route 1</em> > <em>Route 3</em> > <em>Route 2</em>',
+    text: '路线1 > 路线3 > 路线2',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>Route 1</em> > <em>Route 2</em> = <em>Route 3</em>',
+    text: '路线1 > 路线2 = 路线3',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>Route 3</em> > <em>Route 1</em> > <em>Route 2</em>',
+    text: '路线3 > 路线1 > 路线2',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'All <em>three</em> routes have the same initial flow.',
+    text: '三条路线的初始流量相同。',
   },
 ]
 
@@ -120,7 +117,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -203,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -220,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -259,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -307,7 +304,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

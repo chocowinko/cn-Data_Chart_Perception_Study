@@ -1,18 +1,16 @@
 <template>
   <div class="circle-packing-highlighting">
-    <h2 class="page-title">Circle Packing + Highlighting (2/3)</h2>
+    <h2 class="page-title">圆堆积图 + 高亮 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: Highlight the country with the <em>highest emissions</em> in each of the <em>five
-          Asian subregions</em>.</h3>
+          高亮事件：高亮显示五个亚洲次区域中排放量最高的国家。</h3>
 
         <h2 class="task-title">
-          Task 2: Which has higher per capita emissions: <em>Finland</em>, or the country with the
-          <em>second-highest emissions</em> in <em>Central Asia</em>?</h2>
+          任务 2：芬兰与中亚地区的国家相比，哪个的人均排放量更高？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -37,10 +35,10 @@
             @click="handleConfirm(null, selectedAnswer, '/circle-packing-highlighting-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -48,7 +46,7 @@
       <!-- 右侧：图表区域 -->
       <div class="chart-area">
         <h1 class="chart-main-title">
-          Per Capita Greenhouse Gas Emissions: Asia and Europe Comparison
+          人均温室气体排放量：亚洲与欧洲对比
         </h1>
 
         <div class="chart-wrapper">
@@ -75,15 +73,15 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'circle-packing-highlighting-2',
-  'Circle Packing + Highlighting (2/3)',
+  '圆堆积图 + 高亮 (2/3)',
   null,
 )
 
 const options = [
-  { label: '(A) <em>Mongolia</em>', value: 'A' },
-  { label: '(B) <em>Qatar</em>', value: 'B' },
-  { label: '(C) <em>Finland</em>', value: 'C' },
-  { label: '(D) <em>Kazakhstan</em>', value: 'D' },
+  { label: '(A) 蒙古', value: 'A' },
+  { label: '(B) 卡塔尔', value: 'B' },
+  { label: '(C) 芬兰', value: 'C' },
+  { label: '(D) 哈萨克斯坦', value: 'D' },
 ]
 
 const playAnimation = () => {
@@ -105,7 +103,7 @@ const playAnimation = () => {
 
 .page-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -143,7 +141,7 @@ const playAnimation = () => {
 
 .chart-main-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -205,7 +203,7 @@ const playAnimation = () => {
 
 .event-description {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -224,7 +222,7 @@ const playAnimation = () => {
 
 .task-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -265,7 +263,7 @@ const playAnimation = () => {
 
 .option-label {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -311,7 +309,7 @@ const playAnimation = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;

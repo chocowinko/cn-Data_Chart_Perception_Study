@@ -127,7 +127,7 @@ function goHome() {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-size: 32px;
   font-weight: 600;
   color: #1f1f1f;

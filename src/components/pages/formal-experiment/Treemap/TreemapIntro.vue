@@ -1,23 +1,22 @@
 <template>
   <div class="treemap-intro">
-    <h1 class="main-title">Treemap</h1>
+    <h1 class="main-title">树状图</h1>
 
     <div class="description-section">
       <p class="description">
-        This treemap compares sales performance between 2016 (State A) and 2017 (State B). Each
-        rectangle's area represents total sales volume, allowing visual comparison across years.
+        该树状图比较了2016年（状态A）和2017年（状态B）之间的销售表现。每个矩形的面积代表总销售额，便于跨年度的视觉比较。
       </p>
 
-      <p class="description">The hierarchy is organized in three levels:</p>
+      <p class="description">层级结构分为三个级别：</p>
 
       <ul class="features-list">
-        <li><strong>Category:</strong> Technology, Furniture, Office Supplies</li>
-        <li><strong>Sub-Category:</strong> Phones, Chairs, Binders, etc.</li>
-        <li><strong>Segment:</strong> Consumer, Corporate, Home Office</li>
+        <li><strong>类别：</strong>科技产品、家具、办公用品</li>
+        <li><strong>子类别：</strong>手机、椅子、装订用品等</li>
+        <li><strong>客户群：</strong>消费者、企业、家庭办公</li>
       </ul>
 
       <p class="description">
-        By putting these levels inside each other, the chart shows how much each product and customer type contributed to the total sales in each year.
+        通过将这些层级嵌套在一起，图表展示了每种产品和客户类型在每年总销售额中的贡献。
       </p>
     </div>
 
@@ -31,7 +30,7 @@
     </div>
 
     <button class="continue-button" @click="continueFormal">
-      <span class="button-text">Start</span>
+      <span class="button-text">开始</span>
     </button>
   </div>
 </template>
@@ -55,7 +54,7 @@ const continueFormal = () => {
 
 .main-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -72,7 +71,7 @@ const continueFormal = () => {
 
 .description {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -85,7 +84,7 @@ const continueFormal = () => {
 
 .features-list {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -151,7 +150,7 @@ const continueFormal = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;

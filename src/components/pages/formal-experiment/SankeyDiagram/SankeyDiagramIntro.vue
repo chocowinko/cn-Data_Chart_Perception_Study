@@ -1,18 +1,16 @@
 <template>
   <div class="sankey-diagram-intro">
-    <h1 class="main-title">Sankey Diagram</h1>
+    <h1 class="main-title">桑基图</h1>
 
     <div class="description-section">
       <p class="description">
-        This Sankey diagram shows how energy flows in the UK, from its source (left) to its final
-        use (right).
+        此桑基图显示了英国的能源流动情况，从能源来源（左侧）到最终用途（右侧）。
       </p>
 
       <ul class="features-list">
-        <li>Nodes (the blocks) represent types of energy or the sectors where energy is used.</li>
+        <li>节点（方块）代表能源类型或使用能源的部门。</li>
         <li>
-          Flows (the bands) show the movement of energy. The wider the flow, the greater the amount
-          of energy.
+          流（带状线）显示能源的流动。流越宽，能源量越大。
         </li>
       </ul>
     </div>
@@ -26,7 +24,7 @@
     </div>
 
     <button class="continue-button" @click="continueFormal">
-      <span class="button-text">Start</span>
+      <span class="button-text">开始</span>
     </button>
   </div>
 </template>
@@ -53,7 +51,7 @@ const continueFormal = () => {
 
 .main-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -71,7 +69,7 @@ const continueFormal = () => {
 
 .description {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -84,7 +82,7 @@ const continueFormal = () => {
 
 .features-list {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -146,7 +144,7 @@ const continueFormal = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;

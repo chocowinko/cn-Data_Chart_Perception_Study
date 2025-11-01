@@ -56,16 +56,16 @@
     </style>
   </head>
   <body>
-    <h1>Superstore Sales Treemap</h1>
+    <h1>超市销售树状图</h1>
     <div id="main-container">
       <div>
-        <h3>2016 Sales Data</h3>
+        <h3>2016年销售数据</h3>
         <div class="chart-container">
           <div id="chart-1"></div>
         </div>
       </div>
       <div>
-        <h3>2017 Sales Data</h3>
+        <h3>2017年销售数据</h3>
         <div class="chart-container">
           <div id="chart-2"></div>
         </div>
@@ -79,6 +79,40 @@
 
       // 创建一个通用的Tooltip
       const tooltip = d3.select('body').append('div').attr('class', 'tooltip')
+
+      // 中文翻译映射
+      const translations = {
+        // 类别
+        'Technology': '科技产品',
+        'Furniture': '家具',
+        'Office Supplies': '办公用品',
+        // 客户类型
+        'Consumer': '消费者',
+        'Corporate': '企业',
+        'Home Office': '家庭办公',
+        // 子类别
+        'Phones': '手机',
+        'Chairs': '椅子',
+        'Storage': '储物柜',
+        'Tables': '桌子',
+        'Binders': '装订用品',
+        'Machines': '机器',
+        'Accessories': '配件',
+        'Copiers': '复印机',
+        'Bookcases': '书柜',
+        'Appliances': '电器',
+        'Furnishings': '家居用品',
+        'Paper': '纸张',
+        'Supplies': '办公耗材',
+        'Art': '艺术用品',
+        'Labels': '标签',
+        'Envelopes': '信封',
+        'Fasteners': '紧固件'
+      }
+
+      const translate = (text) => {
+        return translations[text] || text
+      }
 
       // 自定义颜色映射 - 产品类别
       const colorMap = {
@@ -198,7 +232,7 @@
           .attr('class', 'parent-label')
           .attr('x', 4)
           .attr('y', 13)
-          .text((d) => d.data.name)
+          .text((d) => translate(d.data.name))
 
         // 产品类别标签 (depth 2)
         cell
@@ -207,7 +241,7 @@
           .attr('class', 'node-label')
           .attr('x', 4)
           .attr('y', 13)
-          .text((d) => d.data.name)
+          .text((d) => translate(d.data.name))
           .style('display', (d) => (d.x1 - d.x0 < 10 ? 'none' : 'inline'))
 
         const leafCells = cell.filter((d) => !d.children)
@@ -218,9 +252,10 @@
           .attr('class', 'node-label')
           .attr('x', 4)
           .attr('y', 13)
-          .text((d) =>
-            d.data.name.length > 10 ? d.data.name.substring(0, 10) + '...' : d.data.name,
-          )
+          .text((d) => {
+            const translatedName = translate(d.data.name)
+            return translatedName.length > 10 ? translatedName.substring(0, 10) + '...' : translatedName
+          })
           .style('display', (d) => (d.x1 - d.x0 < 30 ? 'none' : 'inline'))
 
         // 第二行：销售额
@@ -237,9 +272,9 @@
             tooltip.style('opacity', 0.9)
             tooltip
               .html(
-                `<div class="tooltip-format">${d.data.category}</div>` +
-                  `<div>子类别: ${d.data.subCategory}</div>` +
-                  `<div>客户类型: ${d.data.segment}</div>` +
+                `<div class="tooltip-format">${translate(d.data.category)}</div>` +
+                  `<div>子类别: ${translate(d.data.subCategory)}</div>` +
+                  `<div>客户类型: ${translate(d.data.segment)}</div>` +
                   `<div>销售额: $${d3.format(',.2f')(d.data.value)}</div>`,
               )
               .style('left', event.pageX + 10 + 'px')

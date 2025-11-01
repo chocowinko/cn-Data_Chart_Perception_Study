@@ -1,14 +1,13 @@
 <template>
   <div class="network-diagram-highlighting">
-    <h2 class="page-title">Network Diagram + Highlighting (3/3)</h2>
+    <h2 class="page-title">网络图 + 高亮 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          Task 3: In <em>Community 3</em>, which member is connected to
-          <em>all other members</em> within that community?
+          任务 3：在社群 3 中，哪个成员与该社群内的所有其他成员都有连接？
         </h2>
 
         <div class="options-section">
@@ -34,10 +33,10 @@
             @click="handleConfirm(null, selectedAnswer, '/network-diagram-staging-1')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -66,14 +65,14 @@ const chartIframe = ref(null)
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'network-diagram-highlighting-3',
-  'Network Diagram + Highlighting (3/3)',
+  '网络图 + 高亮 (3/3)',
 )
 
 const options = [
-  { value: 'A', label: '(A) <em>Student 115</em>' },
-  { value: 'B', label: '(B) <em>Student 61</em>' },
-  { value: 'C', label: '(C) <em>Student 60</em>' },
-  { value: 'D', label: '(D) Student 114' },
+  { value: 'A', label: '(A) 学生 115' },
+  { value: 'B', label: '(B) 学生 61' },
+  { value: 'C', label: '(C) 学生 60' },
+  { value: 'D', label: '(D) 学生 114' },
 ]
 
 const playAnimation = () => {
@@ -94,7 +93,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -174,7 +173,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -213,7 +212,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -257,7 +256,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

@@ -1,20 +1,17 @@
 <template>
   <div class="network-diagram-tracing">
-    <h2 class="page-title">Network Diagram + Tracing (2/3)</h2>
+    <h2 class="page-title">网络图 + 追踪 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Tracing Event: A message broadcast starts from <em>Student 114</em> and spreads through
-          the network. Each student forwards messages to their contacts sequentially, ordered by
-          contact frequency (<em>highest to lowest</em>).
+          追踪事件：一条消息广播从学生 114 开始，并通过网络传播。每个学生按联系频率顺序（从高到低）依次将消息转发给他们的联系人。
         </h3>
 
         <h2 class="task-title">
-          Task 2: Given that students in the <em>purple community</em> received the message, which
-          student from the <em>orange community</em> first sent it to them?
+          任务 2：哪位社群外的学生首次将消息带入了紫色社群？
         </h2>
 
         <div class="options-section">
@@ -40,10 +37,10 @@
             @click="handleConfirm(null, selectedAnswer, '/network-diagram-tracing-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -74,14 +71,14 @@ const chartIframe = ref(null)
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'network-diagram-tracing-2',
-  'Network Diagram + Tracing (2/3)',
+  '网络图 + 追踪 (2/3)',
 )
 
 const options = [
-  { value: 'A', label: '(A) <em>Student 13</em>' },
-  { value: 'B', label: '(B) <em>Student 34</em>' },
-  { value: 'C', label: '(C) <em>Student 60</em>' },
-  { value: 'D', label: '(D) <em>Student 52</em>' },
+  { value: 'A', label: '(A) 学生 13' },
+  { value: 'B', label: '(B) 学生 34' },
+  { value: 'C', label: '(C) 学生 60' },
+  { value: 'D', label: '(D) 学生 52' },
 ]
 
 const playAnimation = () => {
@@ -104,7 +101,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -184,7 +181,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -201,7 +198,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -240,7 +237,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -284,7 +281,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

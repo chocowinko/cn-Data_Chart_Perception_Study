@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Network Highlighting Animation</title>
+    <title>网络高亮动画</title>
     <style>
       html,
       body {
@@ -45,7 +45,7 @@
   <body>
     <div class="container">
       <h1>
-        Student Contact Frequency Network in Classroom - Highlighting the Two Largest Communities
+        同学联系频率网络图——高亮显示其中最大的两大社群
       </h1>
       <div class="chart-container">
         <div id="network-container"></div>
@@ -91,11 +91,11 @@
       ])
         .then(([nodes, edges, layoutJson]) => {
           if (!nodes || nodes.length === 0) {
-            console.error('Unable to load node data from network_nodes.csv')
+            console.error('无法从 network_nodes.csv 加载节点数据')
             return
           }
           if (!edges || edges.length === 0) {
-            console.error('Unable to load edge data from network_routed.csv')
+            console.error('无法从 network_routed.csv 加载边数据')
             return
           }
 
@@ -322,7 +322,7 @@
           }
         })
         .catch((error) => {
-          console.error('Error loading or drawing network:', error)
+          console.error('加载或绘制网络错误:', error)
         })
     </script>
   </body>

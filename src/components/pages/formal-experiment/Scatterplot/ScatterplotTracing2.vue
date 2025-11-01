@@ -1,15 +1,14 @@
 <template>
   <div class="scatterplot-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Scatterplot + Tracing (2/3)</h2>
+    <h2 class="page-title">散点图 + 追踪 (2/3)</h2>
 
     <!-- 两栏布局容器 -->
     <div class="content-container">
       <!-- 左侧任务区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          Task 2: Compared to the 2014 data points, did the dots spread out more vertically (up and
-          down), or did they get more clustered together?
+          任务2：与2014年的数据点相比，这些点在垂直方向上（上下）是更分散了，还是更聚集了？
         </h2>
 
         <div class="options-section">
@@ -35,10 +34,10 @@
             @click="handleConfirm(null, selectedAnswer, '/scatterplot-tracing-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -61,7 +60,7 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'scatterplot-tracing-2',
-  'Scatterplot + Tracing (2/3)',
+  '散点图 + 追踪 (2/3)',
 )
 let svg = null
 let g = null
@@ -77,22 +76,22 @@ const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'They spread out more (meaning the changes in pollution levels were more extreme).',
+    text: '更分散了',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'They got more clustered together (meaning the changes in pollution levels were less extreme).',
+    text: '更聚集了',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'The spread of the dots stayed about the same.',
+    text: '点的分散程度基本保持不变',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'The dots only got closer together side-to-side, not up-and-down.',
+    text: '点只在水平方向上靠得更近，而不是在垂直方向上',
   },
 ]
 
@@ -251,8 +250,8 @@ const drawInitialState = () => {
     .style('font-size', '18px')
     .style('font-weight', 'bold')
     .style('fill', '#2c3e50')
-    .style('font-family', 'Roboto, sans-serif')
-    .text('PM2.5 and Ozone Concentration Trajectory in Changping District, Beijing (2014-2016)')
+    .style('font-family', 'PingFang SC, sans-serif')
+    .text('北京市昌平区PM2.5与臭氧浓度变化轨迹 (2014-2016)')
 
   // 添加坐标轴
   g.append('g').attr('class', 'x-axis').attr('transform', `translate(0,${y.range()[0]})`)
@@ -281,7 +280,7 @@ const drawInitialState = () => {
     .attr('y', y.range()[0] + 45)
     .style('font-size', '14px')
     .style('fill', '#333')
-    .text('Daily Average Ozone Concentration (O3, μg/m³)')
+    .text('臭氧日均浓度 (O3, μg/m³)')
 
   g.append('text')
     .attr('class', 'y-axis-title')
@@ -291,7 +290,7 @@ const drawInitialState = () => {
     .attr('x', -y.range()[0] / 2)
     .style('font-size', '14px')
     .style('fill', '#333')
-    .text('Daily Average PM2.5 Concentration (μg/m³)')
+    .text('PM2.5日均浓度 (μg/m³)')
 
   // 添加月份图例
   const legend = g
@@ -311,18 +310,18 @@ const drawInitialState = () => {
     .attr('stroke-width', 1)
 
   const monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    '一月',
+    '二月',
+    '三月',
+    '四月',
+    '五月',
+    '六月',
+    '七月',
+    '八月',
+    '九月',
+    '十月',
+    '十一月',
+    '十二月',
   ]
 
   monthNames.forEach((month, i) => {
@@ -468,7 +467,7 @@ const traceAnimation = () => {
 
 .axis text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-size: 11px;
   fill: #333;
@@ -510,7 +509,7 @@ const traceAnimation = () => {
 
 .page-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -563,7 +562,7 @@ const traceAnimation = () => {
 
 .task-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -599,7 +598,7 @@ const traceAnimation = () => {
 
 .option-label {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -669,7 +668,7 @@ const traceAnimation = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Student Contact Network - Staged Construction</title>
+    <title>学生联系网络 - 分阶段构建</title>
     <style>
       html,
       body {
@@ -142,15 +142,15 @@
   </head>
   <body>
     <div class="overlay-controls">
-      <h1>Student Contact Network - Staging</h1>
+      <h1>学生联系网络 - 分阶段</h1>
       <div class="controls">
-        <button id="start-staging">Start Staging</button>
-        <button id="reset">Reset View</button>
+        <button id="start-staging">开始分阶段</button>
+        <button id="reset">重置视图</button>
       </div>
-      <div id="info-panel">Loading data...</div>
+      <div id="info-panel">正在加载数据...</div>
     </div>
     <h1 class="chart-title">
-      Student Contact Frequency Network - Three-Level Relationship Visualization
+      学生联系频率网络 - 三级关系可视化
     </h1>
     <svg id="network-svg"></svg>
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -283,17 +283,17 @@
 
           const statsText = Object.keys(communityStats)
             .sort((a, b) => a - b)
-            .map((group) => `Community ${group}: ${communityStats[group]} members`)
+            .map((group) => `社群 ${group}: ${communityStats[group]} 个成员`)
             .join('<br>')
 
           infoPanel.html(
-            `Data loaded successfully.<br>K-Means clustering analysis completed.<br><br><strong>Community Distribution:</strong><br>${statsText}<br><br>Click button to start staging.`,
+            `数据加载成功。<br>K-Means 聚类分析完成。<br><br><strong>社群分布：</strong><br>${statsText}<br><br>点击按钮开始分阶段。`,
           )
           drawInitialGraphStructure(graph)
         })
         .catch((error) => {
-          console.error('Error loading data:', error)
-          infoPanel.html(`<span style="color: red;">Unable to load data files.</span>`)
+          console.error('加载数据错误:', error)
+          infoPanel.html(`<span style="color: red;">无法加载数据文件。</span>`)
         })
 
       // 修改：绘制初始图表结构，包括预设的连线图层
@@ -396,7 +396,7 @@
       function startStagingAnimation() {
         if (!clusterThresholds) {
           infoPanel.html(
-            "<span style='color: red;'>Clustering analysis not completed. Please wait for data loading.</span>",
+            "<span style='color: red;'>聚类分析未完成。请等待数据加载。</span>",
           )
           return
         }
@@ -413,7 +413,7 @@
 
         const timer1 = setTimeout(() => {
           infoPanel.html(
-            `Stage 1: Drawing Core Strong Relationships<br>(Contact frequency ≥ ${Math.round(clusterThresholds.strong)})`,
+            `阶段 1：绘制核心强关系<br>(联系频率 ≥ ${Math.round(clusterThresholds.strong)})`,
           )
           // 使用K-Means聚类结果：强关系
           drawLinks(
@@ -428,7 +428,7 @@
         currentDelay += 3000
         const timer2 = setTimeout(() => {
           infoPanel.html(
-            `Stage 2: Drawing Moderate Relationships<br>(${Math.round(clusterThresholds.weak)} ≤ frequency < ${Math.round(clusterThresholds.strong)})`,
+            `阶段 2：绘制中等关系<br>(${Math.round(clusterThresholds.weak)} ≤ 频率 < ${Math.round(clusterThresholds.strong)})`,
           )
           // 使用K-Means聚类结果：中等关系
           drawLinks(
@@ -443,7 +443,7 @@
         currentDelay += 3000
         const timer3 = setTimeout(() => {
           infoPanel.html(
-            `Stage 3: Drawing Weak Sparse Relationships<br>(frequency < ${Math.round(clusterThresholds.weak)})`,
+            `阶段 3：绘制弱稀疏关系<br>(频率 < ${Math.round(clusterThresholds.weak)})`,
           )
           // 使用K-Means聚类结果：弱关系
           drawLinks(
@@ -458,7 +458,7 @@
         currentDelay += 3000
         const timer4 = setTimeout(() => {
           infoPanel.html(
-            `Network construction completed.<br><small>Based on K-Means clustering</small>`,
+            `网络构建完成。<br><small>基于 K-Means 聚类</small>`,
           )
           enableButtons()
         }, currentDelay)

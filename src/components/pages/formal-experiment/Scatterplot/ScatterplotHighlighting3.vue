@@ -1,14 +1,14 @@
 <template>
   <div class="scatterplot-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Scatterplot + Highlighting (3/3)</h2>
+    <h2 class="page-title">散点图 + 高亮 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          Task 3: When the winter dots are highlighted, which statement is most accurate?
+          任务3：当冬季的点被高亮显示时，以下哪个陈述最准确？
         </h2>
 
         <div class="options-section">
@@ -34,10 +34,10 @@
             @click="handleConfirm(null, selectedAnswer, '/scatterplot-staging-1')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -60,7 +60,7 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'scatterplot-highlighting-3',
-  'Scatterplot + Highlighting (3/3)',
+  '散点图 + 高亮 (3/3)',
 )
 let chartData = null
 
@@ -68,22 +68,22 @@ const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'They are evenly distributed across the corners of the graph.',
+    text: '它们均匀分布在图表的各个角落。',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'They are almost completely absent from the top half of the graph (the high PM2.5 region).',
+    text: '它们几乎完全不在图表的上半部分（PM2.5高的区域）。',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'They are the times of the year when ozone concentrations are highest.',
+    text: '它们是一年中臭氧浓度最高的时期。',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'They are almost completely absent from the entire right half of the graph (the high ozone region).',
+    text: '它们几乎完全不在图表的整个右半部分（臭氧高的区域）。',
   },
 ]
 
@@ -208,18 +208,18 @@ const initScatterplot = () => {
     ]
 
     const monthNames = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月',
     ]
 
     // Create separate traces for each month - initially all gray
@@ -245,10 +245,10 @@ const initScatterplot = () => {
 
     const layout = {
       title: {
-        text: '<b>2016 Daily Average PM2.5 and Ozone Concentration Scatterplot in Changping District, Beijing</b>',
+        text: '<b>2016年北京市昌平区PM2.5与臭氧日均浓度散点图</b>',
         font: {
           size: 18,
-          family: 'Roboto, sans-serif',
+          family: 'PingFang SC, sans-serif',
           color: '#2c3e50',
         },
         x: 0,
@@ -257,14 +257,14 @@ const initScatterplot = () => {
         yanchor: 'top',
       },
       xaxis: {
-        title: 'Daily Average Ozone Concentration (μg/m³)',
+        title: '臭氧日均浓度 (μg/m³)',
         title_font: { size: 14 },
         showgrid: true,
         gridwidth: 1,
         gridcolor: 'rgba(128,128,128,0.2)',
       },
       yaxis: {
-        title: 'Daily Average PM2.5 Concentration (μg/m³)',
+        title: 'PM2.5日均浓度 (μg/m³)',
         title_font: { size: 14 },
         showgrid: true,
         gridwidth: 1,
@@ -272,7 +272,7 @@ const initScatterplot = () => {
       },
       plot_bgcolor: 'white',
       paper_bgcolor: 'white',
-      font: { family: 'Roboto, sans-serif' },
+      font: { family: 'PingFang SC, sans-serif' },
       hovermode: false,
       showlegend: true,
       legend: {
@@ -387,7 +387,7 @@ const playAnimation = () => {
       text: '<b>2016 Daily Average PM2.5 and Ozone Concentration Scatterplot in Changping District, Beijing</b>',
       font: {
         size: 18,
-        family: 'Roboto, sans-serif',
+        family: 'PingFang SC, sans-serif',
         color: '#2c3e50',
       },
       x: 0,
@@ -409,7 +409,7 @@ const playAnimation = () => {
     },
     plot_bgcolor: 'white',
     paper_bgcolor: 'white',
-    font: { family: 'Roboto, sans-serif' },
+    font: { family: 'PingFang SC, sans-serif' },
     hovermode: false,
     showlegend: true,
     legend: {
@@ -444,7 +444,7 @@ const playAnimation = () => {
 
 .page-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -497,7 +497,7 @@ const playAnimation = () => {
 
 .task-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -533,7 +533,7 @@ const playAnimation = () => {
 
 .option-label {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -603,7 +603,7 @@ const playAnimation = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;

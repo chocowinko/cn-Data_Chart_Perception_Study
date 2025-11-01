@@ -1,22 +1,19 @@
 <template>
   <div class="network-diagram-intro">
-    <h1 class="main-title">Network Diagram</h1>
+    <h1 class="main-title">网络图</h1>
 
     <div class="description-section">
       <p class="description">
-        This network diagram displays the contact frequency between students within a classroom.
+        该网络图展示了教室内学生之间的联系频率。
       </p>
 
       <ul class="features-list">
-        <li><strong>Nodes:</strong> Each node represents a student in the class.</li>
+        <li><strong>节点：</strong>每个节点代表班级中的一名学生。</li>
         <li>
-          <strong>Links:</strong> Lines connecting nodes represent contact relationships between
-          students. The thickness of each line reflects the contact frequency—thicker lines indicate
-          more frequent interactions.
+          <strong>连线：</strong>连接节点的线条代表学生之间的联系关系。每条线的粗细反映了联系频率——线条越粗表示互动越频繁。
         </li>
         <li>
-          <strong>Colors:</strong> Different colors distinguish different communities, revealing how
-          student groups cluster together and their connection structures.
+          <strong>颜色：</strong>不同的颜色区分不同的社群，揭示了学生群体如何聚集在一起以及他们的连接结构。
         </li>
       </ul>
     </div>
@@ -30,7 +27,7 @@
     </div>
 
     <button class="continue-button" @click="continueFormal">
-      <span class="button-text">Start</span>
+      <span class="button-text">开始</span>
     </button>
   </div>
 </template>
@@ -53,7 +50,7 @@ const continueFormal = () => {
 }
 
 .main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 32px;
@@ -68,7 +65,7 @@ const continueFormal = () => {
 }
 
 .description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -79,7 +76,7 @@ const continueFormal = () => {
 }
 
 .features-list {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -137,7 +134,7 @@ const continueFormal = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

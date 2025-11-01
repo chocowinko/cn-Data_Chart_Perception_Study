@@ -1,20 +1,18 @@
 <template>
   <div class="sankey-diagram-highlighting-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Sankey Diagram + Highlighting (2/3)</h2>
+    <h2 class="page-title">桑基图 + 高亮 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: All downstream pathways and related nodes from the <em>Oil</em> node
-          are highlighted.
+          高亮事件：石油节点的所有下游路径和相关节点被高亮显示。
         </h3>
 
         <h2 class="task-title">
-          Task 2: When the flow paths of <em>Oil</em> are highlighted, which specific field does its
-          energy primarily flow to?
+          任务2：当石油的流动路径被高亮显示时，其能源主要流向哪里？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/sankey-diagram-highlighting-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -73,29 +71,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'sankey-diagram-highlighting-2',
-  'Sankey Diagram + Highlighting (2/3)',
+  '桑基图 + 高亮 (2/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'Primarily used for electricity generation',
+    text: '主要用于发电',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'Primarily used for residential living',
+    text: '主要用于住宅生活',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'Primarily used for transportation',
+    text: '主要用于交通运输',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'Very evenly distributed across all fields',
+    text: '非常均匀地分布在所有领域',
   },
 ]
 
@@ -118,7 +116,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -202,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -302,7 +300,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

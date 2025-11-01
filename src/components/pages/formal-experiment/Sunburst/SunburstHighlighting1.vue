@@ -1,19 +1,17 @@
 <template>
   <div class="sunburst-highlighting">
-    <h2 class="page-title">Sunburst + Highlighting (1/3)</h2>
+    <h2 class="page-title">旭日图 + 高亮 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: Highlight two flavors that belong to <em>Fruity</em> but have
-          different direct parent sub-categories.
+          高亮事件：高亮显示属于果味但具有不同直接父级子类别的两种风味。
         </h3>
 
         <h2 class="task-title">
-          Task 1: Which two flavors from the <em>Fruity</em> category have different direct parent
-          sub-categories?
+          任务1：来自果味类别的哪两种风味具有不同的直接父级子类别？
         </h2>
 
         <div class="options-section">
@@ -39,21 +37,21 @@
             @click="handleConfirm(null, selectedAnswer, '/sunburst-highlighting-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button
             class="play-animation-btn"
             @click="handlePlayAnimation(playAnimation)"
             :disabled="!isIframeLoaded"
           >
-            <span class="button-text">{{ isIframeLoaded ? 'Play Animation' : 'Loading...' }}</span>
+            <span class="button-text">{{ isIframeLoaded ? '播放动画' : '加载中...' }}</span>
           </button>
         </div>
       </div>
 
       <!-- 右侧：图表区域 -->
       <div class="chart-area">
-        <h1 class="chart-main-title">World Coffee Research Sensory Lexicon</h1>
+        <h1 class="chart-main-title">世界咖啡研究感官词典</h1>
 
         <div class="chart-wrapper">
           <iframe
@@ -79,14 +77,14 @@ const isIframeLoaded = ref(false)
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'sunburst-highlighting-1',
-  'Sunburst + Highlighting (1/3)',
+  '旭日图 + 高亮 (1/3)',
 )
 
 const options = [
-  { label: '(A) <em>Blueberry</em> and <em>Strawberry</em>', value: 'A' },
-  { label: '(B) <em>Lemon</em> and <em>Lime</em>', value: 'B' },
-  { label: '(C) <em>Grapefruit</em> and <em>Cherry</em>', value: 'C' },
-  { label: '(D) <em>Raisin</em> and <em>Prune</em>', value: 'D' },
+  { label: '(A) 蓝莓 和 草莓', value: 'A' },
+  { label: '(B) 柠檬 和 青柠', value: 'B' },
+  { label: '(C) 葡萄柚 和 樱桃', value: 'C' },
+  { label: '(D) 葡萄干 和 西梅', value: 'D' },
 ]
 
 onMounted(() => {
@@ -117,7 +115,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -154,7 +152,7 @@ const playAnimation = () => {
 }
 
 .chart-main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -223,7 +221,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -231,16 +229,10 @@ const playAnimation = () => {
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;
-  font-style: italic;
-}
-
-.event-description em {
-  font-weight: 600;
-  font-style: italic;
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -248,11 +240,6 @@ const playAnimation = () => {
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
-}
-
-.task-title em {
-  font-weight: 600;
-  font-style: italic;
 }
 
 .options-section {
@@ -279,7 +266,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -287,11 +274,6 @@ const playAnimation = () => {
   color: #545454;
   cursor: pointer;
   text-align: left;
-}
-
-.option-label em {
-  font-weight: 600;
-  font-style: italic;
 }
 
 .option-letter {
@@ -323,7 +305,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

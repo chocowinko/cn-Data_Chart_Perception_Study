@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Circle Packing - Staging 2</title>
+    <title>圆堆积图 - 分阶段 2</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <style>
       body {
@@ -41,6 +41,37 @@
     <script>
       const CSV_URL = 'asia_europe_emissions_hierarchical.csv'
       const colorScale = d3.scaleOrdinal().domain(['Asia', 'Europe']).range(['#FFA07A', '#5DADE2'])
+      const continentNames = { Asia: '亚洲', Europe: '欧洲' }
+      const subregionNames = {
+        'Western Asia': '西亚', 'South-eastern Asia': '东南亚', 'Southern Asia': '南亚',
+        'Central Asia': '中亚', 'Eastern Asia': '东亚', 'Eastern Europe': '东欧',
+        'Northern Europe': '北欧', 'Southern Europe': '南欧', 'Western Europe': '西欧'
+      }
+      const countryNames = {
+        'Saudi Arabia': '沙特阿拉伯', 'United Arab Emirates': '阿联酋', 'Qatar': '卡塔尔',
+        'Kuwait': '科威特', 'Bahrain': '巴林', 'Oman': '阿曼', 'Yemen': '也门',
+        'Iraq': '伊拉克', 'Jordan': '约旦', 'Lebanon': '黎巴嫩', 'Israel': '以色列',
+        'Georgia': '格鲁吉亚', 'Armenia': '亚美尼亚', 'Azerbaijan': '阿塞拜疆', 'Cyprus': '塞浦路斯',
+        'Singapore': '新加坡', 'Malaysia': '马来西亚', 'Thailand': '泰国', 'Indonesia': '印度尼西亚',
+        'Philippines': '菲律宾', 'Cambodia': '柬埔寨', 'Myanmar': '缅甸',
+        'India': '印度', 'Pakistan': '巴基斯坦', 'Bangladesh': '孟加拉国', 'Sri Lanka': '斯里兰卡',
+        'Nepal': '尼泊尔', 'Bhutan': '不丹', 'Maldives': '马尔代夫',
+        'Kazakhstan': '哈萨克斯坦', 'Uzbekistan': '乌兹别克斯坦', 'Turkmenistan': '土库曼斯坦',
+        'Tajikistan': '塔吉克斯坦', 'Kyrgyzstan': '吉尔吉斯斯坦',
+        'China': '中国', 'Japan': '日本', 'Mongolia': '蒙古',
+        'Poland': '波兰', 'Czechia': '捷克', 'Slovakia': '斯洛伐克', 'Hungary': '匈牙利',
+        'Romania': '罗马尼亚', 'Bulgaria': '保加利亚', 'Ukraine': '乌克兰', 'Belarus': '白俄罗斯',
+        'Sweden': '瑞典', 'Norway': '挪威', 'Finland': '芬兰', 'Denmark': '丹麦',
+        'Iceland': '冰岛', 'Estonia': '爱沙尼亚', 'Latvia': '拉脱维亚', 'Lithuania': '立陶宛',
+        'Ireland': '爱尔兰',
+        'Spain': '西班牙', 'Italy': '意大利', 'Greece': '希腊', 'Portugal': '葡萄牙',
+        'Serbia': '塞尔维亚', 'Croatia': '克罗地亚', 'Bosnia and Herzegovina': '波斯尼亚和黑塞哥维那',
+        'Albania': '阿尔巴尼亚', 'North Macedonia': '北马其顿', 'Slovenia': '斯洛文尼亚',
+        'Montenegro': '黑山', 'Malta': '马耳他', 'Andorra': '安道尔',
+        'Germany': '德国', 'France': '法国', 'Belgium': '比利时', 'Netherlands': '荷兰',
+        'Luxembourg': '卢森堡', 'Switzerland': '瑞士', 'Austria': '奥地利',
+        'Liechtenstein': '列支敦士登'
+      }
       let root, svg, allNodes, allLabels
 
       function playStagingAnimation() {
@@ -182,8 +213,16 @@
           .attr('stroke', '#fff')
           .attr('stroke-width', 1.2)
           .on('mouseover', (e, d) => {
+            let displayName = d.data.name
+            if (d.depth === 1 && continentNames[d.data.name]) {
+              displayName = continentNames[d.data.name]
+            } else if (d.depth === 2 && subregionNames[d.data.name]) {
+              displayName = subregionNames[d.data.name]
+            } else if (d.depth === 3 && countryNames[d.data.name]) {
+              displayName = countryNames[d.data.name]
+            }
             tooltip
-              .html(`<strong>${d.data.name}</strong><br>${d.data.value.toFixed(2)} tCO₂e`)
+              .html(`<strong>${displayName}</strong><br>${d.data.value.toFixed(2)} tCO₂e`)
               .style('left', e.pageX + 10 + 'px')
               .style('top', e.pageY - 10 + 'px')
               .transition()
@@ -201,8 +240,16 @@
           .attr('opacity', 0)
           .each(function (d) {
             const sel = d3.select(this)
+            let displayName = d.data.name
+            if (d.depth === 1 && continentNames[d.data.name]) {
+              displayName = continentNames[d.data.name]
+            } else if (d.depth === 2 && subregionNames[d.data.name]) {
+              displayName = subregionNames[d.data.name]
+            } else if (d.depth === 3 && countryNames[d.data.name]) {
+              displayName = countryNames[d.data.name]
+            }
             const labelText =
-              d.data.name.length > 15 ? d.data.name.substring(0, 15) + '…' : d.data.name
+              displayName.length > 15 ? displayName.substring(0, 15) + '…' : displayName
 
             if (d.depth === 1) {
               // 大洲标签 - Asia和Europe往上移

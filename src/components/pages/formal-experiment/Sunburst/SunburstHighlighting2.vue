@@ -1,16 +1,16 @@
 <template>
   <div class="sunburst-highlighting">
-    <h2 class="page-title">Sunburst + Highlighting (2/3)</h2>
+    <h2 class="page-title">旭日图 + 高亮 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: Highlight the top-level flavor category that contains <em>Maple Syrup</em>.</h3>
+          高亮事件：高亮显示包含枫糖浆的顶级风味类别。</h3>
 
         <h2 class="task-title">
-          Task 2: What is the top-level flavor category that <em>Maple Syrup</em> belongs to?</h2>
+          任务2：枫糖浆属于哪个顶级风味类别？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -35,21 +35,21 @@
             @click="handleConfirm(null, selectedAnswer, '/sunburst-highlighting-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button
             class="play-animation-btn"
             @click="handlePlayAnimation(playAnimation)"
             :disabled="!isIframeLoaded"
           >
-            <span class="button-text">{{ isIframeLoaded ? 'Play Animation' : 'Loading...' }}</span>
+            <span class="button-text">{{ isIframeLoaded ? '播放动画' : '加载中...' }}</span>
           </button>
         </div>
       </div>
 
       <!-- 右侧：图表区域 -->
       <div class="chart-area">
-        <h1 class="chart-main-title">World Coffee Research Sensory Lexicon</h1>
+        <h1 class="chart-main-title">世界咖啡研究感官词典</h1>
 
         <div class="chart-wrapper">
           <iframe
@@ -75,14 +75,14 @@ const isIframeLoaded = ref(false)
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'sunburst-highlighting-2',
-  'Sunburst + Highlighting (2/3)',
+  '旭日图 + 高亮 (2/3)',
 )
 
 const options = [
-  { label: '(A) <em>Fruity</em>', value: 'A' },
-  { label: '(B) <em>Spices</em>', value: 'B' },
-  { label: '(C) <em>Roasted</em>', value: 'C' },
-  { label: '(D) <em>Sweet</em>', value: 'D' },
+  { label: '(A) 果味', value: 'A' },
+  { label: '(B) 香料味', value: 'B' },
+  { label: '(C) 烘焙味', value: 'C' },
+  { label: '(D) 甜味', value: 'D' },
 ]
 
 onMounted(() => {
@@ -114,7 +114,7 @@ const playAnimation = () => {
 
 .page-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -153,7 +153,7 @@ const playAnimation = () => {
 
 .chart-main-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -224,7 +224,7 @@ const playAnimation = () => {
 
 .event-description {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -233,17 +233,11 @@ const playAnimation = () => {
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;
-  font-style: italic;
-}
-
-.event-description em {
-  font-weight: 600;
-  font-style: italic;
 }
 
 .task-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -252,11 +246,6 @@ const playAnimation = () => {
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
-}
-
-.task-title em {
-  font-weight: 600;
-  font-style: italic;
 }
 
 .options-section {
@@ -284,7 +273,7 @@ const playAnimation = () => {
 
 .option-label {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -293,11 +282,6 @@ const playAnimation = () => {
   color: #545454;
   cursor: pointer;
   text-align: left;
-}
-
-.option-label em {
-  font-weight: 600;
-  font-style: italic;
 }
 
 .option-letter {
@@ -330,7 +314,7 @@ const playAnimation = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;

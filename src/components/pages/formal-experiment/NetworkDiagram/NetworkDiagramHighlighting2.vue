@@ -1,14 +1,13 @@
 <template>
   <div class="network-diagram-highlighting">
-    <h2 class="page-title">Network Diagram + Highlighting (2/3)</h2>
+    <h2 class="page-title">网络图 + 高亮 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          Task 2: Which community is connected to both highlighted communities and has the <em>most total
-          connections</em>?</h2>
+          任务 2：哪个社群与两个高亮社群都有连接且拥有最多的总连接数？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -33,10 +32,10 @@
             @click="handleConfirm(null, selectedAnswer, '/network-diagram-highlighting-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -65,14 +64,14 @@ const chartIframe = ref(null)
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'network-diagram-highlighting-2',
-  'Network Diagram + Highlighting (2/3)',
+  '网络图 + 高亮 (2/3)',
 )
 
 const options = [
-  { value: 'A', label: '(A) <em>Community 8</em>' },
-  { value: 'B', label: '(B) <em>Community 1</em>' },
-  { value: 'C', label: '(C) <em>Community 7</em>' },
-  { value: 'D', label: '(D) Community 6' },
+  { value: 'A', label: '(A) 社群 8' },
+  { value: 'B', label: '(B) 社群 1' },
+  { value: 'C', label: '(C) 社群 7' },
+  { value: 'D', label: '(D) 社群 6' },
 ]
 
 const playAnimation = () => {
@@ -94,7 +93,7 @@ const playAnimation = () => {
 
 .page-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -176,7 +175,7 @@ const playAnimation = () => {
 
 .task-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -217,7 +216,7 @@ const playAnimation = () => {
 
 .option-label {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -263,7 +262,7 @@ const playAnimation = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;

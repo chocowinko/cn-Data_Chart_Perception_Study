@@ -39,7 +39,7 @@ const startFormalExperiment = () => {
 }
 
 .main-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 35.5556px;
@@ -50,7 +50,7 @@ const startFormalExperiment = () => {
 }
 
 .subtitle {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
@@ -66,7 +66,7 @@ const startFormalExperiment = () => {
 .description,
 .instruction,
 .break-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17.7778px;
@@ -102,7 +102,7 @@ const startFormalExperiment = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 17.7778px;

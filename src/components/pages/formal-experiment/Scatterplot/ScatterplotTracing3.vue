@@ -1,15 +1,14 @@
 <template>
   <div class="scatterplot-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Scatterplot + Tracing (3/3)</h2>
+    <h2 class="page-title">散点图 + 追踪 (3/3)</h2>
 
     <!-- 两栏布局容器 -->
     <div class="content-container">
       <!-- 左侧任务区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          Task 3: From 2014 to 2016, did the single worst day of PM2.5 pollution get better or
-          worse?
+          任务3：从2014年到2016年，PM2.5污染最严重的单日情况是变好了还是变差了？
         </h2>
 
         <div class="options-section">
@@ -35,10 +34,13 @@
             @click="handleConfirm(null, selectedAnswer, '/heatmap-intro')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
-          <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+          <button
+            class="play-animation-btn"
+            @click="handlePlayAnimation(playAnimation)"
+          >
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -54,128 +56,134 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useTaskTimer } from '@/composables/useTaskTimer'
+import { ref, onMounted, onUnmounted } from "vue";
+import { useTaskTimer } from "@/composables/useTaskTimer";
 
-const selectedAnswer = ref('')
+const selectedAnswer = ref("");
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
-  'scatterplot-tracing-3',
-  'Scatterplot + Tracing (3/3)',
-)
-let svg = null
-let g = null
-let x = null
-let y = null
-let width = 0
-let height = 0
-let mergedData = null
-let colorScale = null
-let isAnimating = false
+  "scatterplot-tracing-3",
+  "散点图 + 追踪 (3/3)"
+);
+let svg = null;
+let g = null;
+let x = null;
+let y = null;
+let width = 0;
+let height = 0;
+let mergedData = null;
+let colorScale = null;
+let isAnimating = false;
 
 const options = [
   {
-    letter: 'A',
-    value: 'A',
-    text: 'It got worse (the point on the chart moved higher).',
+    letter: "A",
+    value: "A",
+    text: "变差了（图表上的点向上移动了，意味着PM2.5浓度更高）",
   },
   {
-    letter: 'B',
-    value: 'B',
-    text: 'It got better (the point on the chart moved lower).',
+    letter: "B",
+    value: "B",
+    text: "变好了（图表上的点向下移动了，意味着PM2.5浓度更低）",
   },
   {
-    letter: 'C',
-    value: 'C',
-    text: 'It stayed about the same.',
+    letter: "C",
+    value: "C",
+    text: "基本保持不变",
   },
   {
-    letter: 'D',
-    value: 'D',
-    text: "An extreme pollution day like that didn't happen in 2016.",
+    letter: "D",
+    value: "D",
+    text: "2016年没有发生那样的极端污染天",
   },
-]
+];
 
 onMounted(() => {
   // 动态加载D3.js
-  const script = document.createElement('script')
-  script.src = 'https://d3js.org/d3.v7.min.js'
+  const script = document.createElement("script");
+  script.src = "https://d3js.org/d3.v7.min.js";
   script.onload = () => {
     setTimeout(() => {
-      initScatterplot()
-    }, 50)
-  }
-  document.head.appendChild(script)
-})
+      initScatterplot();
+    }, 50);
+  };
+  document.head.appendChild(script);
+});
 
 onUnmounted(() => {
   // 清理
   if (svg) {
-    svg.selectAll('*').remove()
+    svg.selectAll("*").remove();
   }
-})
+});
 
 const initScatterplot = () => {
   // 基础配置
-  const margin = { top: 80, right: 100, bottom: 100, left: 100 }
-  const container = document.querySelector('.chart-container')
-  const svgWidth = container.clientWidth - 60 // 减去padding
-  const svgHeight = 600
+  const margin = { top: 80, right: 100, bottom: 100, left: 100 };
+  const container = document.querySelector(".chart-container");
+  const svgWidth = container.clientWidth - 60; // 减去padding
+  const svgHeight = 600;
 
-  const chartDiv = document.getElementById('scatterplot-chart')
-  chartDiv.innerHTML = '' // 清空容器
+  const chartDiv = document.getElementById("scatterplot-chart");
+  chartDiv.innerHTML = ""; // 清空容器
 
   svg = d3
-    .select('#scatterplot-chart')
-    .append('svg')
-    .attr('width', svgWidth)
-    .attr('height', svgHeight)
+    .select("#scatterplot-chart")
+    .append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
 
-  width = svgWidth - margin.left - margin.right
-  height = svgHeight - margin.top - margin.bottom
+  width = svgWidth - margin.left - margin.right;
+  height = svgHeight - margin.top - margin.bottom;
 
-  g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`)
+  g = svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  x = d3.scaleLinear().range([0, width])
-  y = d3.scaleLinear().range([height, 0])
+  x = d3.scaleLinear().range([0, width]);
+  y = d3.scaleLinear().range([height, 0]);
 
   // 月份颜色映射 - 与HTML完全一致
   const monthColors = [
-    '#E0C4C4',
-    '#4FAFAF',
-    '#A8C8A8',
-    '#F0906F',
-    '#9BC49C',
-    '#448CB3',
-    '#898888',
-    '#E63946',
-    '#F4E4BC',
-    '#7FB3D3',
-    '#D4AF37',
-    '#BEA4B4',
-  ]
-  colorScale = d3.scaleOrdinal().domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).range(monthColors)
+    "#E0C4C4",
+    "#4FAFAF",
+    "#A8C8A8",
+    "#F0906F",
+    "#9BC49C",
+    "#448CB3",
+    "#898888",
+    "#E63946",
+    "#F4E4BC",
+    "#7FB3D3",
+    "#D4AF37",
+    "#BEA4B4",
+  ];
+  colorScale = d3
+    .scaleOrdinal()
+    .domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+    .range(monthColors);
 
   // 加载和处理数据
-  fetch('/src/All/Scatterplot/PRSA_Data_Changping_20130301-20170228.csv')
+  fetch("/src/All/Scatterplot/PRSA_Data_Changping_20130301-20170228.csv")
     .then((response) => response.text())
     .then((csvText) => {
-      const rawData = d3.csvParse(csvText, d3.autoType)
+      const rawData = d3.csvParse(csvText, d3.autoType);
 
       // 处理数据
-      const data2014Map = new Map()
-      const data2016Map = new Map()
+      const data2014Map = new Map();
+      const data2016Map = new Map();
 
       rawData.forEach((row) => {
-        const year = row.year
-        const month = row.month
-        const day = row.day
+        const year = row.year;
+        const month = row.month;
+        const day = row.day;
         const dayOfYear = Math.floor(
-          (new Date(year, month - 1, day) - new Date(year, 0, 0)) / (1000 * 60 * 60 * 24),
-        )
+          (new Date(year, month - 1, day) - new Date(year, 0, 0)) /
+            (1000 * 60 * 60 * 24)
+        );
 
-        const pm25 = parseFloat(row['PM2.5'])
-        const o3 = parseFloat(row['O3'])
+        const pm25 = parseFloat(row["PM2.5"]);
+        const o3 = parseFloat(row["O3"]);
 
         if (!isNaN(pm25) && !isNaN(o3) && pm25 > 0 && o3 > 0) {
           if (year === 2014) {
@@ -186,12 +194,12 @@ const initScatterplot = () => {
                 count: 0,
                 month: month,
                 day: day,
-              })
+              });
             }
-            const dayData = data2014Map.get(dayOfYear)
-            dayData.pm25_sum += pm25
-            dayData.o3_sum += o3
-            dayData.count++
+            const dayData = data2014Map.get(dayOfYear);
+            dayData.pm25_sum += pm25;
+            dayData.o3_sum += o3;
+            dayData.count++;
           } else if (year === 2016) {
             if (!data2016Map.has(dayOfYear)) {
               data2016Map.set(dayOfYear, {
@@ -200,20 +208,20 @@ const initScatterplot = () => {
                 count: 0,
                 month: month,
                 day: day,
-              })
+              });
             }
-            const dayData = data2016Map.get(dayOfYear)
-            dayData.pm25_sum += pm25
-            dayData.o3_sum += o3
-            dayData.count++
+            const dayData = data2016Map.get(dayOfYear);
+            dayData.pm25_sum += pm25;
+            dayData.o3_sum += o3;
+            dayData.count++;
           }
         }
-      })
+      });
 
       // 合并2014和2016数据（只使用偶数天）
-      mergedData = []
+      mergedData = [];
       data2014Map.forEach((d1, dayOfYear) => {
-        const d2 = data2016Map.get(dayOfYear)
+        const d2 = data2016Map.get(dayOfYear);
         if (d2 && d1.count > 0 && d2.count > 0 && d1.day % 2 === 0) {
           mergedData.push({
             day_of_year: dayOfYear,
@@ -222,222 +230,226 @@ const initScatterplot = () => {
             y1: d1.pm25_sum / d1.count, // 2014 PM2.5
             x2: d2.o3_sum / d2.count, // 2016 O3
             y2: d2.pm25_sum / d2.count, // 2016 PM2.5
-          })
+          });
         }
-      })
+      });
 
       // 设置固定坐标范围，与Staging页面保持一致
-      x.domain([0, 200])
-      y.domain([0, 420])
+      x.domain([0, 200]);
+      y.domain([0, 420]);
 
-      drawInitialState()
+      drawInitialState();
     })
     .catch((error) => {
-      console.error('Error loading data:', error)
-    })
-}
+      console.error("Error loading data:", error);
+    });
+};
 
 const drawInitialState = () => {
-  g.selectAll('*').remove() // 清空画布
-  svg.selectAll('.chart-title').remove() // 清除旧标题
+  g.selectAll("*").remove(); // 清空画布
+  svg.selectAll(".chart-title").remove(); // 清除旧标题
 
   // 添加图表标题（添加到SVG上而不是g上，这样才能真正左对齐）
   svg
-    .append('text')
-    .attr('class', 'chart-title')
-    .attr('text-anchor', 'start')
-    .attr('x', 30)
-    .attr('y', 30)
-    .style('font-size', '18px')
-    .style('font-weight', 'bold')
-    .style('fill', '#2c3e50')
-    .style('font-family', 'Roboto, sans-serif')
-    .text('PM2.5 and Ozone Concentration Trajectory in Changping District, Beijing (2014-2016)')
+    .append("text")
+    .attr("class", "chart-title")
+    .attr("text-anchor", "start")
+    .attr("x", 30)
+    .attr("y", 30)
+    .style("font-size", "18px")
+    .style("font-weight", "bold")
+    .style("fill", "#2c3e50")
+    .style("font-family", "PingFang SC, sans-serif")
+    .text("北京市昌平区PM2.5与臭氧浓度变化轨迹 (2014-2016)");
 
   // 添加坐标轴
-  g.append('g').attr('class', 'x-axis').attr('transform', `translate(0,${y.range()[0]})`)
-  g.append('g').attr('class', 'y-axis')
+  g.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0,${y.range()[0]})`);
+  g.append("g").attr("class", "y-axis");
 
   // 添加网格线
-  g.append('g')
-    .attr('class', 'grid')
-    .attr('transform', `translate(0,${y.range()[0]})`)
-    .call(d3.axisBottom(x).tickSize(-height).tickFormat(''))
-    .style('stroke-opacity', 0.1)
+  g.append("g")
+    .attr("class", "grid")
+    .attr("transform", `translate(0,${y.range()[0]})`)
+    .call(d3.axisBottom(x).tickSize(-height).tickFormat(""))
+    .style("stroke-opacity", 0.1);
 
-  g.append('g')
-    .attr('class', 'grid')
-    .call(d3.axisLeft(y).tickSize(-x.range()[1]).tickFormat(''))
-    .style('stroke-opacity', 0.1)
+  g.append("g")
+    .attr("class", "grid")
+    .call(d3.axisLeft(y).tickSize(-x.range()[1]).tickFormat(""))
+    .style("stroke-opacity", 0.1);
 
-  g.select('.x-axis').call(d3.axisBottom(x))
-  g.select('.y-axis').call(d3.axisLeft(y))
+  g.select(".x-axis").call(d3.axisBottom(x));
+  g.select(".y-axis").call(d3.axisLeft(y));
 
   // 添加坐标轴标题
-  g.append('text')
-    .attr('class', 'x-axis-title')
-    .attr('text-anchor', 'middle')
-    .attr('x', x.range()[1] / 2)
-    .attr('y', y.range()[0] + 45)
-    .style('font-size', '14px')
-    .style('fill', '#333')
-    .text('Daily Average Ozone Concentration (O3, μg/m³)')
+  g.append("text")
+    .attr("class", "x-axis-title")
+    .attr("text-anchor", "middle")
+    .attr("x", x.range()[1] / 2)
+    .attr("y", y.range()[0] + 45)
+    .style("font-size", "14px")
+    .style("fill", "#333")
+    .text("臭氧日均浓度 (O3, μg/m³)");
 
-  g.append('text')
-    .attr('class', 'y-axis-title')
-    .attr('text-anchor', 'middle')
-    .attr('transform', 'rotate(-90)')
-    .attr('y', -50)
-    .attr('x', -y.range()[0] / 2)
-    .style('font-size', '14px')
-    .style('fill', '#333')
-    .text('Daily Average PM2.5 Concentration (μg/m³)')
+  g.append("text")
+    .attr("class", "y-axis-title")
+    .attr("text-anchor", "middle")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -50)
+    .attr("x", -y.range()[0] / 2)
+    .style("font-size", "14px")
+    .style("fill", "#333")
+    .text("PM2.5日均浓度 (μg/m³)");
 
   // 添加月份图例
   const legend = g
-    .append('g')
-    .attr('class', 'legend')
-    .attr('transform', `translate(${x.range()[1] + 20}, 20)`)
+    .append("g")
+    .attr("class", "legend")
+    .attr("transform", `translate(${x.range()[1] + 20}, 20)`);
 
   // 添加图例背景框
   legend
-    .append('rect')
-    .attr('x', -8)
-    .attr('y', -8)
-    .attr('width', 50)
-    .attr('height', 12 * 18 + 8)
-    .attr('fill', 'rgba(255,255,255,0.8)')
-    .attr('stroke', 'rgba(0,0,0,0.2)')
-    .attr('stroke-width', 1)
+    .append("rect")
+    .attr("x", -8)
+    .attr("y", -8)
+    .attr("width", 50)
+    .attr("height", 12 * 18 + 8)
+    .attr("fill", "rgba(255,255,255,0.8)")
+    .attr("stroke", "rgba(0,0,0,0.2)")
+    .attr("stroke-width", 1);
 
   const monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ]
+    "一月",
+    "二月",
+    "三月",
+    "四月",
+    "五月",
+    "六月",
+    "七月",
+    "八月",
+    "九月",
+    "十月",
+    "十一月",
+    "十二月",
+  ];
 
   monthNames.forEach((month, i) => {
-    const legendRow = legend.append('g').attr('transform', `translate(0, ${i * 18})`)
+    const legendRow = legend
+      .append("g")
+      .attr("transform", `translate(0, ${i * 18})`);
 
     legendRow
-      .append('circle')
-      .attr('cx', 0)
-      .attr('cy', 0)
-      .attr('r', 4)
-      .style('fill', colorScale(i + 1))
+      .append("circle")
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("r", 4)
+      .style("fill", colorScale(i + 1));
 
     legendRow
-      .append('text')
-      .attr('x', 10)
-      .attr('y', 4)
+      .append("text")
+      .attr("x", 10)
+      .attr("y", 4)
       .text(month)
-      .style('font-size', '11px')
-      .style('fill', '#333')
-  })
+      .style("font-size", "11px")
+      .style("fill", "#333");
+  });
 
   // 绘制2014年的初始点
-  g.selectAll('.dot')
+  g.selectAll(".dot")
     .data(mergedData)
     .enter()
-    .append('circle')
-    .attr('class', 'dot')
-    .attr('cx', (d) => x(d.x1))
-    .attr('cy', (d) => y(d.y1))
-    .attr('r', 4)
-    .style('fill', (d) => colorScale(d.month))
-    .style('stroke', '#fff')
-    .style('stroke-width', '0.5px')
-}
+    .append("circle")
+    .attr("class", "dot")
+    .attr("cx", (d) => x(d.x1))
+    .attr("cy", (d) => y(d.y1))
+    .attr("r", 4)
+    .style("fill", (d) => colorScale(d.month))
+    .style("stroke", "#fff")
+    .style("stroke-width", "0.5px");
+};
 
 const playAnimation = () => {
-  if (!mergedData || isAnimating) return
+  if (!mergedData || isAnimating) return;
 
-  isAnimating = true
+  isAnimating = true;
 
   // 重置到初始状态
-  drawInitialState()
+  drawInitialState();
 
   setTimeout(() => {
-    traceAnimation()
-  }, 100)
-}
+    traceAnimation();
+  }, 100);
+};
 
 const traceAnimation = () => {
-  if (!mergedData) return
+  if (!mergedData) return;
 
   // 清除旧的轨迹线
-  g.selectAll('.trace-line').remove()
-  g.selectAll('defs').remove()
+  g.selectAll(".trace-line").remove();
+  g.selectAll("defs").remove();
 
   // 创建渐变定义
-  const defs = g.append('defs')
+  const defs = g.append("defs");
 
   // 为每个数据点创建轨迹线，使用渐变颜色
   const lines = g
-    .selectAll('.trace-line')
+    .selectAll(".trace-line")
     .data(mergedData)
     .enter()
-    .append('line')
-    .attr('class', 'trace-line')
-    .attr('x1', (d) => x(d.x1))
-    .attr('y1', (d) => y(d.y1))
-    .attr('x2', (d) => x(d.x1)) // 初始状态，终点=起点
-    .attr('y2', (d) => y(d.y1))
-    .attr('stroke', (d, i) => {
+    .append("line")
+    .attr("class", "trace-line")
+    .attr("x1", (d) => x(d.x1))
+    .attr("y1", (d) => y(d.y1))
+    .attr("x2", (d) => x(d.x1)) // 初始状态，终点=起点
+    .attr("y2", (d) => y(d.y1))
+    .attr("stroke", (d, i) => {
       // 为每条线创建唯一的渐变
-      const gradientId = `gradient-${i}`
+      const gradientId = `gradient-${i}`;
       const gradient = defs
-        .append('linearGradient')
-        .attr('id', gradientId)
-        .attr('gradientUnits', 'userSpaceOnUse')
-        .attr('x1', x(d.x1)) // 起点坐标（2014年数据点）
-        .attr('y1', y(d.y1))
-        .attr('x2', x(d.x2)) // 终点坐标（2016年数据点）
-        .attr('y2', y(d.y2))
+        .append("linearGradient")
+        .attr("id", gradientId)
+        .attr("gradientUnits", "userSpaceOnUse")
+        .attr("x1", x(d.x1)) // 起点坐标（2014年数据点）
+        .attr("y1", y(d.y1))
+        .attr("x2", x(d.x2)) // 终点坐标（2016年数据点）
+        .attr("y2", y(d.y2));
 
       // 起点（2014年）- 浅色
       gradient
-        .append('stop')
-        .attr('offset', '0%')
-        .attr('stop-color', colorScale(d.month))
-        .attr('stop-opacity', 0.2)
+        .append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", colorScale(d.month))
+        .attr("stop-opacity", 0.2);
 
       // 终点（2016年）- 深色
       gradient
-        .append('stop')
-        .attr('offset', '100%')
-        .attr('stop-color', colorScale(d.month))
-        .attr('stop-opacity', 0.8)
+        .append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", colorScale(d.month))
+        .attr("stop-opacity", 0.8);
 
-      return `url(#${gradientId})`
+      return `url(#${gradientId})`;
     })
-    .attr('stroke-width', 3)
-    .attr('stroke-opacity', 0)
+    .attr("stroke-width", 3)
+    .attr("stroke-opacity", 0);
 
   // 创建渐变轨迹动画
   lines
     .transition()
     .delay((d, i) => i * 3) // 延迟创建流动效果
     .duration(0)
-    .attr('stroke-opacity', 0.3)
+    .attr("stroke-opacity", 0.3)
     .transition()
     .duration(3000)
     .ease(d3.easeQuadInOut)
-    .attr('x2', (d) => x(d.x2))
-    .attr('y2', (d) => y(d.y2))
+    .attr("x2", (d) => x(d.x2))
+    .attr("y2", (d) => y(d.y2));
 
   // 确保数据点在轨迹线之上
-  const dots = g.selectAll('.dot')
-  dots.raise() // 将所有数据点提升到最上层
+  const dots = g.selectAll(".dot");
+  dots.raise(); // 将所有数据点提升到最上层
 
   // 数据点移动动画
   dots
@@ -445,14 +457,14 @@ const traceAnimation = () => {
     .delay((d, i) => i * 3)
     .duration(3000)
     .ease(d3.easeQuadInOut)
-    .attr('cx', (d) => x(d.x2))
-    .attr('cy', (d) => y(d.y2))
-    .style('fill', (d) => colorScale(d.month))
-    .attr('r', 5) // 稍微增大半径
-    .on('end', () => {
-      isAnimating = false
-    })
-}
+    .attr("cx", (d) => x(d.x2))
+    .attr("cy", (d) => y(d.y2))
+    .style("fill", (d) => colorScale(d.month))
+    .attr("r", 5) // 稍微增大半径
+    .on("end", () => {
+      isAnimating = false;
+    });
+};
 
 // confirmAnswer 功能已由 handleConfirm 替代
 </script>
@@ -467,9 +479,7 @@ const traceAnimation = () => {
 }
 
 .axis text {
-  font-family:
-    Roboto,
-    sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-size: 11px;
   fill: #333;
 }
@@ -509,9 +519,7 @@ const traceAnimation = () => {
 }
 
 .page-title {
-  font-family:
-    Roboto,
-    sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -562,9 +570,7 @@ const traceAnimation = () => {
 }
 
 .task-title {
-  font-family:
-    Roboto,
-    sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -598,9 +604,7 @@ const traceAnimation = () => {
 }
 
 .option-label {
-  font-family:
-    Roboto,
-    sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -668,9 +672,7 @@ const traceAnimation = () => {
 }
 
 .button-text {
-  font-family:
-    Roboto,
-    sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

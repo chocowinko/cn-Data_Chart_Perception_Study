@@ -1,16 +1,15 @@
 <template>
   <div class="line-graph-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Line Graph + Highlighting (3/3)</h2>
+    <h2 class="page-title">折线图 + 高亮 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          Task 3: The chart highlights the <em>most unstable</em> (red) and
-          <em>most stable</em> (blue) product lines for the entire year's sales. Which description
-          of their patterns is most accurate?
+          任务3：图表高亮了全年销售中最不稳定（红色）和
+          最稳定（蓝色）的产品线。以下哪项描述最为准确？
         </h2>
 
         <div class="options-section">
@@ -33,13 +32,18 @@
         <div class="button-control">
           <button
             class="confirm-btn"
-            @click="handleConfirm(null, selectedAnswer, '/line-graph-staging-1')"
+            @click="
+              handleConfirm(null, selectedAnswer, '/line-graph-staging-1')
+            "
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
-          <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+          <button
+            class="play-animation-btn"
+            @click="handlePlayAnimation(playAnimation)"
+          >
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -54,38 +58,38 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useTaskTimer } from '@/composables/useTaskTimer'
+import { ref, onMounted } from "vue";
+import { useTaskTimer } from "@/composables/useTaskTimer";
 
-const selectedAnswer = ref('')
+const selectedAnswer = ref("");
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
-  'line-graph-highlighting-3',
-  'Line Graph + Highlighting (3/3)',
-)
+  "line-graph-highlighting-3",
+  "折线图 + 高亮 (3/3)"
+);
 
 const options = [
   {
-    letter: 'A',
-    value: 'A',
-    text: 'The <em>most unstable</em> red line fluctuates dramatically throughout the year, while the <em>most stable</em> blue line shows a steady decline',
+    letter: "A",
+    value: "A",
+    text: "最不稳定的红线全年剧烈波动，而最稳定的蓝线则呈现平稳下降趋势",
   },
   {
-    letter: 'B',
-    value: 'B',
-    text: 'Both lines have similar December sales peaks, with the red line simply having larger fluctuations',
+    letter: "B",
+    value: "B",
+    text: "两条线在十二月都有相似的销售高峰，红线只是波动幅度更大",
   },
   {
-    letter: 'C',
-    value: 'C',
-    text: 'The <em>most unstable</em> red line shows a dramatic U-shaped rebound, while the <em>most stable</em> blue line remains close to a flat line throughout the year',
+    letter: "C",
+    value: "C",
+    text: "最不稳定的红线呈现出戏剧性的U型反弹，而最稳定的蓝线全年基本保持平稳",
   },
   {
-    letter: 'D',
-    value: 'D',
-    text: 'The <em>most unstable</em> red line is growing rapidly, while the <em>most stable</em> blue line is declining rapidly',
+    letter: "D",
+    value: "D",
+    text: "最不稳定的红线正在快速增长，而最稳定的蓝线则在迅速下降",
   },
-]
+];
 
 const chartHTML = ref(`
 <style>
@@ -104,7 +108,7 @@ h1 {
     margin-bottom: -10px;
     font-size: 18px;
     font-weight: 600;
-    font-family: Roboto, sans-serif;
+    font-family: PingFang SC, sans-serif;
 }
 .chart-container {
     position: relative;
@@ -162,265 +166,267 @@ svg {
 }
 </style>
 <div class="container">
-    <h1>2024 Product Category Sales Volatility Analysis</h1>
+    <h1>2024年产品类别销售波动分析</h1>
     <div class="chart-container">
         <svg id="salesChart"></svg>
     </div>
     <div id="tooltip" class="tooltip"></div>
 </div>
-`)
+`);
 
-let chartInitialized = false
+let chartInitialized = false;
 
 onMounted(() => {
-  const script = document.createElement('script')
-  script.src = 'https://d3js.org/d3.v7.min.js'
+  const script = document.createElement("script");
+  script.src = "https://d3js.org/d3.v7.min.js";
   script.onload = () => {
     setTimeout(() => {
-      initializeChart()
-    }, 100)
-  }
-  document.head.appendChild(script)
-})
+      initializeChart();
+    }, 100);
+  };
+  document.head.appendChild(script);
+});
 
 function initializeChart() {
-  if (chartInitialized) return
-  chartInitialized = true
+  if (chartInitialized) return;
+  chartInitialized = true;
 
   function parseCSV(csvText) {
-    const lines = csvText.split('\n')
-    const headers = lines[1].split(',').map((h) => h.trim())
+    const lines = csvText.split("\n");
+    const headers = lines[1].split(",").map((h) => h.trim());
     const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ]
-    const categories = {}
-
-    const categoryMap = {
-      粮油食品: 'Food & Oil',
-      饮料: 'Beverages',
-      烟酒: 'Tobacco & Alcohol',
-      服装鞋帽: 'Clothing & Footwear',
-      化妆品: 'Cosmetics',
-      金银珠宝: 'Jewelry',
-      日用品: 'Daily Necessities',
-      体育娱乐用品: 'Sports & Recreation',
-      家用电器和音像器材: 'Home Appliances & Audio Equipment',
-      中西药品: 'Medicine',
-      文化办公用品: 'Cultural & Office Supplies',
-      家具: 'Furniture',
-      通讯器材: 'Communication Equipment',
-      石油及制品: 'Petroleum & Products',
-      汽车: 'Automobiles',
-      建筑及装潢材料: 'Construction & Decoration Materials',
-    }
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const categories = {};
 
     for (let i = 3; i < lines.length; i++) {
-      const line = lines[i].trim()
-      if (!line) continue
-      const values = line.split(',').map((v) => v.trim())
-      if (values.length < 2) continue
+      const line = lines[i].trim();
+      if (!line) continue;
+      const values = line.split(",").map((v) => v.trim());
+      if (values.length < 2) continue;
       for (let j = 1; j < Math.min(values.length, headers.length); j++) {
-        const originalCategoryName = headers[j].replace('(亿元)', '').trim()
-        const categoryName = categoryMap[originalCategoryName] || originalCategoryName
-        const value = parseInt(values[j])
+        const originalCategoryName = headers[j].replace("(亿元)", "").trim();
+        const categoryName = originalCategoryName;
+        const value = parseInt(values[j]);
         if (!isNaN(value) && categoryName) {
-          if (!categories[categoryName]) categories[categoryName] = []
-          categories[categoryName].push(value)
+          if (!categories[categoryName]) categories[categoryName] = [];
+          categories[categoryName].push(value);
         }
       }
     }
-    return { months, categories }
+    return { months, categories };
   }
 
   function createEmptyChart(rawData) {
-    const filteredCategories = {}
+    const filteredCategories = {};
     Object.keys(rawData.categories).forEach((category) => {
-      const values = rawData.categories[category]
+      const values = rawData.categories[category];
       if (Math.max(...values) <= 1000) {
-        filteredCategories[category] = values
+        filteredCategories[category] = values;
       }
-    })
+    });
 
     const volatilityData = Object.keys(filteredCategories)
       .map((category) => {
-        const values = filteredCategories[category]
-        const mean = values.reduce((sum, val) => sum + val, 0) / values.length
-        const min = Math.min(...values)
-        const max = Math.max(...values)
-        return { category, values, mean, min, max }
+        const values = filteredCategories[category];
+        const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        return { category, values, mean, min, max };
       })
-      .sort((a, b) => a.mean - b.mean)
+      .sort((a, b) => a.mean - b.mean);
 
     const distinctColors = [
-      '#8dd3c7',
-      '#E2D874',
-      '#bebada',
-      '#fb8072',
-      '#80b1d3',
-      '#fdb462',
-      '#b3de69',
-      '#fccde5',
-      '#d9d9d9',
-      '#bc80bd',
-      '#ccebc5',
-    ]
+      "#8dd3c7",
+      "#E2D874",
+      "#bebada",
+      "#fb8072",
+      "#80b1d3",
+      "#fdb462",
+      "#b3de69",
+      "#fccde5",
+      "#d9d9d9",
+      "#bc80bd",
+      "#ccebc5",
+    ];
 
-    const margin = { top: 60, right: 180, bottom: 60, left: 60 }
-    const containerWidth = document.querySelector('.chart-container').clientWidth
-    const containerHeight = 600
-    const width = containerWidth - margin.left - margin.right
-    const height = containerHeight - margin.top - margin.bottom
+    const margin = { top: 60, right: 180, bottom: 60, left: 60 };
+    const containerWidth =
+      document.querySelector(".chart-container").clientWidth;
+    const containerHeight = 600;
+    const width = containerWidth - margin.left - margin.right;
+    const height = containerHeight - margin.top - margin.bottom;
 
-    d3.select('#salesChart').selectAll('*').remove()
+    d3.select("#salesChart").selectAll("*").remove();
 
     const svg = d3
-      .select('#salesChart')
-      .attr('width', containerWidth)
-      .attr('height', containerHeight)
+      .select("#salesChart")
+      .attr("width", containerWidth)
+      .attr("height", containerHeight);
 
-    const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`)
+    const g = svg
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const xScale = d3.scalePoint().domain(rawData.months).range([0, width]).padding(0.1)
+    const xScale = d3
+      .scalePoint()
+      .domain(rawData.months)
+      .range([0, width])
+      .padding(0.1);
 
     const yScale = d3
       .scaleLinear()
       .domain([0, d3.max(volatilityData, (d) => d3.max(d.values))])
-      .range([height, 0])
+      .range([height, 0]);
 
-    g.append('g')
-      .attr('class', 'axis')
-      .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(xScale))
+    g.append("g")
+      .attr("class", "axis")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(xScale));
 
-    g.append('g').attr('class', 'axis').call(d3.axisLeft(yScale))
+    g.append("g").attr("class", "axis").call(d3.axisLeft(yScale));
 
-    g.append('text')
-      .attr('class', 'axis-label')
-      .attr('x', width / 2)
-      .attr('y', height + 40)
-      .style('text-anchor', 'middle')
-      .text('Month')
+    g.append("text")
+      .attr("class", "axis-label")
+      .attr("x", width / 2)
+      .attr("y", height + 40)
+      .style("text-anchor", "middle")
+      .text("月份");
 
-    g.append('text')
-      .attr('class', 'axis-label')
-      .attr('transform', 'rotate(-90)')
-      .attr('x', -height / 2)
-      .attr('y', -40)
-      .style('text-anchor', 'middle')
-      .text('Sales (100 Million RMB)')
+    g.append("text")
+      .attr("class", "axis-label")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2)
+      .attr("y", -40)
+      .style("text-anchor", "middle")
+      .text("销售额 (亿元)");
 
     const legend = svg
-      .append('g')
-      .attr('class', 'legend')
-      .attr('transform', `translate(${width + margin.left + 20}, ${margin.top})`)
+      .append("g")
+      .attr("class", "legend")
+      .attr(
+        "transform",
+        `translate(${width + margin.left + 20}, ${margin.top})`
+      );
 
     volatilityData
       .slice()
       .reverse()
       .forEach((item, reverseIndex) => {
-        const originalIndex = volatilityData.length - 1 - reverseIndex
-        const color = distinctColors[originalIndex % distinctColors.length]
-        const legendRow = legend.append('g').attr('transform', `translate(0, ${reverseIndex * 20})`)
+        const originalIndex = volatilityData.length - 1 - reverseIndex;
+        const color = distinctColors[originalIndex % distinctColors.length];
+        const legendRow = legend
+          .append("g")
+          .attr("transform", `translate(0, ${reverseIndex * 20})`);
 
-        legendRow.append('circle').attr('r', 4).style('fill', color)
+        legendRow.append("circle").attr("r", 4).style("fill", color);
 
         legendRow
-          .append('text')
-          .attr('x', 10)
-          .attr('y', 0)
-          .attr('dy', '0.32em')
-          .style('font-size', '9px')
-          .text(item.category)
-      })
+          .append("text")
+          .attr("x", 10)
+          .attr("y", 0)
+          .attr("dy", "0.32em")
+          .style("font-size", "9px")
+          .text(item.category);
+      });
 
     // 保存数据供动画使用
-    window.chartData = { volatilityData, rawData, xScale, yScale, g, distinctColors, legend }
+    window.chartData = {
+      volatilityData,
+      rawData,
+      xScale,
+      yScale,
+      g,
+      distinctColors,
+      legend,
+    };
   }
 
   async function loadDataAndCreateChart() {
     try {
-      const response = await fetch('/销售额.csv')
-      const csvText = await response.text()
-      const rawData = parseCSV(csvText)
-      createEmptyChart(rawData)
+      const response = await fetch("/销售额.csv");
+      const csvText = await response.text();
+      const rawData = parseCSV(csvText);
+      createEmptyChart(rawData);
     } catch (error) {
-      console.error('Failed to load CSV file:', error)
-      document.getElementById('salesChart').style.display = 'none'
-      const container = document.querySelector('.chart-container')
+      console.error("Failed to load CSV file:", error);
+      document.getElementById("salesChart").style.display = "none";
+      const container = document.querySelector(".chart-container");
       container.innerHTML =
-        '<p style="text-align: center; color: #e74c3c; padding: 50px;">Unable to load data file</p>'
+        '<p style="text-align: center; color: #e74c3c; padding: 50px;">无法加载数据文件</p>';
     }
   }
 
-  loadDataAndCreateChart()
+  loadDataAndCreateChart();
 }
 
 const playAnimation = () => {
-  if (!window.chartData) return
+  if (!window.chartData) return;
 
-  const { volatilityData, rawData, xScale, yScale, g, distinctColors, legend } = window.chartData
+  const { volatilityData, rawData, xScale, yScale, g, distinctColors, legend } =
+    window.chartData;
 
   // 清除现有的线条和点
-  g.selectAll('.line').remove()
-  g.selectAll('.dot').remove()
+  g.selectAll(".line").remove();
+  g.selectAll(".dot").remove();
 
   const line = d3
     .line()
     .x((d, i) => xScale(rawData.months[i]))
-    .y((d) => yScale(d))
+    .y((d) => yScale(d));
 
-  const tooltip = d3.select('#tooltip')
+  const tooltip = d3.select("#tooltip");
 
   volatilityData.forEach((item, index) => {
-    const color = distinctColors[index % distinctColors.length]
+    const color = distinctColors[index % distinctColors.length];
 
-    g.append('path')
+    g.append("path")
       .datum(item.values)
-      .attr('class', 'line')
-      .attr('data-category', item.category)
-      .attr('d', line)
-      .style('stroke', color)
-      .style('fill', 'none')
-      .style('stroke-width', 2)
+      .attr("class", "line")
+      .attr("data-category", item.category)
+      .attr("d", line)
+      .style("stroke", color)
+      .style("fill", "none")
+      .style("stroke-width", 2);
 
     g.selectAll(`.dot-${index}`)
       .data(item.values)
       .enter()
-      .append('circle')
-      .attr('class', `dot dot-${index}`)
-      .attr('data-category', item.category)
-      .attr('cx', (d, i) => xScale(rawData.months[i]))
-      .attr('cy', (d) => yScale(d))
-      .attr('r', 4)
-      .style('fill', color)
-      .style('stroke', color)
-      .on('mouseover', function (event, d) {
-        const monthIndex = item.values.indexOf(d)
-        tooltip.transition().duration(200).style('opacity', 0.9)
+      .append("circle")
+      .attr("class", `dot dot-${index}`)
+      .attr("data-category", item.category)
+      .attr("cx", (d, i) => xScale(rawData.months[i]))
+      .attr("cy", (d) => yScale(d))
+      .attr("r", 4)
+      .style("fill", color)
+      .style("stroke", color)
+      .on("mouseover", function (event, d) {
+        const monthIndex = item.values.indexOf(d);
+        tooltip.transition().duration(200).style("opacity", 0.9);
         tooltip
           .html(
-            `${item.category}: ${d} hundred million RMB<br/>Month: ${rawData.months[monthIndex]}`,
+            `${item.category}: ${d} 亿元<br/>月份: ${rawData.months[monthIndex]}`
           )
-          .style('left', event.pageX + 10 + 'px')
-          .style('top', event.pageY - 28 + 'px')
-        d3.select(this).transition().duration(100).attr('r', 6)
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 28 + "px");
+        d3.select(this).transition().duration(100).attr("r", 6);
       })
-      .on('mouseout', function () {
-        tooltip.transition().duration(500).style('opacity', 0)
-        d3.select(this).transition().duration(100).attr('r', 4)
-      })
-  })
+      .on("mouseout", function () {
+        tooltip.transition().duration(500).style("opacity", 0);
+        d3.select(this).transition().duration(100).attr("r", 4);
+      });
+  });
 
   // 1秒后高亮最稳定和最不稳定的品类
   setTimeout(() => {
@@ -432,16 +438,16 @@ const playAnimation = () => {
       xScale,
       yScale,
       rawData,
-      tooltip,
-    )
-  }, 1000)
-}
+      tooltip
+    );
+  }, 1000);
+};
 
 function increaseSaturation(color, targetSaturation) {
-  const rgb = d3.color(color).rgb()
-  const hsl = d3.hsl(rgb)
-  hsl.s = targetSaturation / 100
-  return hsl.toString()
+  const rgb = d3.color(color).rgb();
+  const hsl = d3.hsl(rgb);
+  hsl.s = targetSaturation / 100;
+  return hsl.toString();
 }
 
 function highlightStabilityCategories(
@@ -452,90 +458,97 @@ function highlightStabilityCategories(
   xScale,
   yScale,
   rawData,
-  tooltip,
+  tooltip
 ) {
   // 计算每个品类的波动性（使用标准差）
   const stabilityData = volatilityData.map((item) => {
-    const values = item.values
-    const mean = values.reduce((sum, val) => sum + val, 0) / values.length
-    const squaredDiffs = values.map((val) => Math.pow(val - mean, 2))
-    const variance = squaredDiffs.reduce((sum, val) => sum + val, 0) / values.length
-    const volatility = Math.sqrt(variance)
-    return { category: item.category, volatility, mean, values }
-  })
+    const values = item.values;
+    const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
+    const squaredDiffs = values.map((val) => Math.pow(val - mean, 2));
+    const variance =
+      squaredDiffs.reduce((sum, val) => sum + val, 0) / values.length;
+    const volatility = Math.sqrt(variance);
+    return { category: item.category, volatility, mean, values };
+  });
 
   // 找到最稳定和最不稳定的品类
   const mostStable = stabilityData.reduce(
     (min, current) => (current.volatility < min.volatility ? current : min),
-    stabilityData[0],
-  )
+    stabilityData[0]
+  );
   const mostUnstable = stabilityData.reduce(
     (max, current) => (current.volatility > max.volatility ? current : max),
-    stabilityData[0],
-  )
+    stabilityData[0]
+  );
 
   console.log(
-    `Most stable: ${mostStable.category} (volatility: ${mostStable.volatility.toFixed(2)})`,
-  )
+    `Most stable: ${mostStable.category} (volatility: ${mostStable.volatility.toFixed(2)})`
+  );
   console.log(
-    `Most unstable: ${mostUnstable.category} (volatility: ${mostUnstable.volatility.toFixed(2)})`,
-  )
+    `Most unstable: ${mostUnstable.category} (volatility: ${mostUnstable.volatility.toFixed(2)})`
+  );
 
   // 高亮最稳定的品类（蓝色）
-  const stableIndex = volatilityData.findIndex((item) => item.category === mostStable.category)
-  const stableOriginalColor = distinctColors[stableIndex % distinctColors.length]
-  const stableSaturatedColor = increaseSaturation(stableOriginalColor, 90)
+  const stableIndex = volatilityData.findIndex(
+    (item) => item.category === mostStable.category
+  );
+  const stableOriginalColor =
+    distinctColors[stableIndex % distinctColors.length];
+  const stableSaturatedColor = increaseSaturation(stableOriginalColor, 90);
 
   svgGroup
-    .selectAll('path.line')
+    .selectAll("path.line")
     .filter(function () {
-      return d3.select(this).attr('data-category') === mostStable.category
+      return d3.select(this).attr("data-category") === mostStable.category;
     })
-    .classed('most-stable', true)
-    .style('stroke', stableSaturatedColor)
+    .classed("most-stable", true)
+    .style("stroke", stableSaturatedColor);
 
   svgGroup
-    .selectAll('circle.dot')
+    .selectAll("circle.dot")
     .filter(function () {
-      return d3.select(this).attr('data-category') === mostStable.category
+      return d3.select(this).attr("data-category") === mostStable.category;
     })
-    .style('fill', stableSaturatedColor)
-    .style('stroke', stableSaturatedColor)
+    .style("fill", stableSaturatedColor)
+    .style("stroke", stableSaturatedColor);
 
   legend
-    .selectAll('text')
+    .selectAll("text")
     .filter(function () {
-      return d3.select(this).text() === mostStable.category
+      return d3.select(this).text() === mostStable.category;
     })
-    .classed('legend-stable', true)
+    .classed("legend-stable", true);
 
   // 高亮最不稳定的品类（红色）
-  const unstableIndex = volatilityData.findIndex((item) => item.category === mostUnstable.category)
-  const unstableOriginalColor = distinctColors[unstableIndex % distinctColors.length]
-  const unstableSaturatedColor = increaseSaturation(unstableOriginalColor, 90)
+  const unstableIndex = volatilityData.findIndex(
+    (item) => item.category === mostUnstable.category
+  );
+  const unstableOriginalColor =
+    distinctColors[unstableIndex % distinctColors.length];
+  const unstableSaturatedColor = increaseSaturation(unstableOriginalColor, 90);
 
   svgGroup
-    .selectAll('path.line')
+    .selectAll("path.line")
     .filter(function () {
-      return d3.select(this).attr('data-category') === mostUnstable.category
+      return d3.select(this).attr("data-category") === mostUnstable.category;
     })
-    .classed('most-unstable', true)
-    .style('stroke', unstableSaturatedColor)
+    .classed("most-unstable", true)
+    .style("stroke", unstableSaturatedColor);
 
   svgGroup
-    .selectAll('circle.dot')
+    .selectAll("circle.dot")
     .filter(function () {
-      return d3.select(this).attr('data-category') === mostUnstable.category
+      return d3.select(this).attr("data-category") === mostUnstable.category;
     })
-    .style('fill', unstableSaturatedColor)
-    .style('stroke', unstableSaturatedColor)
+    .style("fill", unstableSaturatedColor)
+    .style("stroke", unstableSaturatedColor);
 
   legend
-    .selectAll('text')
+    .selectAll("text")
     .filter(function () {
-      return d3.select(this).text() === mostUnstable.category
+      return d3.select(this).text() === mostUnstable.category;
     })
-    .classed('legend-unstable', true)
+    .classed("legend-unstable", true);
 }
 
 // confirmAnswer 功能已由 handleConfirm 替代
@@ -550,7 +563,7 @@ function highlightStabilityCategories(
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -591,7 +604,7 @@ function highlightStabilityCategories(
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -603,7 +616,7 @@ function highlightStabilityCategories(
 
 .task-title em {
   font-weight: 600;
-  font-style: italic;
+  font-style: normal;
 }
 
 .options-section {
@@ -630,7 +643,7 @@ function highlightStabilityCategories(
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -642,7 +655,7 @@ function highlightStabilityCategories(
 
 .option-label em {
   font-weight: 600;
-  font-style: italic;
+  font-style: normal;
 }
 
 .option-letter {
@@ -703,7 +716,7 @@ function highlightStabilityCategories(
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

@@ -1,20 +1,18 @@
 <template>
   <div class="destination-map-staging-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Destination Map + Staging (3/3)</h2>
+    <h2 class="page-title">目的地图 + 分阶段 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: The lines on the map appear in groups, based on where people are moving
-          <em>TO</em>.
+          分阶段事件：地图上的线条按人们移动到哪里分组显示。
         </h3>
 
         <h2 class="task-title">
-          Task 3: For the migration routes between <em>Europe</em> and
-          <em>Central & Southern Asia</em>, which direction has more people moving?
+          任务3：对于欧洲和中南亚之间的迁移路线，哪个方向移动的人更多？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/destination-map-tracing-1')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -74,29 +72,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'destination-map-staging-3',
-  'Destination Map + Staging (3/3)',
+  '目的地图 + 分阶段 (3/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'More people are moving from <em>Central & Southern Asia</em> to <em>Europe</em>.',
+    text: '从中南亚到欧洲移动的人更多。',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'More people are moving from <em>Europe</em> to <em>Central & Southern Asia</em>.',
+    text: '从欧洲到中南亚移动的人更多。',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'The number of people moving in both directions is about the same.',
+    text: '两个方向移动的人数大致相同。',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'There are no migration routes between these two regions.',
+    text: '这两个区域之间没有迁移路线。',
   },
 ]
 
@@ -119,7 +117,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -202,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -306,7 +304,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

@@ -1,19 +1,16 @@
 <template>
   <div class="network-diagram-tracing">
-    <h2 class="page-title">Network Diagram + Tracing (3/3)</h2>
+    <h2 class="page-title">网络图 + 追踪 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Tracing Event: A message broadcast starts from <em>Student 114</em> and spreads through the
-          network. Each student forwards messages to their contacts sequentially, ordered by contact
-          frequency (<em>highest to lowest</em>).</h3>
+          追踪事件：一条消息广播从学生 114 开始，并通过网络传播。每个学生按联系频率顺序（从高到低）依次将消息转发给他们的联系人。</h3>
 
         <h2 class="task-title">
-          Task 3: In the <em>khaki community</em>, which student received the message from someone <em>outside
-          their community</em>, even though other members within the community had already received it?</h2>
+          任务 3：卡其色社群中，当其他成员已获悉消息时，哪个学生反而是从社群外收到的？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -38,10 +35,10 @@
             @click="handleConfirm(null, selectedAnswer, '/circle-packing-intro')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -72,14 +69,14 @@ const chartIframe = ref(null)
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'network-diagram-tracing-3',
-  'Network Diagram + Tracing (3/3)',
+  '网络图 + 追踪 (3/3)',
 )
 
 const options = [
-  { value: 'A', label: '(A) <em>Student 74</em>' },
-  { value: 'B', label: '(B) <em>Student 73</em>' },
-  { value: 'C', label: '(C) <em>Student 122</em>' },
-  { value: 'D', label: '(D) <em>Student 89</em>' },
+  { value: 'A', label: '(A) 学生 74' },
+  { value: 'B', label: '(B) 学生 73' },
+  { value: 'C', label: '(C) 学生 122' },
+  { value: 'D', label: '(D) 学生 89' },
 ]
 
 const playAnimation = () => {
@@ -103,7 +100,7 @@ const playAnimation = () => {
 
 .page-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -185,7 +182,7 @@ const playAnimation = () => {
 
 .event-description {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -204,7 +201,7 @@ const playAnimation = () => {
 
 .task-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -245,7 +242,7 @@ const playAnimation = () => {
 
 .option-label {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -291,7 +288,7 @@ const playAnimation = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;

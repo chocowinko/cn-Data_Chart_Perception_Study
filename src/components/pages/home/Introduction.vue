@@ -134,7 +134,7 @@ const startProject = () => {
 
 .main-title {
   width: 100%;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 35.5556px;
@@ -147,7 +147,7 @@ const startProject = () => {
 
 .content {
   width: 100%;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 17.7778px;
@@ -179,7 +179,7 @@ const startProject = () => {
 }
 
 .task-flow-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -190,7 +190,7 @@ const startProject = () => {
 }
 
 .task-flow-content {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17.7778px;
@@ -214,7 +214,7 @@ const startProject = () => {
 }
 
 .chart-animation-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -241,7 +241,7 @@ const startProject = () => {
 .animation-strategy-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -388,7 +388,7 @@ const startProject = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

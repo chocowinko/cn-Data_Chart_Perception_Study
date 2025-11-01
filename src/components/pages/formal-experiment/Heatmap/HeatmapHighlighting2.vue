@@ -1,19 +1,18 @@
 <template>
   <div class="heatmap-highlighting-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Heatmap + Highlighting (2/3)</h2>
+    <h2 class="page-title">热力图 + 高亮 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: Days where the temperature difference between <em>Moscow</em> and
-          <em>Copenhagen</em> exceeds <em>10°C</em>.
+          高亮事件：莫斯科和哥本哈根之间温差超过10°C的日期。
         </h3>
 
         <h2 class="task-title">
-          Task 2: For the <em>summer</em> months (<em>June-August</em>), which statement is true?
+          任务2：对于夏季月份（6月至8月），下列哪个陈述是正确的？
         </h2>
 
         <div class="options-section">
@@ -39,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/heatmap-highlighting-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -51,12 +50,12 @@
       <div class="chart-area">
         <div class="chart-display">
           <div class="main-container">
-            <h1 class="chart-main-title">Heat maps of Moscow and Copenhagen in 2019</h1>
+            <h1 class="chart-main-title">2019年莫斯科和哥本哈根热力图</h1>
 
             <!-- Moscow 热力图 -->
             <div class="chart-container" id="chart-container-moscow">
               <div class="chart-area-inner">
-                <h2 class="chart-title">Moscow</h2>
+                <h2 class="chart-title">莫斯科</h2>
                 <div id="axis-months-moscow" class="axis-months"></div>
                 <div id="axis-days-moscow" class="axis-days"></div>
                 <div id="chart-grid-moscow" class="chart-grid"></div>
@@ -67,7 +66,7 @@
             <!-- Copenhagen 热力图 -->
             <div class="chart-container" id="chart-container-copenhagen">
               <div class="chart-area-inner">
-                <h2 class="chart-title">Copenhagen</h2>
+                <h2 class="chart-title">哥本哈根</h2>
                 <div id="axis-months-copenhagen" class="axis-months"></div>
                 <div id="axis-days-copenhagen" class="axis-days"></div>
                 <div id="chart-grid-copenhagen" class="chart-grid"></div>
@@ -92,29 +91,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'heatmap-highlighting-2',
-  'Heatmap + Highlighting (2/3)',
+  '热力图 + 高亮 (2/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: "In the <em>summer</em>, there wasn't a single day where the temperature difference was more than <em>10°C</em>.",
+    text: '夏季没有一天温差超过10°C。',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'There are many days in the <em>summer</em> with a big temperature difference, about as many as in the <em>winter</em>.',
+    text: '夏季有很多天温差很大，大约和冬季一样多。',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'In the <em>summer</em>, there are a few days with a big temperature difference, mostly because it was much warmer in <em>Moscow</em>.',
+    text: '夏季有少数几天温差很大，主要是因为莫斯科更暖和。',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'In the <em>summer</em>, there are a few days with a big temperature difference, mostly because it was much warmer in <em>Copenhagen</em>.',
+    text: '夏季有少数几天温差很大，主要是因为哥本哈根更暖和。',
   },
 ]
 
@@ -129,18 +128,18 @@ const initHeatmapHighlighting = async () => {
     const dataCopenhagen = new Map()
 
     const MONTH_NAMES = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
     ]
     const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
@@ -327,7 +326,7 @@ const initHeatmapHighlighting = async () => {
     const warnEl = document.getElementById('warn')
     if (warnEl) {
       warnEl.style.display = 'block'
-      warnEl.textContent = `Loading failed: ${err.message}. Please ensure moscow_copenhagen_tem.csv file is accessible.`
+      warnEl.textContent = `加载失败: ${err.message}。请确保 moscow_copenhagen_tem.csv 文件可访问。`
     }
   }
 }
@@ -360,7 +359,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -418,12 +417,12 @@ const playAnimation = () => {
   font-size: 18px;
   font-weight: 600;
   line-height: 24px;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   width: 100%;
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -440,7 +439,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -479,7 +478,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -642,7 +641,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

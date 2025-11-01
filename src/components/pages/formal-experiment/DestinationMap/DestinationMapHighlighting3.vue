@@ -1,21 +1,18 @@
 <template>
   <div class="destination-map-highlighting-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Destination Map + Highlighting (3/3)</h2>
+    <h2 class="page-title">目的地图 + 高亮 (3/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighted Event: For each of the <em>seven</em> major regions (<em>North America</em>,
-          <em>Europe</em>, <em>Central and Southern Asia</em>, etc.), their single largest outbound
-          route is highlighted.
+          高亮事件：对于七个主要区域（北美洲、欧洲、中南亚等），它们各自最大的出境路线已高亮显示。
         </h3>
 
         <h2 class="task-title">
-          Task 3: Of the <em>7</em> highlighted routes, which region's route represents the smallest
-          population volume?
+          任务3：在7条高亮显示的路线中，哪个区域的路线代表最小的人口流量？
         </h2>
 
         <div class="options-section">
@@ -41,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/destination-map-staging-1')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -76,29 +73,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'destination-map-highlighting-3',
-  'Destination Map + Highlighting (3/3)',
+  '目的地图 + 高亮 (3/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '<em>North America</em>',
+    text: '北美洲',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>Oceania</em>',
+    text: '大洋洲',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>Europe</em>',
+    text: '欧洲',
   },
   {
     letter: 'D',
     value: 'D',
-    text: '<em>Latin America</em>',
+    text: '拉丁美洲',
   },
 ]
 
@@ -121,7 +118,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -204,7 +201,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -221,7 +218,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -260,7 +257,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -308,7 +305,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

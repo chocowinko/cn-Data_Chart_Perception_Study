@@ -1,20 +1,18 @@
 <template>
   <div class="sankey-diagram-staging-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Sankey Diagram + Staging (1/3)</h2>
+    <h2 class="page-title">桑基图 + 分阶段 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: The animation builds the energy flows in stages, from the energy sources,
-          through the middle nodes, to the final users.
+          分阶段事件：动画分阶段构建能源流，从能源来源，通过中间节点到最终用户。
         </h3>
 
         <h2 class="task-title">
-          Task 1: During the animation construction process, which intermediate node is the largest
-          <em>energy hub</em>, receiving the most diverse types of upstream energy inflows?
+          任务1：在动画构建过程中，哪个中间节点是最大的能源枢纽，接收最多样化类型的上游能源流入？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/sankey-diagram-staging-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -73,29 +71,29 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'sankey-diagram-staging-1',
-  'Sankey Diagram + Staging (1/3)',
+  '桑基图 + 分阶段 (1/3)',
 )
 
 const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '<em>Oil</em>',
+    text: '石油',
   },
   {
     letter: 'B',
     value: 'B',
-    text: '<em>Gas</em> (<em>natural gas</em>)',
+    text: '天然气',
   },
   {
     letter: 'C',
     value: 'C',
-    text: '<em>Electricity grid</em>',
+    text: '电网',
   },
   {
     letter: 'D',
     value: 'D',
-    text: '<em>Bio-conversion</em>',
+    text: '生物转化',
   },
 ]
 
@@ -118,7 +116,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -202,7 +200,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +217,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +256,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -302,7 +300,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

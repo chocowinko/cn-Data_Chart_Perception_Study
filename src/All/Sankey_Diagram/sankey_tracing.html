@@ -289,6 +289,31 @@
       }
 
       // Function to categorize nodes by their position in energy flow
+
+      // 中文标签映射
+      const labelMap = {
+        "Agricultural 'waste'": "农业废物", "Biofuel imports": "生物燃料进口", "Biomass imports": "生物质进口",
+        "Coal imports": "煤炭进口", "Coal reserves": "煤炭储备", "Coal": "煤炭",
+        "Gas imports": "天然气进口", "Gas reserves": "天然气储备", "Gas": "天然气", "Ngas": "天然气",
+        "Oil imports": "石油进口", "Oil reserves": "石油储备", "Oil": "石油",
+        "Petroleum products": "石油产品", "UK land based bioenergy": "英国陆基生物能源",
+        "Marine algae": "海洋藻类", "Solar PV": "太阳能光伏", "Solar Thermal": "太阳能热",
+        "Solar": "太阳能", "Tidal": "潮汐能", "Wave": "波浪能", "Wind": "风能",
+        "Geothermal": "地热能", "Hydro": "水电", "Nuclear": "核能",
+        "Bio-conversion": "生物转化", "Thermal generation": "热力发电", "CHP": "热电联产",
+        "District heating": "区域供热", "Electricity grid": "电网", "H2 conversion": "氢转化",
+        "Liquid": "液体燃料", "Solid": "固体燃料", "Losses": "损耗",
+        "Over generation / exports": "过量发电/出口",
+        "Heating and cooling - commercial": "商业供暖制冷",
+        "Heating and cooling - homes": "家庭供暖制冷",
+        "Industry": "工业", "Road transport": "道路交通", "Rail transport": "铁路交通",
+        "Agriculture": "农业",
+        "Lighting & appliances - commercial": "商业照明电器",
+        "Lighting & appliances - homes": "家庭照明电器",
+        "Domestic aviation": "国内航空", "International aviation": "国际航空",
+        "International shipping": "国际航运", "Domestic navigation": "国内航运",
+        "Non-energy use": "非能源使用"
+      };
       function categorizeNodes(nodes, links) {
         console.log(
           'All nodes:',
@@ -515,7 +540,7 @@
       async function animateChart(chartData, container) {
         // Create the base chart structure
         const chart = AnimatedSankeyChart(chartData, {
-          nodeLabel: (d) => d.id,
+          nodeLabel: (d) => labelMap[d.id] || d.id,
           nodeAlign: 'justify',
           linkColor: 'source',
           format: ',.0f',

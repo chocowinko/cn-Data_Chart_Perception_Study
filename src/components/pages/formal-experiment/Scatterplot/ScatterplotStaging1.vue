@@ -1,20 +1,18 @@
 <template>
   <div class="scatterplot-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Scatterplot + Staging (1/3)</h2>
+    <h2 class="page-title">散点图 + 分阶段 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: Data points are introduced progressively month by month throughout the
-          year, from January to December.
+          分阶段事件：从一月到十二月，数据点逐月逐步呈现。
         </h3>
 
         <h2 class="task-title">
-          Task 1: In which area of the graph are the air quality levels in October and November
-          primarily concentrated?
+          任务1：关于十月和十一月的空气质量水平，以下哪个描述最准确？
         </h2>
 
         <div class="options-section">
@@ -40,10 +38,10 @@
             @click="handleConfirm(null, selectedAnswer, '/scatterplot-staging-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -66,7 +64,7 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'scatterplot-staging-1',
-  'Scatterplot + Staging (1/3)',
+  '散点图 + 分阶段 (1/3)',
 )
 let chartData = null
 let isInitialized = false
@@ -77,22 +75,22 @@ const options = [
   {
     letter: 'A',
     value: 'A',
-    text: 'Low PM2.5, High ozone',
+    text: 'PM2.5低，臭氧高',
   },
   {
     letter: 'B',
     value: 'B',
-    text: 'High PM2.5, Low ozone',
+    text: 'PM2.5高，臭氧低',
   },
   {
     letter: 'C',
     value: 'C',
-    text: 'High PM2.5, High ozone',
+    text: 'PM2.5高，臭氧高',
   },
   {
     letter: 'D',
     value: 'D',
-    text: 'Low PM2.5, Low ozone',
+    text: 'PM2.5低，臭氧低',
   },
 ]
 
@@ -263,26 +261,26 @@ const initScatterplot = () => {
     ]
 
     const monthNames = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月',
     ]
 
     const layout = {
       title: {
-        text: '<b>2016 Daily Average PM2.5 and Ozone Concentration Scatterplot in Changping District, Beijing</b>',
+        text: '<b>2016年北京市昌平区PM2.5与臭氧日均浓度散点图</b>',
         font: {
           size: 18,
-          family: 'Roboto, sans-serif',
+          family: 'PingFang SC, sans-serif',
           color: '#2c3e50',
         },
         x: 0,
@@ -291,7 +289,7 @@ const initScatterplot = () => {
         yanchor: 'top',
       },
       xaxis: {
-        title: 'Daily Average Ozone Concentration (μg/m³)',
+        title: '臭氧日均浓度 (μg/m³)',
         title_font: { size: 14 },
         showgrid: true,
         gridwidth: 1,
@@ -305,7 +303,7 @@ const initScatterplot = () => {
         ticktext: ['0', '20', '40', '60', '80', '100', '120', '140', '160', '180', '200'],
       },
       yaxis: {
-        title: 'Daily Average PM2.5 Concentration (μg/m³)',
+        title: 'PM2.5日均浓度 (μg/m³)',
         title_font: { size: 14 },
         showgrid: true,
         gridwidth: 1,
@@ -321,7 +319,7 @@ const initScatterplot = () => {
       },
       plot_bgcolor: 'white',
       paper_bgcolor: 'white',
-      font: { family: 'Roboto, sans-serif' },
+      font: { family: 'PingFang SC, sans-serif' },
       hovermode: false,
       showlegend: true,
       legend: {
@@ -462,7 +460,7 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -513,7 +511,7 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -525,7 +523,7 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -559,7 +557,7 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -627,7 +625,7 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

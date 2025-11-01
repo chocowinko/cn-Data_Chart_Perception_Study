@@ -1,23 +1,21 @@
 <template>
   <div class="destination-map-intro">
-    <h1 class="main-title">OD Map (Origin-Destination Map)</h1>
+    <h1 class="main-title">OD图（起点-终点图）</h1>
 
     <div class="description-section">
       <p class="description">
-        This OD map shows aggregated migration flows between seven world regions for the selected
-        dataset.
+        此OD图显示了所选数据集中七个世界区域之间的汇总迁移流。
       </p>
 
       <ul class="features-list">
         <li>
-          Each curved arc represents people moving from an origin region (source) to a destination
-          region (target).
+          每条弧线代表从起点区域（源）到目的地区域（目标）的人员流动。
         </li>
         <li>
-          The arc thickness corresponds to the volume of movement — thicker arcs mean larger flows.
+          弧线的粗细对应于流动量——越粗的弧线表示越大的流量。
         </li>
         <li>
-          Colors indicate the origin region, allowing viewers to trace where most migration begins.
+          颜色表示起点区域，让观众可以追踪大多数迁移的起点。
         </li>
       </ul>
     </div>
@@ -31,7 +29,7 @@
     </div>
 
     <button class="continue-button" @click="continueFormal">
-      <span class="button-text">Start</span>
+      <span class="button-text">开始</span>
     </button>
   </div>
 </template>
@@ -58,7 +56,7 @@ const continueFormal = () => {
 
 .main-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -76,7 +74,7 @@ const continueFormal = () => {
 
 .description {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -89,7 +87,7 @@ const continueFormal = () => {
 
 .features-list {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -151,7 +149,7 @@ const continueFormal = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;

@@ -81,16 +81,16 @@
     </style>
   </head>
   <body>
-    <h1>Superstore Sales Treemap</h1>
+    <h1>超市销售树状图</h1>
     <div id="main-container">
       <div>
-        <h3>2016 Sales Data</h3>
+        <h3>2016年销售数据</h3>
         <div class="chart-container">
           <div id="chart-1"></div>
         </div>
       </div>
       <div>
-        <h3>2017 Sales Data</h3>
+        <h3>2017年销售数据</h3>
         <div class="chart-container">
           <div id="chart-2"></div>
         </div>
@@ -102,12 +102,47 @@
       const chartWidth = 700
       const chartHeight = 900
 
-      // 增长最快的前五名子品类数据
-      const top5Growth2016 = ['Supplies', 'Machines', 'Copiers', 'Fasteners', 'Tables']
-      const top5Growth2017 = ['Appliances', 'Art', 'Binders', 'Accessories', 'Labels']
+      // 增长最快的前五名子品类数据（将从实际数据中动态计算）
+      // 2016和2017都显示同样的5个增长最快的子类别
+      let top5Growth2016 = [] // 将从数据中计算（与2017相同）
+      let top5Growth2017 = [] // 将从数据中计算
 
       // 创建一个通用的Tooltip
       const tooltip = d3.select('body').append('div').attr('class', 'tooltip')
+
+      // 中文翻译映射
+      const translations = {
+        // 类别
+        'Technology': '科技产品',
+        'Furniture': '家具',
+        'Office Supplies': '办公用品',
+        // 客户类型
+        'Consumer': '消费者',
+        'Corporate': '企业',
+        'Home Office': '家庭办公',
+        // 子类别
+        'Phones': '手机',
+        'Chairs': '椅子',
+        'Storage': '储物柜',
+        'Tables': '桌子',
+        'Binders': '装订用品',
+        'Machines': '机器',
+        'Accessories': '配件',
+        'Copiers': '复印机',
+        'Bookcases': '书柜',
+        'Appliances': '电器',
+        'Furnishings': '家居用品',
+        'Paper': '纸张',
+        'Supplies': '办公耗材',
+        'Art': '艺术用品',
+        'Labels': '标签',
+        'Envelopes': '信封',
+        'Fasteners': '紧固件'
+      }
+
+      const translate = (text) => {
+        return translations[text] || text
+      }
 
       // 自定义颜色映射 - 产品类别
       const colorMap = {
@@ -230,7 +265,7 @@
           .attr('class', 'parent-label')
           .attr('x', 4)
           .attr('y', 13)
-          .text((d) => d.data.name)
+          .text((d) => translate(d.data.name))
 
         // 子类别标签 (depth 2)
         cell
@@ -239,7 +274,7 @@
           .attr('class', 'node-label')
           .attr('x', 4)
           .attr('y', 13)
-          .text((d) => d.data.name)
+          .text((d) => translate(d.data.name))
           .style('display', (d) => (d.x1 - d.x0 < 10 ? 'none' : 'inline'))
 
         const leafCells = cell.filter((d) => !d.children)
@@ -250,9 +285,10 @@
           .attr('class', 'node-label')
           .attr('x', 4)
           .attr('y', 13)
-          .text((d) =>
-            d.data.name.length > 10 ? d.data.name.substring(0, 10) + '...' : d.data.name,
-          )
+          .text((d) => {
+            const translatedName = translate(d.data.name)
+            return translatedName.length > 10 ? translatedName.substring(0, 10) + '...' : translatedName
+          })
           .style('display', (d) => (d.x1 - d.x0 < 30 ? 'none' : 'inline'))
 
         // 第二行：销售额
@@ -269,9 +305,9 @@
             tooltip.style('opacity', 0.9)
             tooltip
               .html(
-                `<div class="tooltip-format">${d.data.category}</div>` +
-                  `<div>子类别: ${d.data.subCategory}</div>` +
-                  `<div>客户类型: ${d.data.segment}</div>` +
+                `<div class="tooltip-format">${translate(d.data.category)}</div>` +
+                  `<div>子类别: ${translate(d.data.subCategory)}</div>` +
+                  `<div>客户类型: ${translate(d.data.segment)}</div>` +
                   `<div>销售额: $${d3.format(',.2f')(d.data.value)}</div>`,
               )
               .style('left', event.pageX + 10 + 'px')
@@ -314,38 +350,89 @@
       }
 
       // --- 主逻辑：加载数据并为每个年份调用绘图函数 ---
-      d3.csv('superstore_temporal_data.csv')
+      d3.csv('Sample - Superstore.csv')
         .then(function (data) {
-          // 清洗和预处理数据 - 聚合月度数据为年度数据
-          const aggregatedData = []
+          // 清洗和预处理数据
+          const cleanData = data
+            .map((d) => ({
+              year: new Date(d['Order Date']).getFullYear(),
+              sales: +d.Sales,
+              segment: d.Segment,
+              category: d.Category,
+              subCategory: d['Sub-Category'],
+            }))
+            // 过滤掉不完整的数据，只保留2016和2017年
+            .filter(
+              (d) =>
+                d.year &&
+                d.sales &&
+                d.segment &&
+                d.category &&
+                d.subCategory &&
+                (d.year === 2016 || d.year === 2017),
+            )
 
-          // 按年份、类别、子类别聚合数据
+          // 首先计算每个子类别的年度销售额用于增长率计算
+          const subCategorySalesByYear = d3.rollup(
+            cleanData,
+            (v) => d3.sum(v, (d) => d.sales),
+            (d) => d.subCategory,
+            (d) => d.year,
+          )
+
+          // 计算增长率并找出2017年增长最快的前5个子类别
+          const growthRates = []
+          subCategorySalesByYear.forEach((yearSales, subCategory) => {
+            const sales2016 = yearSales.get(2016) || 0
+            const sales2017 = yearSales.get(2017) || 0
+            if (sales2016 > 0 && sales2017 > 0) {
+              const growthRate = ((sales2017 - sales2016) / sales2016) * 100
+              growthRates.push({
+                subCategory: subCategory,
+                growthRate: growthRate,
+                sales2016: sales2016,
+                sales2017: sales2017
+              })
+            }
+          })
+
+          // 按增长率降序排序并取前5个
+          growthRates.sort((a, b) => b.growthRate - a.growthRate)
+          top5Growth2017 = growthRates.slice(0, 5).map(d => d.subCategory)
+          top5Growth2016 = top5Growth2017 // 2016年也高亮同样的5个子类别
+          
+          // 输出到控制台以便查看
+          console.log('2017年增长率最高的前5个子类别（在两个年份中同时高亮）：')
+          growthRates.slice(0, 5).forEach((d, i) => {
+            console.log(`${i + 1}. ${d.subCategory}: ${d.growthRate.toFixed(2)}% (2016: $${d.sales2016.toFixed(2)}, 2017: $${d.sales2017.toFixed(2)})`)
+          })
+
+          // 按年份、类别、子类别、客户段聚合数据
+          const aggregatedData = []
           const groupedData = d3.rollup(
-            data,
-            (v) => d3.sum(v, (d) => +d.value),
-            (d) => +d.Year,
-            (d) => d.level1,
-            (d) => d.level2,
+            cleanData,
+            (v) => d3.sum(v, (d) => d.sales),
+            (d) => d.year,
+            (d) => d.category,
+            (d) => d.subCategory,
+            (d) => d.segment,
           )
 
           // 转换为所需格式
           groupedData.forEach((categories, year) => {
-            if (year === 2016 || year === 2017) {
-              categories.forEach((subcategories, category) => {
-                subcategories.forEach((sales, subCategory) => {
-                  // 为每个子类别创建三个客户段的数据
-                  ;['Consumer', 'Corporate', 'Home Office'].forEach((segment) => {
-                    aggregatedData.push({
-                      year: year,
-                      sales: sales / 3, // 平均分配到三个客户段
-                      segment: segment,
-                      category: category,
-                      subCategory: subCategory,
-                    })
+            categories.forEach((subcategories, category) => {
+              subcategories.forEach((segments, subCategory) => {
+                segments.forEach((sales, segment) => {
+                  aggregatedData.push({
+                    year: year,
+                    sales: sales,
+                    segment: segment,
+                    category: category,
+                    subCategory: subCategory,
                   })
                 })
               })
-            }
+            })
           })
 
           // 分别处理两个年份的数据并绘图
@@ -362,7 +449,7 @@
         .catch(function (error) {
           console.error('数据加载失败:', error)
           document.querySelector('#main-container').innerHTML =
-            `<p style="color: red; text-align: center;">错误：无法加载数据文件 'superstore_temporal_data.csv'。请确保文件存在。</p>`
+            `<p style="color: red; text-align: center;">错误：无法加载数据文件 'Sample - Superstore.csv'。请确保文件存在。</p>`
         })
 
       // 暴露函数给外部调用 - 播放高亮动画

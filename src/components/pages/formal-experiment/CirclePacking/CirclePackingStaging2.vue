@@ -1,18 +1,16 @@
 <template>
   <div class="circle-packing-staging">
-    <h2 class="page-title">Circle Packing + Staging (2/3)</h2>
+    <h2 class="page-title">圆堆积图 + 分阶段 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: The visualization builds progressively from <em>continents</em> → <em>subregions</em> →
-          <em>countries</em>.</h3>
+          分阶段事件：可视化从大陆 → 次区域 → 国家逐步构建。</h3>
 
         <h2 class="task-title">
-          Task 2: Compare two circles: the country with the <em>highest emissions</em> in <em>Asia</em>, and the
-          circle representing <em>all of Europe</em>. How do they compare in size?</h2>
+          任务 2：亚洲排放量最高的次区域与欧洲整体相比，哪一个的总排放量更高？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -37,10 +35,10 @@
             @click="handleConfirm(null, selectedAnswer, '/circle-packing-staging-3')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -48,7 +46,7 @@
       <!-- 右侧：图表区域 -->
       <div class="chart-area">
         <h1 class="chart-main-title">
-          Per Capita Greenhouse Gas Emissions: Asia and Europe Comparison
+          人均温室气体排放量：亚洲与欧洲对比
         </h1>
 
         <div class="chart-wrapper">
@@ -75,14 +73,14 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'circle-packing-staging-2',
-  'Circle Packing + Staging (2/3)',
+  '圆堆积图 + 分阶段 (2/3)',
 )
 
 const options = [
-  { label: '(A) The country is <em>significantly larger</em> than all of Europe', value: 'A' },
-  { label: '(B) The country is <em>similar in size</em> to all of Europe', value: 'B' },
-  { label: '(C) The country is <em>significantly smaller</em> than all of Europe', value: 'C' },
-  { label: '(D) Cannot be visually determined', value: 'D' },
+  { label: '(A) 该国明显大于整个欧洲', value: 'A' },
+  { label: '(B) 该国大小与整个欧洲相似', value: 'B' },
+  { label: '(C) 该国明显小于整个欧洲', value: 'C' },
+  { label: '(D) 无法通过视觉判断', value: 'D' },
 ]
 
 const playAnimation = () => {
@@ -104,7 +102,7 @@ const playAnimation = () => {
 
 .page-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -142,7 +140,7 @@ const playAnimation = () => {
 
 .chart-main-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -204,7 +202,7 @@ const playAnimation = () => {
 
 .event-description {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -223,7 +221,7 @@ const playAnimation = () => {
 
 .task-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -264,7 +262,7 @@ const playAnimation = () => {
 
 .option-label {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -310,7 +308,7 @@ const playAnimation = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;

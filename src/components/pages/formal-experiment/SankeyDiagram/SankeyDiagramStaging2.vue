@@ -1,20 +1,18 @@
 <template>
   <div class="sankey-diagram-staging-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">Sankey Diagram + Staging (2/3)</h2>
+    <h2 class="page-title">桑基图 + 分阶段 (2/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: Energy flows are being constructed step by step, showing how energy sources
-          connect to intermediate nodes and finally to end consumers.
+          分阶段事件：能源流被逐步构建，显示能源来源如何连接到中间节点，最终到达终端消费者。
         </h3>
 
         <h2 class="task-title">
-          Task 2: Which of the following best describes how the energy from <em>Liquid</em> is
-          distributed as it flows outward?
+          任务2：以下哪项最能描述液体燃料能源向外流动时的分布方式？
         </h2>
 
         <div class="options-section">
@@ -37,13 +35,18 @@
         <div class="button-control">
           <button
             class="confirm-btn"
-            @click="handleConfirm(null, selectedAnswer, '/sankey-diagram-staging-3')"
+            @click="
+              handleConfirm(null, selectedAnswer, '/sankey-diagram-staging-3')
+            "
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
-          <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+          <button
+            class="play-animation-btn"
+            @click="handlePlayAnimation(playAnimation)"
+          >
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
@@ -66,45 +69,49 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useTaskTimer } from '@/composables/useTaskTimer'
+import { ref } from "vue";
+import { useTaskTimer } from "@/composables/useTaskTimer";
 
-const selectedAnswer = ref('')
+const selectedAnswer = ref("");
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
-  'sankey-diagram-staging-2',
-  'Sankey Diagram + Staging (2/3)',
-)
+  "sankey-diagram-staging-2",
+  "桑基图 + 分阶段 (2/3)"
+);
 
 const options = [
   {
-    letter: 'A',
-    value: 'A',
-    text: 'Its energy flows entirely to <em>Road transport</em> as a single terminal.',
+    letter: "A",
+    value: "A",
+    text: "其能源完全流向道路运输作为单一终点",
   },
   {
-    letter: 'B',
-    value: 'B',
-    text: 'Its energy is distributed to multiple nodes, including various transport sectors (aviation, road, shipping, etc.) and industry.',
+    letter: "B",
+    value: "B",
+    text: "其能源分布到多个节点，包括各种运输部门（航空、道路、航运等）和工业",
   },
   {
-    letter: 'C',
-    value: 'C',
-    text: 'Its energy flows entirely to <em>International aviation</em> as the largest single destination.',
+    letter: "C",
+    value: "C",
+    text: "其能源完全流向国际航空，作为最大的单一目的地",
   },
   {
-    letter: 'D',
-    value: 'D',
-    text: 'Its energy is primarily used for power generation, flowing to <em>Thermal generation</em>.',
+    letter: "D",
+    value: "D",
+    text: "其能源主要用于发电，流向热力发电",
   },
-]
+];
 
 const playAnimation = () => {
-  const iframe = document.querySelector('.chart-iframe')
-  if (iframe && iframe.contentWindow && iframe.contentWindow.playHighlightAnimation) {
-    iframe.contentWindow.playHighlightAnimation()
+  const iframe = document.querySelector(".chart-iframe");
+  if (
+    iframe &&
+    iframe.contentWindow &&
+    iframe.contentWindow.playHighlightAnimation
+  ) {
+    iframe.contentWindow.playHighlightAnimation();
   }
-}
+};
 
 // confirmAnswer 功能已由 handleConfirm 替代
 </script>
@@ -118,7 +125,9 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -202,7 +211,9 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -219,7 +230,9 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -258,7 +271,9 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -302,7 +317,9 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

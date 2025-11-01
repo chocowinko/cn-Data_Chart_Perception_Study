@@ -1,18 +1,18 @@
 <template>
   <div class="sunburst-staging">
-    <h2 class="page-title">Sunburst + Staging (1/3)</h2>
+    <h2 class="page-title">旭日图 + 分阶段 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Staging Event: The animation progressively reveals the hierarchical structure of coffee
-          flavors, layer by layer.</h3>
+          分阶段事件：动画逐层逐步展示咖啡风味的层级结构。
+        </h3>
 
         <h2 class="task-title">
-          Task 1: During the animation, which of the following is a <em>second-level sub-category</em> under
-          <em>Green/Vegetative</em> that is NOT further subdivided?</h2>
+          任务1：在动画过程中，以下哪个是绿色/植物味下的二级子类别，且没有进一步细分？
+        </h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -24,7 +24,9 @@
               class="option-radio"
             />
             <label :for="`option-${option.value}`" class="option-label">
-              <span class="option-letter">{{ option.label.substring(0, 3) }}</span>
+              <span class="option-letter">{{
+                option.label.substring(0, 3)
+              }}</span>
               <span v-html="option.label.substring(4)"></span>
             </label>
           </div>
@@ -37,21 +39,23 @@
             @click="handleConfirm(null, selectedAnswer, '/sunburst-staging-2')"
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
           <button
             class="play-animation-btn"
             @click="handlePlayAnimation(playAnimation)"
             :disabled="!isIframeLoaded"
           >
-            <span class="button-text">{{ isIframeLoaded ? 'Play Animation' : 'Loading...' }}</span>
+            <span class="button-text">{{
+              isIframeLoaded ? "播放动画" : "加载中..."
+            }}</span>
           </button>
         </div>
       </div>
 
       <!-- 右侧：图表区域 -->
       <div class="chart-area">
-        <h1 class="chart-main-title">World Coffee Research Sensory Lexicon</h1>
+        <h1 class="chart-main-title">世界咖啡研究感官词典</h1>
 
         <div class="chart-wrapper">
           <iframe
@@ -68,41 +72,41 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useTaskTimer } from '@/composables/useTaskTimer'
+import { ref, onMounted } from "vue";
+import { useTaskTimer } from "@/composables/useTaskTimer";
 
-const chartIframe = ref(null)
-const selectedAnswer = ref('')
-const isIframeLoaded = ref(false)
+const chartIframe = ref(null);
+const selectedAnswer = ref("");
+const isIframeLoaded = ref(false);
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
-  'sunburst-staging-1',
-  'Sunburst + Staging (1/3)',
-)
+  "sunburst-staging-1",
+  "旭日图 + 分阶段 (1/3)"
+);
 
 const options = [
-  { label: '(A) <em>Beany</em>', value: 'A' },
-  { label: '(B) <em>Floral</em>', value: 'B' },
-  { label: '(C) <em>Berry</em>', value: 'C' },
-  { label: '(D) <em>Green/Vegetative</em>', value: 'D' },
-]
+  { label: "(A) 豆味", value: "A" },
+  { label: "(B) 花香", value: "B" },
+  { label: "(C) 浆果", value: "C" },
+  { label: "(D) 绿色/植物味", value: "D" },
+];
 
 onMounted(() => {
   if (chartIframe.value) {
-    chartIframe.value.addEventListener('load', () => {
+    chartIframe.value.addEventListener("load", () => {
       // 额外等待一小段时间确保 ECharts 完全初始化
       setTimeout(() => {
-        isIframeLoaded.value = true
-      }, 500)
-    })
+        isIframeLoaded.value = true;
+      }, 500);
+    });
   }
-})
+});
 
 const playAnimation = () => {
   if (chartIframe.value?.contentWindow?.playStagingAnimation) {
-    chartIframe.value.contentWindow.playStagingAnimation()
+    chartIframe.value.contentWindow.playStagingAnimation();
   }
-}
+};
 
 // confirmAnswer 功能已由 handleConfirm 替代
 </script>
@@ -117,7 +121,7 @@ const playAnimation = () => {
 
 .page-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -156,7 +160,7 @@ const playAnimation = () => {
 
 .chart-main-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -227,7 +231,7 @@ const playAnimation = () => {
 
 .event-description {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -236,17 +240,11 @@ const playAnimation = () => {
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;
-  font-style: italic;
-}
-
-.event-description em {
-  font-weight: 600;
-  font-style: italic;
 }
 
 .task-title {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -255,11 +253,6 @@ const playAnimation = () => {
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
-}
-
-.task-title em {
-  font-weight: 600;
-  font-style: italic;
 }
 
 .options-section {
@@ -287,7 +280,7 @@ const playAnimation = () => {
 
 .option-label {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -296,11 +289,6 @@ const playAnimation = () => {
   color: #545454;
   cursor: pointer;
   text-align: left;
-}
-
-.option-label em {
-  font-weight: 600;
-  font-style: italic;
 }
 
 .option-letter {
@@ -333,7 +321,7 @@ const playAnimation = () => {
 
 .button-text {
   font-family:
-    Roboto,
+    PingFang SC,
     sans-serif;
   font-style: normal;
   font-weight: 600;

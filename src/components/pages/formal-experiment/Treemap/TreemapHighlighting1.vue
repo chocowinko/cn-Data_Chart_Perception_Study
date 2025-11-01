@@ -1,18 +1,17 @@
 <template>
   <div class="treemap-highlighting">
-    <h2 class="page-title">Treemap + Highlighting (1/3)</h2>
+    <h2 class="page-title">树状图 + 高亮 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          Highlighting Event: Simultaneously highlight the <em>top five sub-categories</em> with the
-          highest annual sales growth rates in both <em>2016</em> and <em>2017</em> treemaps.
+          高亮事件：高亮显示2017年增长率最高的五个子类别以及它们在2016年对应的销售额位置。
         </h3>
 
         <h2 class="task-title">
-          Task 1: Which of the highlighted products had the fastest growth in <em>2017</em>?
+          任务1：哪个子类别产品的增长率最大？
         </h2>
 
         <div class="options-section">
@@ -25,7 +24,9 @@
               class="option-radio"
             />
             <label :for="`option-${option.value}`" class="option-label">
-              <span class="option-letter">{{ option.label.substring(0, 3) }}</span>
+              <span class="option-letter">{{
+                option.label.substring(0, 3)
+              }}</span>
               <span v-html="option.label.substring(4)"></span>
             </label>
           </div>
@@ -35,20 +36,25 @@
         <div class="button-control">
           <button
             class="confirm-btn"
-            @click="handleConfirm(null, selectedAnswer, '/treemap-highlighting-2')"
+            @click="
+              handleConfirm(null, selectedAnswer, '/treemap-highlighting-2')
+            "
             :disabled="!selectedAnswer"
           >
-            <span class="button-text">Confirm</span>
+            <span class="button-text">确认</span>
           </button>
-          <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
-            <span class="button-text">Play Animation</span>
+          <button
+            class="play-animation-btn"
+            @click="handlePlayAnimation(playAnimation)"
+          >
+            <span class="button-text">播放动画</span>
           </button>
         </div>
       </div>
 
       <!-- 右侧：图表区域 -->
       <div class="chart-area">
-        <h1 class="chart-main-title">Superstore Sales Comparison: 2016 vs 2017</h1>
+        <h1 class="chart-main-title">超市销售额对比：2016年 vs 2017年</h1>
 
         <div class="chart-wrapper">
           <iframe
@@ -65,31 +71,31 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useTaskTimer } from '@/composables/useTaskTimer'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useTaskTimer } from "@/composables/useTaskTimer";
 
-const router = useRouter()
-const chartIframe = ref(null)
-const selectedAnswer = ref('')
+const router = useRouter();
+const chartIframe = ref(null);
+const selectedAnswer = ref("");
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
-  'treemap-highlighting-1',
-  'Treemap + Highlighting (1/3)',
-)
+  "treemap-highlighting-1",
+  "树状图 + 高亮 (1/3)"
+);
 
 const options = [
-  { label: '(A) <em>Phones</em>', value: 'A' },
-  { label: '(B) <em>Chairs</em>', value: 'B' },
-  { label: '(C) <em>Binders</em>', value: 'C' },
-  { label: '(D) <em>Tables</em>', value: 'D' },
-]
+  { label: "(A) 配件", value: "A" },
+  { label: "(B) 电器", value: "B" },
+  { label: "(C) 艺术用品", value: "C" },
+  { label: "(D) 装订用品", value: "D" },
+];
 
 const playAnimation = () => {
   if (chartIframe.value?.contentWindow?.playHighlightAnimation) {
-    chartIframe.value.contentWindow.playHighlightAnimation()
+    chartIframe.value.contentWindow.playHighlightAnimation();
   }
-}
+};
 
 // confirmAnswer 功能已由 handleConfirm 替代
 </script>
@@ -103,7 +109,9 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -140,7 +148,9 @@ const playAnimation = () => {
 }
 
 .chart-main-title {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -201,7 +211,9 @@ const playAnimation = () => {
 }
 
 .event-description {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -218,7 +230,9 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -257,7 +271,9 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -301,7 +317,9 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

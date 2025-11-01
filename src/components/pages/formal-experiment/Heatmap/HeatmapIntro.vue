@@ -1,23 +1,19 @@
 <template>
   <div class="heatmap-intro">
-    <h1 class="main-title">Heatmap</h1>
+    <h1 class="main-title">热力图</h1>
 
     <div class="description-section">
       <p class="description">
-        This heat map shows the daily average temperature distribution for Moscow and Copenhagen in
-        2019.
+        该热力图展示了2019年莫斯科和哥本哈根的日平均温度分布。
       </p>
 
       <ul class="features-list">
-        <li>The horizontal axis (left to right) represents the month, from January to December.</li>
+        <li>横轴（从左到右）表示月份，从一月到十二月。</li>
         <li>
-          The vertical axis (bottom to top) represents the day of the month, from the 1st to the
-          31st.
+          纵轴（从下到上）表示一个月中的日期，从1日到31日。
         </li>
         <li>
-          Each colored square in the chart represents a day, and its color indicates the average
-          temperature for that day, with Red boxes mean it was warm, and blue boxes mean it was
-          cold.
+          图表中的每个彩色方块代表一天，其颜色表示该天的平均温度，红色方块表示温暖，蓝色方块表示寒冷。
         </li>
       </ul>
     </div>
@@ -26,10 +22,10 @@
       <div class="chart-container">
         <div class="controls">
           <button class="city-btn active" id="btnMoscow" @click="switchCity('Moscow')">
-            Moscow
+            莫斯科
           </button>
           <button class="city-btn" id="btnCopenhagen" @click="switchCity('Copenhagen')">
-            Copenhagen
+            哥本哈根
           </button>
         </div>
         <div class="chart-grid" id="chart-grid"></div>
@@ -41,7 +37,7 @@
     </div>
 
     <button class="continue-button" @click="continueFormal">
-      <span class="button-text">Start</span>
+      <span class="button-text">开始</span>
     </button>
   </div>
 </template>
@@ -73,18 +69,18 @@ let dataCopenhagen = []
 let overallMinTemp, overallMaxTemp
 
 const MONTH_LABELS = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
+  '一月',
+  '二月',
+  '三月',
+  '四月',
+  '五月',
+  '六月',
+  '七月',
+  '八月',
+  '九月',
+  '十月',
+  '十一月',
+  '十二月',
 ]
 
 const initHeatmap = async () => {
@@ -345,7 +341,7 @@ const updateCity = (city) => {
 
 .main-title {
   width: 100%;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 35.5556px;
@@ -362,7 +358,7 @@ const updateCity = (city) => {
 }
 
 .description {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17.7778px;
@@ -373,7 +369,7 @@ const updateCity = (city) => {
 }
 
 .features-list {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 17.7778px;
@@ -434,7 +430,7 @@ const updateCity = (city) => {
   cursor: pointer;
   font-size: 13px;
   transition: all 0.2s ease;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
 }
 
 .city-btn.active {
@@ -476,9 +472,9 @@ const updateCity = (city) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 10px;
   color: #555;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   line-height: 1;
 }
 
@@ -507,7 +503,7 @@ const updateCity = (city) => {
   justify-content: space-between;
   font-size: 11px;
   color: #555;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
 }
 
 .tooltip {
@@ -521,7 +517,7 @@ const updateCity = (city) => {
   z-index: 1000;
   transform: translate(-50%, -110%);
   white-space: nowrap;
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
 }
 
 .error-message {
@@ -555,7 +551,7 @@ const updateCity = (city) => {
 }
 
 .button-text {
-  font-family: Roboto, sans-serif;
+  font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
