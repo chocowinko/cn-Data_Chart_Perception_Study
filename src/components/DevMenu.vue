@@ -280,6 +280,41 @@
           </div>
         </div>
 
+        <div class="chart-category">
+          <h4>实验完成页面</h4>
+          <div class="chart-grid">
+            <button @click="navigateTo('/experiment-complete')" class="chart-btn">
+              实验完成
+            </button>
+          </div>
+        </div>
+
+        <div class="chart-category">
+          <h4>📝 问卷调查</h4>
+          <div class="chart-grid">
+            <button @click="navigateTo('/questionnaire')" class="chart-btn">
+              第一部分：背景经验
+            </button>
+            <button @click="navigateTo('/questionnaire-part2')" class="chart-btn">
+              第二部分：体验感受
+            </button>
+            <button @click="navigateTo('/questionnaire-part3')" class="chart-btn">
+              第三部分：策略评估
+            </button>
+            <button @click="navigateTo('/questionnaire-part4')" class="chart-btn">
+              第四部分：开放反馈
+            </button>
+          </div>
+          <div class="chart-grid" style="margin-top: 10px;">
+            <button @click="exportQuestionnaireData" class="chart-btn results-btn">
+              💾 导出问卷数据
+            </button>
+            <button @click="clearQuestionnaireData" class="chart-btn" style="background: #e74c3c;">
+              🗑️ 清除问卷数据
+            </button>
+          </div>
+        </div>
+
         <div class="chart-category results-section">
           <h4>📊 计时结果</h4>
           <div class="chart-grid">
@@ -312,8 +347,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useQuestionnaireStore } from '../stores/questionnaire'
 
 const router = useRouter()
+const questionnaireStore = useQuestionnaireStore()
 const showDevMenu = ref(false)
 const devMode = ref(false)
 const searchQuery = ref('')
@@ -363,16 +400,28 @@ const navigateTo = (path) => {
   closeMenu()
 }
 
-const openChart = (filePath) => {
-  // 在新标签页中打开HTML文件
-  window.open(filePath, '_blank')
-  closeMenu()
-}
-
 const toggleDevMode = () => {
   devMode.value = !devMode.value
   localStorage.setItem('devMode', devMode.value.toString())
   closeMenu()
+}
+
+const exportQuestionnaireData = () => {
+  try {
+    questionnaireStore.downloadJSON()
+    closeMenu()
+  } catch (error) {
+    console.error('导出问卷数据失败:', error)
+    alert('导出失败，请检查控制台')
+  }
+}
+
+const clearQuestionnaireData = () => {
+  if (confirm('确定要清除所有问卷数据吗？此操作不可恢复！')) {
+    questionnaireStore.clearAllData()
+    alert('问卷数据已清除')
+    closeMenu()
+  }
 }
 
 const toggleFilter = (filterKey) => {

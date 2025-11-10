@@ -87,6 +87,11 @@ import SunburstStaging1 from '../components/pages/formal-experiment/Sunburst/Sun
 import SunburstStaging2 from '../components/pages/formal-experiment/Sunburst/SunburstStaging2.vue'
 import SunburstStaging3 from '../components/pages/formal-experiment/Sunburst/SunburstStaging3.vue'
 import TimingResults from '../components/pages/results/TimingResults.vue'
+import ExperimentComplete from '../components/pages/formal-experiment/ExperimentComplete.vue'
+import Questionnaire from '../components/pages/questionnaire/Questionnaire.vue'
+import QuestionnairePart2 from '../components/pages/questionnaire/QuestionnairePart2.vue'
+import QuestionnairePart3 from '../components/pages/questionnaire/QuestionnairePart3.vue'
+import QuestionnairePart4 from '../components/pages/questionnaire/QuestionnairePart4.vue'
 
 const routes = [
   {
@@ -529,6 +534,31 @@ const routes = [
     name: 'TimingResults',
     component: TimingResults,
   },
+  {
+    path: '/experiment-complete',
+    name: 'ExperimentComplete',
+    component: ExperimentComplete,
+  },
+  {
+    path: '/questionnaire',
+    name: 'Questionnaire',
+    component: Questionnaire,
+  },
+  {
+    path: '/questionnaire-part2',
+    name: 'QuestionnairePart2',
+    component: QuestionnairePart2,
+  },
+  {
+    path: '/questionnaire-part3',
+    name: 'QuestionnairePart3',
+    component: QuestionnairePart3,
+  },
+  {
+    path: '/questionnaire-part4',
+    name: 'QuestionnairePart4',
+    component: QuestionnairePart4,
+  },
 ]
 
 const router = createRouter({
@@ -545,7 +575,7 @@ const router = createRouter({
 })
 
 // 全局后置守卫：每次路由切换后强制滚动到顶部
-router.afterEach((to, from) => {
+router.afterEach(() => {
   // 使用 nextTick 确保 DOM 更新后再滚动
   setTimeout(() => {
     // 滚动 window

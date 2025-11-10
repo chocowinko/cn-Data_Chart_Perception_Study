@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>学生联系网络 - 消息广播</title>
+    <style>
+      text {
+        display: none;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background-color: transparent;
+      }
+      .overlay-controls {
+        display: none !important;
+      }
+      h1 {
+        display: none;
+      }
+      .controls,
+      #info-panel {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        max-width: 350px;
+      }
+      .controls button {
+        font-size: 14px;
+        margin: 0 5px;
+        padding: 6px 12px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .controls button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      #start-animation {
+        background-color: #28a745;
+        color: white;
+        border-color: #28a745;
+      }
+      #info-panel {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .error-message {
+        color: #d62728;
+        font-weight: bold;
+      }
+      .chart-title {
+        display: none;
+      }
+      #network-svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="overlay-controls">
+      <h1>消息广播模拟</h1>
+      <div class="controls">
+        <button id="start-animation" disabled>开始广播</button>
+        <button id="reset">重置</button>
+      </div>
+      <div id="info-panel">正在加载数据...</div>
+    </div>
+    <h1 class="chart-title">学生联系网络 - 消息广播模拟</h1>
+    <svg id="network-svg"></svg>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      const svg = d3
+        .select('#network-svg')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('preserveAspectRatio', 'xMinYMin meet')
+      const infoPanel = d3.select('#info-panel')
+      const startButton = document.getElementById('start-animation')
+      const resetButton = document.getElementById('reset')
+
+      const PRIMARY_TRANSMISSION_DELAY = 1000
+      const SECONDARY_TRANSMISSION_DELAY = 1000
+      const LINK_DRAW_DURATION = 1000
+
+      // --- 与 highlighting 一致的颜色映射 ---
+      const colorMap = {
+        0: '#E2D874',
+        1: '#B4C7DE',
+        2: '#4592BB',
+        3: '#5AB3A6',
+        4: '#CA6E72',
+        5: '#CFBAAF',
+        6: '#E7A6AC',
+        7: '#B2789E',
+        8: '#F29076',
+      }
+      // 节点初始半径统一使用常量，避免不同阶段半径不一致导致的视觉差异
+      const NODE_RADIUS = 13.33
+
+      let simulationTimers = []
+      let receivedNodes = new Set()
+      let propagatingNodes = new Set()
+      let graphData = null
+      let nodeMap = new Map()
+
+      function showError(message) {
+        infoPanel.html(`<span class="error-message">错误:</span><br>${message}`)
+        startButton.disabled = true
+      }
+
+      // --- 同时加载 JSON 和 CSV ---
+      Promise.all([
+        d3.json('../Network_Diagram/network_data_for_broadcast.json'),
+        d3.json('../Network_Diagram/layout_positions.json'),
+        d3.csv('../Network_Diagram/network_nodes.csv'),
+      ])
+        .then(function ([graph, layouts, nodesCsv]) {
+          graphData = graph
+
+          if (!graphData.nodes || graphData.nodes.length === 0) {
+            showError('JSON文件中缺少 `nodes` 列表或列表为空。')
+            return
+          }
+          if (!graphData.centrality_scores) {
+            showError('JSON文件中缺少 `centrality_scores` 对象。')
+            return
+          }
+          if (!graphData.adjacency_list_sorted) {
+            showError('JSON文件中缺少 `adjacency_list_sorted` 对象。')
+            return
+          }
+
+          // 把 group 信息 merge 进 graph.nodes
+          const groupMap = new Map(nodesCsv.map((d) => [d.id, +d.group]))
+          graph.nodes.forEach((node) => {
+            node.group = groupMap.get(node.id) || 0
+            const position = layouts[node.id]
+            if (position) {
+              node.x = position.x * 0.667
+              node.y = position.y * 0.667
+            }
+          })
+
+          infoPanel.html(`数据加载完成。<br>点击按钮开始模拟。`)
+
+          nodeMap = new Map(graph.nodes.map((node) => [String(node.id), node]))
+
+          const mainGroup = svg.append('g')
+          // 将底部的灰色边放在最低层
+          const bottomLinkGroup = mainGroup.append('g').attr('class', 'bottom-links')
+          const linkGroup = mainGroup.append('g').attr('class', 'links')
+          const nodeGroup = mainGroup.append('g').attr('class', 'nodes')
+
+          graph.links.forEach((link) => {
+            link.sourceNode = nodeMap.get(String(link.source.id || link.source))
+            link.targetNode = nodeMap.get(String(link.target.id || link.target))
+          })
+
+          bottomLinkGroup
+            .selectAll('line')
+            .data(graph.links)
+            .enter()
+            .append('line')
+            .attr('id', (d) => `bg-link-${d.sourceNode.id}-${d.targetNode.id}`)
+            .attr('x1', (d) => d.sourceNode.x)
+            .attr('y1', (d) => d.sourceNode.y)
+            .attr('x2', (d) => d.targetNode.x)
+            .attr('y2', (d) => d.targetNode.y)
+            .style('stroke', '#C0C0C0')
+            .style('stroke-width', (d) => Math.max(0.5, Math.sqrt(d.value) / 2))
+            .style('opacity', 0)
+
+          linkGroup
+            .selectAll('line')
+            .data(graph.links)
+            .enter()
+            .append('line')
+            .attr('id', (d) => `link-${d.sourceNode.id}-${d.targetNode.id}`)
+            .attr('x1', (d) => d.sourceNode.x)
+            .attr('y1', (d) => d.sourceNode.y)
+            .attr('x2', (d) => d.targetNode.x)
+            .attr('y2', (d) => d.targetNode.y)
+            .style('stroke', '#CFBAAF')
+            .style('stroke-width', (d) => Math.max(0.5, Math.sqrt(d.value) / 2))
+            .style('opacity', 0)
+
+          const node = nodeGroup
+            .selectAll('g')
+            .data(graph.nodes)
+            .enter()
+            .append('g')
+            .attr('id', (d) => `node-${d.id}`)
+            .attr('transform', (d) => `translate(${d.x},${d.y})`)
+
+          // 放大节点 & 字体
+          node.append('circle').attr('r', NODE_RADIUS).style('fill', '#999')
+          node
+            .append('text')
+            .text((d) => d.id)
+            .attr('x', 16.67)
+            .attr('y', 6.67)
+            .style('fill', '#333')
+            .style('font-size', '16.67px')
+
+          // --- 动态计算 viewBox 适配页面 ---
+          let minX = Infinity,
+            maxX = -Infinity,
+            minY = Infinity,
+            maxY = -Infinity
+          graph.nodes.forEach((node) => {
+            // 使用原始坐标（未缩放）来计算 viewBox
+            const originalX = node.x / 0.667
+            const originalY = node.y / 0.667
+            minX = Math.min(minX, originalX)
+            maxX = Math.max(maxX, originalX)
+            minY = Math.min(minY, originalY)
+            maxY = Math.max(maxY, originalY)
+          })
+          const viewBoxWidth = maxX - minX
+          const viewBoxHeight = maxY - minY
+          const paddingX = viewBoxWidth * 0.15
+          const paddingY = viewBoxHeight * 0.15
+          svg.attr(
+            'viewBox',
+            `${minX - paddingX} ${minY - paddingY} ${
+              viewBoxWidth + paddingX * 2
+            } ${viewBoxHeight + paddingY * 2}`,
+          )
+
+          startButton.disabled = false
+        })
+        .catch((error) => {
+          console.error('加载或处理数据时出错:', error)
+          showError(
+            `无法加载或解析数据文件。<br>请检查文件路径是否正确。<br>详细错误: ${error.message}`,
+          )
+        })
+
+      function propagate(fromNodeId) {
+        if (propagatingNodes.has(fromNodeId)) return
+        propagatingNodes.add(fromNodeId)
+
+        const nodeElement = d3.select(`#node-${fromNodeId}`)
+        if (nodeElement.empty()) {
+          console.error(`无法在SVG中找到ID为 'node-${fromNodeId}' 的节点元素。动画中止。`)
+          return
+        }
+
+        const nodeData = nodeMap.get(String(fromNodeId))
+        nodeElement
+          .select('circle')
+          .transition()
+          .duration(300)
+          .style('fill', colorMap[nodeData.group] || '#d62728')
+
+        const sortedNeighbors = graphData.adjacency_list_sorted[fromNodeId] || []
+
+        sortedNeighbors.forEach((neighborId, index) => {
+          const totalDelay = PRIMARY_TRANSMISSION_DELAY + index * SECONDARY_TRANSMISSION_DELAY
+
+          const timer = setTimeout(() => {
+            if (receivedNodes.has(neighborId)) return
+            receivedNodes.add(neighborId)
+            infoPanel.html(`消息从 <b>${fromNodeId}</b> 传到 <b>${neighborId}</b>`)
+
+            const sourceNode = nodeMap.get(String(fromNodeId))
+            const targetNode = nodeMap.get(String(neighborId))
+            if (!sourceNode || !targetNode) return
+
+            const forwardLinkId = `link-${fromNodeId}-${neighborId}`
+            const reverseLinkId = `link-${neighborId}-${fromNodeId}`
+            const link = d3.select(`#${forwardLinkId}, #${reverseLinkId}`)
+
+            if (link.empty()) return
+
+            link
+              .attr('x1', sourceNode.x)
+              .attr('y1', sourceNode.y)
+              .attr('x2', sourceNode.x)
+              .attr('y2', sourceNode.y)
+              .style('opacity', 1)
+
+            link
+              .transition()
+              .duration(LINK_DRAW_DURATION)
+              .attr('x2', targetNode.x)
+              .attr('y2', targetNode.y)
+              .on('end', () => propagate(neighborId))
+          }, totalDelay)
+          simulationTimers.push(timer)
+        })
+      }
+
+      function startAnimation() {
+        startButton.disabled = true
+        resetAnimation()
+
+        const centrality = graphData.centrality_scores
+        const centralityKeys = Object.keys(centrality)
+        if (centralityKeys.length === 0) {
+          showError('`centrality_scores` 对象为空，无法确定起始节点。')
+          return
+        }
+
+        const startNodeId = centralityKeys.reduce((a, b) => (centrality[a] > centrality[b] ? a : b))
+
+        if (!nodeMap.has(String(startNodeId))) {
+          showError(
+            `计算出的起始节点 (ID: <b>${startNodeId}</b>) 在主节点列表中不存在，无法开始动画。`,
+          )
+          return
+        }
+
+        infoPanel.html(`广播开始！<br>起点: <b>节点 ${startNodeId}</b> (中心性最高)`)
+
+        receivedNodes.add(startNodeId)
+        propagate(startNodeId)
+      }
+
+      function resetAnimation() {
+        simulationTimers.forEach((timer) => clearTimeout(timer))
+        simulationTimers = []
+
+        receivedNodes.clear()
+        propagatingNodes.clear()
+
+        d3.selectAll('.nodes g circle')
+          .transition()
+          .duration(200)
+          .attr('r', NODE_RADIUS)
+          .style('fill', '#999')
+
+        d3.selectAll('.links line')
+          .interrupt()
+          .style('opacity', 0)
+          .attr('x1', (d) => d.sourceNode.x)
+          .attr('y1', (d) => d.sourceNode.y)
+          .attr('x2', (d) => d.targetNode.x)
+          .attr('y2', (d) => d.targetNode.y)
+
+        if (graphData) {
+          infoPanel.html('动画已重置。<br>请点击按钮开始模拟。')
+          startButton.disabled = false
+        }
+      }
+
+      startButton.addEventListener('click', startAnimation)
+      resetButton.addEventListener('click', resetAnimation)
+
+      // 暴露给外部调用
+      window.startBroadcast = startAnimation
+      
+      // 自动循环播放动画
+      function autoLoop() {
+        if (graphData) {
+          startAnimation()
+          // 10秒后重新开始（给动画足够的时间完成）
+          setTimeout(() => {
+            resetAnimation()
+            setTimeout(autoLoop, 1000) // 重置后等1秒再开始下一轮
+          }, 10000)
+        }
+      }
+      
+      // 页面加载后2秒自动开始循环
+      setTimeout(() => {
+        if (graphData) {
+          autoLoop()
+        }
+      }, 2000)
+    </script>
+  </body>
+</html>

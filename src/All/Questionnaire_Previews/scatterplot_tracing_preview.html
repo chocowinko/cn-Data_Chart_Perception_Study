@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tracing动画：空气质量轨迹 2014 vs 2016</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        text {
+            display: none;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            max-width: none;
+            margin: 0;
+            background-color: white;
+            padding: 5px;
+            border-radius: 0;
+            box-shadow: none;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 5px;
+            flex-shrink: 0;
+        }
+        .header h1 {
+            display: none;
+        }
+        .controls {
+            display: none;
+        }
+        #chart {
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+        }
+        button {
+            padding: 8px 15px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #1890ff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #40a9ff;
+        }
+        .axis-title {
+            display: none;
+        }
+        .dot {
+           stroke: #fff;
+           stroke-width: 0.5px;
+        }
+        .trace-line {
+            stroke-opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>2014-2016年北京昌平区PM2.5与臭氧浓度变化轨迹</h1>
+        </div>
+        <div class="controls">
+            <button id="replayBtn">重播动画</button>
+        </div>
+        <svg id="chart"></svg>
+    </div>
+
+<script>
+// ---------------- 基础配置 ----------------
+const svg = d3.select("#chart"),
+      margin = {top: 30, right: 120, bottom: 100, left: 100};
+
+// 动态计算SVG尺寸以适应容器
+const containerRect = document.querySelector('.container').getBoundingClientRect();
+const svgWidth = containerRect.width - 10; // 减去padding
+const svgHeight = containerRect.height - document.querySelector('.header').offsetHeight - document.querySelector('.controls').offsetHeight ;
+
+svg.attr('width', svgWidth).attr('height', svgHeight);
+
+const width = svgWidth - margin.left - margin.right,
+      height = svgHeight - margin.top - margin.bottom;
+
+const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+let mergedData;
+const x = d3.scaleLinear().range([0, width]);
+const y = d3.scaleLinear().range([height, 0]);
+
+// 月份颜色映射 - 使用新的调色板
+const monthColors = [
+    '#E0C4C4', '#4FAFAF', '#A8C8A8', '#F0906F', '#9BC49C', '#448CB3',
+    '#898888', '#E63946', '#F4E4BC', '#7FB3D3', '#D4AF37', '#BEA4B4'
+];
+const colorScale = d3.scaleOrdinal()
+    .domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+    .range(monthColors);
+
+// ---------------- 初始化图表 ----------------
+function initChart() {
+    g.selectAll("*").remove(); // 清空画布
+
+    g.append("g").attr("class", "x-axis").attr("transform", `translate(0,${height})`);
+    g.append("g").attr("class", "y-axis");
+
+    g.append("text")
+        .attr("class", "x-axis-title")
+        .attr("text-anchor", "middle")
+        .attr("x", width / 2)
+        .attr("y", height + 45)
+        .text("日平均臭氧浓度 (O3, μg/m³)");
+
+    g.append("text")
+        .attr("class", "y-axis-title")
+        .attr("text-anchor", "middle")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -50)
+        .attr("x", -height / 2)
+        .text("日平均PM2.5浓度 (μg/m³)");
+    
+    // 添加月份图例
+    const legend = g.append("g").attr("class", "legend")
+       .attr("transform", `translate(${width - 120}, 20)`);
+    
+    const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    
+    monthNames.forEach((month, i) => {
+        const legendRow = legend.append("g")
+            .attr("transform", `translate(0, ${i * 18})`);
+            
+        legendRow.append("text")
+            .attr("x", 10)
+            .attr("y", 4)
+            .text(month)
+            .style("font-size", "11px")
+            .style("fill", "#333");
+    });
+}
+
+// ---------------- 加载和处理数据 ----------------
+Promise.all([
+    d3.csv("../Scatterplot/daily_2014.csv", d3.autoType),
+    d3.csv("../Scatterplot/daily_2016.csv", d3.autoType)
+]).then(function([data2014, data2016]) {
+    
+    const data2016Map = new Map(data2016.map(d => [d.day_of_year, d]));
+
+    mergedData = data2014.map(d1 => {
+        const d2 = data2016Map.get(d1.day_of_year);
+        // 只使用能被4整除的天数的数据，减少数据点
+        if (d2 && d1.day_of_year % 4 === 0) {
+            const month = new Date(d1.date).getMonth() + 1; // Extract month (1-12)
+            return {
+                day_of_year: d1.day_of_year,
+                month: month,
+                x1: d1.O3, y1: d1["PM2.5"], // 2014
+                x2: d2.O3, y2: d2["PM2.5"]  // 2016
+            };
+        }
+        return null;
+    }).filter(d => d && d.x1 != null && d.y1 != null && d.x2 != null && d.y2 != null);
+
+    const xMax = d3.max([].concat(mergedData.map(d => d.x1), mergedData.map(d => d.x2)));
+    const yMax = d3.max([].concat(mergedData.map(d => d.y1), mergedData.map(d => d.y2)));
+    x.domain([0, xMax]).nice();
+    y.domain([0, yMax]).nice();
+
+    drawInitialState();
+    
+    // 自动开始动画
+    setTimeout(() => {
+        traceAnimation();
+    }, 1000);
+
+}).catch(err => {
+    console.error("加载数据失败或数据处理出错: ", err);
+    g.append("text").attr("x", 10).attr("y", 20).attr("dy", ".35em")
+     .text("错误: 无法加载'daily_2014.csv'或'daily_2016.csv'。")
+     .style("fill", "red").style("font-size", "12px");
+    g.append("text").attr("x", 10).attr("y", 40).attr("dy", ".35em")
+     .text("请确保您已运行Python脚本生成这两个文件，并将它们与HTML文件放在同一文件夹中。")
+     .style("fill", "red").style("font-size", "12px");
+});
+
+// ---------------- 绘图与动画函数 ----------------
+function drawInitialState() {
+    initChart();
+    
+    g.select(".x-axis").call(d3.axisBottom(x));
+    g.select(".y-axis").call(d3.axisLeft(y));
+
+    // 绘制2014年的初始点，使用月份颜色
+    g.selectAll(".dot")
+        .data(mergedData)
+        .enter()
+        .append("circle")
+        .attr("class", "dot")
+        .attr("cx", d => x(d.x1))
+        .attr("cy", d => y(d.y1))
+        .attr("r", 3)
+        .style("fill", d => colorScale(d.month)); // 使用月份颜色
+}
+
+function traceAnimation() {
+    if (!mergedData) return;
+
+    // 清除旧的轨迹线（如果重播的话）
+    g.selectAll(".trace-line").remove();
+    g.selectAll("defs").remove();
+
+    // 创建渐变定义
+    const defs = g.append("defs");
+
+    // 为每个数据点创建轨迹线，使用渐变颜色
+    const lines = g.selectAll(".trace-line")
+        .data(mergedData)
+        .enter()
+        .append("line")
+        .attr("class", "trace-line")
+        .attr("x1", d => x(d.x1))
+        .attr("y1", d => y(d.y1))
+        .attr("x2", d => x(d.x1)) // 初始状态，终点=起点
+        .attr("y2", d => y(d.y1))
+        .attr("stroke", (d, i) => {
+            // 为每条线创建唯一的渐变，基于实际线条的方向
+            const gradientId = `gradient-${i}`;
+            const gradient = defs.append("linearGradient")
+                .attr("id", gradientId)
+                .attr("gradientUnits", "userSpaceOnUse")
+                .attr("x1", x(d.x1))  // 起点坐标（2014年数据点）
+                .attr("y1", y(d.y1))
+                .attr("x2", x(d.x2))  // 终点坐标（2016年数据点）
+                .attr("y2", y(d.y2));
+            
+            // 起点（2014年）- 浅色
+            gradient.append("stop")
+                .attr("offset", "0%")
+                .attr("stop-color", colorScale(d.month))
+                .attr("stop-opacity", 0.2);
+            
+            // 终点（2016年）- 深色
+            gradient.append("stop")
+                .attr("offset", "100%")
+                .attr("stop-color", colorScale(d.month))
+                .attr("stop-opacity", 0.8);
+            
+            return `url(#${gradientId})`;
+        })
+        .attr("stroke-width", 3)
+        .attr("stroke-opacity", 0);
+
+    // 创建渐变轨迹动画
+    lines.transition()
+        .delay((d, i) => i * 3) // 延迟创建流动效果
+        .duration(0)
+        .attr("stroke-opacity", 0.3)
+        .transition()
+        .duration(3000)
+        .ease(d3.easeQuadInOut)
+        .attr("x2", d => x(d.x2))
+        .attr("y2", d => y(d.y2));
+
+    // 确保数据点在轨迹线之上：重新选择并提升到最上层
+    const dots = g.selectAll(".dot");
+    dots.raise(); // 将所有数据点提升到最上层
+
+    // 数据点移动动画，保持月份颜色
+    dots.transition()
+        .delay((d, i) => i * 3)
+        .duration(3000)
+        .ease(d3.easeQuadInOut)
+        .attr("cx", d => x(d.x2))
+        .attr("cy", d => y(d.y2))
+        .style("fill", d => colorScale(d.month)) // 保持月份颜色
+        .attr("r", 3.5); // 减小半径
+}
+
+// ---------------- 事件绑定 ----------------
+d3.select("#replayBtn").on("click", function() {
+    drawInitialState(); // 重置到初始状态
+    // 短暂延迟后播放动画，确保DOM更新完毕
+    setTimeout(traceAnimation, 100); 
+});
+
+</script>
+</body>
+</html>

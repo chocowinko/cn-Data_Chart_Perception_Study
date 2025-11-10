@@ -34,7 +34,7 @@
         <div class="button-control">
           <button
             class="confirm-btn"
-            @click="handleConfirm(null, selectedAnswer, '/home')"
+            @click="handleConfirm(null, selectedAnswer, '/experiment-complete')"
             :disabled="!selectedAnswer"
           >
             <span class="button-text">确认</span>

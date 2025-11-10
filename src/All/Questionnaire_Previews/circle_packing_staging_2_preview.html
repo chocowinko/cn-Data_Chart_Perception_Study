@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>圆堆积图 - 分阶段 2</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        color: #333;
+        overflow: hidden;
+      }
+      #chart-container {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      text.label {
+        display: none !important;
+      }
+      .tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.85);
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        pointer-events: none;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart-container">
+      <svg id="chart" width="100%" height="100%"></svg>
+    </div>
+
+    <script>
+      const CSV_URL = '../Circle_Packing/asia_europe_emissions_hierarchical.csv'
+      const colorScale = d3.scaleOrdinal().domain(['Asia', 'Europe']).range(['#FFA07A', '#5DADE2'])
+      const continentNames = { Asia: '亚洲', Europe: '欧洲' }
+      const subregionNames = {
+        'Western Asia': '西亚', 'South-eastern Asia': '东南亚', 'Southern Asia': '南亚',
+        'Central Asia': '中亚', 'Eastern Asia': '东亚', 'Eastern Europe': '东欧',
+        'Northern Europe': '北欧', 'Southern Europe': '南欧', 'Western Europe': '西欧'
+      }
+      const countryNames = {
+        'Saudi Arabia': '沙特阿拉伯', 'United Arab Emirates': '阿联酋', 'Qatar': '卡塔尔',
+        'Kuwait': '科威特', 'Bahrain': '巴林', 'Oman': '阿曼', 'Yemen': '也门',
+        'Iraq': '伊拉克', 'Jordan': '约旦', 'Lebanon': '黎巴嫩', 'Israel': '以色列',
+        'Georgia': '格鲁吉亚', 'Armenia': '亚美尼亚', 'Azerbaijan': '阿塞拜疆', 'Cyprus': '塞浦路斯',
+        'Singapore': '新加坡', 'Malaysia': '马来西亚', 'Thailand': '泰国', 'Indonesia': '印度尼西亚',
+        'Philippines': '菲律宾', 'Cambodia': '柬埔寨', 'Myanmar': '缅甸',
+        'India': '印度', 'Pakistan': '巴基斯坦', 'Bangladesh': '孟加拉国', 'Sri Lanka': '斯里兰卡',
+        'Nepal': '尼泊尔', 'Bhutan': '不丹', 'Maldives': '马尔代夫',
+        'Kazakhstan': '哈萨克斯坦', 'Uzbekistan': '乌兹别克斯坦', 'Turkmenistan': '土库曼斯坦',
+        'Tajikistan': '塔吉克斯坦', 'Kyrgyzstan': '吉尔吉斯斯坦',
+        'China': '中国', 'Japan': '日本', 'Mongolia': '蒙古',
+        'Poland': '波兰', 'Czechia': '捷克', 'Slovakia': '斯洛伐克', 'Hungary': '匈牙利',
+        'Romania': '罗马尼亚', 'Bulgaria': '保加利亚', 'Ukraine': '乌克兰', 'Belarus': '白俄罗斯',
+        'Sweden': '瑞典', 'Norway': '挪威', 'Finland': '芬兰', 'Denmark': '丹麦',
+        'Iceland': '冰岛', 'Estonia': '爱沙尼亚', 'Latvia': '拉脱维亚', 'Lithuania': '立陶宛',
+        'Ireland': '爱尔兰',
+        'Spain': '西班牙', 'Italy': '意大利', 'Greece': '希腊', 'Portugal': '葡萄牙',
+        'Serbia': '塞尔维亚', 'Croatia': '克罗地亚', 'Bosnia and Herzegovina': '波斯尼亚和黑塞哥维那',
+        'Albania': '阿尔巴尼亚', 'North Macedonia': '北马其顿', 'Slovenia': '斯洛文尼亚',
+        'Montenegro': '黑山', 'Malta': '马耳他', 'Andorra': '安道尔',
+        'Germany': '德国', 'France': '法国', 'Belgium': '比利时', 'Netherlands': '荷兰',
+        'Luxembourg': '卢森堡', 'Switzerland': '瑞士', 'Austria': '奥地利',
+        'Liechtenstein': '列支敦士登'
+      }
+      let root, svg, allNodes, allLabels
+
+      function playStagingAnimation() {
+        resetAll()
+        const duration = 1500
+        const delayStep = 1500
+
+        const t = d3.transition().duration(duration)
+
+        // 1. 大洲
+        allNodes
+          .filter((d) => d.depth === 1)
+          .transition(t)
+          .attr('r', (d) => d.r)
+          .attr('opacity', 0.9)
+        allLabels
+          .filter((d) => d.depth === 1)
+          .transition(t)
+          .attr('opacity', 1)
+
+        // 2. 次区域
+        allNodes
+          .filter((d) => d.depth === 2)
+          .transition(t.delay(delayStep))
+          .attr('r', (d) => d.r)
+          .attr('opacity', 0.9)
+        allLabels
+          .filter((d) => d.depth === 2)
+          .transition(t.delay(delayStep))
+          .attr('opacity', 1)
+
+        // 3. 国家
+        allNodes
+          .filter((d) => d.depth === 3)
+          .transition(t.delay(delayStep * 2))
+          .attr('r', (d) => d.r)
+          .attr('opacity', 0.9)
+        allLabels
+          .filter((d) => d.depth === 3)
+          .transition(t.delay(delayStep * 2))
+          .attr('opacity', 1)
+      }
+
+      function resetAll() {
+        allNodes.transition().duration(400).attr('r', 0).attr('opacity', 0)
+        allLabels.transition().duration(400).attr('opacity', 0)
+      }
+
+      d3.csv(CSV_URL)
+        .then((data) => {
+          // 只保留亚洲数据
+          const filt = data.filter(
+            (d) =>
+              d.continent === 'Asia' &&
+              [
+                'Western Asia',
+                'South-eastern Asia',
+                'Southern Asia',
+                'Central Asia',
+                'Eastern Asia',
+              ].includes(d.sub_region)
+          )
+          const contTot = d3.rollup(
+            filt,
+            (v) => d3.sum(v, (d) => +d.emissions),
+            (d) => d.continent,
+          )
+          const subTot = d3.rollup(
+            filt,
+            (v) => d3.sum(v, (d) => +d.emissions),
+            (d) => d.continent + d.sub_region,
+          )
+          const couMap = new Map(filt.map((d) => [d.country, +d.emissions]))
+
+          const hier = {
+            name: 'World',
+            children: Array.from(contTot.keys()).map((c) => ({
+              name: c,
+              value: contTot.get(c),
+              children: Array.from(
+                d3
+                  .group(
+                    filt.filter((d) => d.continent === c),
+                    (d) => d.sub_region,
+                  )
+                  .entries(),
+              ).map(([s, sDat]) => ({
+                name: s,
+                value: subTot.get(c + s),
+                children: sDat.map((d) => ({
+                  name: d.country,
+                  value: couMap.get(d.country),
+                })),
+              })),
+            })),
+          }
+          createViz(hier)
+        })
+        .catch((err) => console.error(err))
+
+      function createViz(hier) {
+        d3.select('#chart').selectAll('*').remove()
+        const box = document.getElementById('chart-container')
+        const w = box.clientWidth,
+          h = box.clientHeight
+        svg = d3
+          .select('#chart')
+          .attr('viewBox', `0 0 ${w} ${h}`)
+          .append('g')
+          .attr('transform', `translate(${w / 2},${h / 2})`)
+
+        const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0)
+
+        // 调整圆的尺寸以适应容器，形成完整圆形
+        const size = Math.min(w, h) * 0.9
+        const pack = d3.pack().size([size, size]).padding(3)
+        root = d3
+          .hierarchy(hier)
+          .sum((d) => d.value || 0)
+          .sort((a, b) => b.value - a.value)
+        pack(root)
+        const nodes = root.children
+        
+        // pack布局的中心点
+        const packCenterX = size / 2
+        const packCenterY = size / 2
+
+        allNodes = svg
+          .selectAll('circle')
+          .data(nodes.flatMap((d) => d.descendants()))
+          .enter()
+          .append('circle')
+          .attr('r', 0)
+          .attr('cx', (d) => d.x - packCenterX)
+          .attr('cy', (d) => d.y - packCenterY)
+          .attr('fill', (d) => {
+            if (d.depth === 1) return colorScale(d.data.name)
+            if (d.depth === 2) return d3.color(colorScale(d.parent.data.name)).brighter(0.5)
+            return d3.color(colorScale(d.parent.parent.data.name)).brighter(1)
+          })
+          .attr('opacity', 0)
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 1.2)
+          .on('mouseover', (e, d) => {
+            let displayName = d.data.name
+            if (d.depth === 1 && continentNames[d.data.name]) {
+              displayName = continentNames[d.data.name]
+            } else if (d.depth === 2 && subregionNames[d.data.name]) {
+              displayName = subregionNames[d.data.name]
+            } else if (d.depth === 3 && countryNames[d.data.name]) {
+              displayName = countryNames[d.data.name]
+            }
+            tooltip
+              .html(`<strong>${displayName}</strong><br>${d.data.value.toFixed(2)} tCO₂e`)
+              .style('left', e.pageX + 10 + 'px')
+              .style('top', e.pageY - 10 + 'px')
+              .transition()
+              .duration(200)
+              .style('opacity', 0.9)
+          })
+          .on('mouseout', () => tooltip.transition().duration(200).style('opacity', 0))
+
+        allLabels = svg
+          .selectAll('text.label')
+          .data(nodes.flatMap((d) => d.descendants()))
+          .enter()
+          .append('text')
+          .attr('class', 'label')
+          .attr('opacity', 0)
+          .each(function (d) {
+            const sel = d3.select(this)
+            let displayName = d.data.name
+            if (d.depth === 1 && continentNames[d.data.name]) {
+              displayName = continentNames[d.data.name]
+            } else if (d.depth === 2 && subregionNames[d.data.name]) {
+              displayName = subregionNames[d.data.name]
+            } else if (d.depth === 3 && countryNames[d.data.name]) {
+              displayName = countryNames[d.data.name]
+            }
+            const labelText =
+              displayName.length > 15 ? displayName.substring(0, 15) + '…' : displayName
+
+            if (d.depth === 1) {
+              // 大洲标签 - Asia和Europe往上移
+              sel.text(labelText)
+              sel
+                .attr('x', d.x - packCenterX)
+                .attr('y', d.y - packCenterY - d.r - 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-weight', '500')
+                .attr('font-size', Math.max(14, Math.min(24, d.r * 0.4)))
+                .attr('fill', '#000')
+            } else if (d.depth === 2) {
+              // 次区域标签 - 根据名称调整位置
+              sel.text(labelText)
+              let xOffset2 = 0
+              let yOffset2 = -5
+              let textAnchor = 'middle'
+              let yBase = d.y - packCenterY - d.r // 默认在圆圈顶部外侧
+
+              // South-eastern Asia往下移
+              if (d.data.name === 'South-eastern Asia') {
+                yOffset2 = 10
+              }
+              // Eastern Asia移到左边并下移，右移10px
+              else if (d.data.name === 'Eastern Asia') {
+                xOffset2 = -d.r
+                yBase = d.y - packCenterY // 在圆心高度
+                yOffset2 = 20
+                textAnchor = 'end'
+              }
+              // Northern Europe左移并下移
+              else if (d.data.name === 'Northern Europe') {
+                xOffset2 = -50
+                yOffset2 = 5
+              }
+              // Southern Europe下移
+              else if (d.data.name === 'Southern Europe') {
+                yOffset2 = 10
+              }
+              // Eastern Europe移到左边并右移10px
+              else if (d.data.name === 'Eastern Europe') {
+                xOffset2 = -d.r
+                yBase = d.y - packCenterY // 在圆心高度
+                yOffset2 = 0
+                textAnchor = 'end'
+              }
+              // Western Asia左上方
+              else if (d.data.name === 'Western Asia') {
+                xOffset2 = -50
+                yOffset2 = -5
+              }
+
+              sel
+                .attr('x', d.x - packCenterX + xOffset2)
+                .attr('y', yBase + yOffset2)
+                .attr('text-anchor', textAnchor)
+                .attr('font-weight', '500')
+                .attr('font-size', Math.max(11, Math.min(16, d.r * 0.45)))
+                .attr('fill', '#000')
+            } else {
+              // 国家标签 - 显示所有国家
+              sel.text(labelText)
+              sel
+                .attr('x', d.x - packCenterX)
+                .attr('y', d.y - packCenterY)
+                .attr('text-anchor', 'middle')
+                .attr('dominant-baseline', 'middle')
+                .attr('font-size', Math.max(7, Math.min(12, d.r * 0.4)))
+                .attr('fill', '#333')
+            }
+          })
+      }
+
+      // 暴露函数给外部调用
+      window.playStagingAnimation = playStagingAnimation
+      
+      // 自动循环播放动画
+      function loopStagingAnimation() {
+        playStagingAnimation()
+        // 计算总时长：reset(400ms) + stage1(1500ms) + stage2(delay 1500 + 1500) + stage3(delay 3000 + 1500) = 400 + 1500 + 3000 + 4500 = 9400ms
+        // 加上额外等待时间
+        setTimeout(loopStagingAnimation, 10000)
+      }
+      
+      // 等待图表创建后启动循环
+      setTimeout(() => {
+        if (allNodes && allLabels) {
+          loopStagingAnimation()
+        }
+      }, 2000)
+    </script>
+  </body>
+</html>

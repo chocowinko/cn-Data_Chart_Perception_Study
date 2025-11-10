@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>热力图 - 分步策略</title>
+    <style>
+      :root {
+        --cell-size: 26.4px;
+        --grid-gap: 1.2px;
+        --day-row-height: 30px;
+        --month-column-width: 60px;
+        --text-color: #333;
+      }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Arial, sans-serif;
+        background: #f0f2f5;
+        color: var(--text-color);
+        padding: 20px 0;
+        display: flex;
+        justify-content: center;
+      }
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+         gap: 40px;
+        padding-right: 80px;
+      }
+      .chart-block {
+        position: relative; /* 关键：成为标题定位的父级 */
+        text-align: center;
+      }
+
+      /* --- 核心修改：城市标题样式 --- */
+      h2.chart-title {
+        display: none; /* 隐藏标题 */
+        position: absolute;
+        /* 定位到图表网格的左上角 */
+        top: calc(var(--day-row-height) - 20px);
+        left: calc(var(--month-column-width) - 150px);
+        z-index: 10;
+        margin: 5px;
+        padding: 4px 10px;
+        font-size: 14px;
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 4px;
+        color: #000;
+        writing-mode: horizontal-tb;
+        transform: rotate(0deg);
+        white-space: nowrap;
+        width: auto;
+        text-align: left;
+      }
+      /* -------------------------------- */
+
+      .chart-area {
+        position: relative;
+        padding-top: var(--day-row-height);
+        padding-left: var(--month-column-width);
+      }
+      .chart-grid {
+        display: grid;
+        grid-template-columns: repeat(31, var(--cell-size));
+        grid-template-rows: repeat(12, var(--cell-size));
+        gap: var(--grid-gap);
+        border: 1px solid #ccc;
+      }
+      .grid-cell {
+        width: var(--cell-size);
+        height: var(--cell-size);
+        background-color: #eee;
+        transition: background-color 0.5s ease-in-out;
+      }
+      .axis-months,
+      .axis-days,
+      #tooltip,
+      .legend-bar-vertical,
+      .legend-labels-vertical,
+      .warn {
+        position: absolute;
+      }
+      .axis-months {
+        top: var(--day-row-height);
+        left: 0;
+        width: var(--month-column-width);
+        display: grid;
+        grid-template-rows: repeat(12, var(--cell-size));
+        gap: var(--grid-gap);
+      }
+      .axis-days {
+        top: 0;
+        left: var(--month-column-width);
+        height: var(--day-row-height);
+        display: grid;
+        grid-template-columns: repeat(31, var(--cell-size));
+        gap: var(--grid-gap);
+      }
+      .axis-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #666;
+      }
+      #tooltip {
+        display: none;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        pointer-events: none;
+        transform: translate(-50%, -120%);
+        white-space: nowrap;
+      }
+      .legend-bar-vertical {
+        right: -35px;
+        top: var(--day-row-height);
+        width: 20px;
+        height: calc(12 * var(--cell-size) + 11 * var(--grid-gap));
+        border: 1px solid #ccc;
+        background: linear-gradient(to top, #307ca6, #faefeb, #c54c52);
+      }
+      .legend-labels-vertical {
+        right: -80px;
+        top: var(--day-row-height);
+        height: calc(12 * var(--cell-size) + 11 * var(--grid-gap));
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #555;
+      }
+      .warn {
+        display: none;
+        color: red;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="chart-block" id="chart-block-moscow">
+        <h2 class="chart-title">Moscow</h2>
+        <div class="chart-area">
+          <div id="axis-months-moscow" class="axis-months"></div>
+          <div id="axis-days-moscow" class="axis-days"></div>
+          <div id="chart-grid-moscow" class="chart-grid"></div>
+        </div>
+      </div>
+
+      <div class="chart-block" id="chart-block-copenhagen">
+        <h2 class="chart-title">Copenhagen</h2>
+        <div class="chart-area">
+          <div id="axis-months-copenhagen" class="axis-months"></div>
+          <div id="axis-days-copenhagen" class="axis-days"></div>
+          <div id="chart-grid-copenhagen" class="chart-grid"></div>
+        </div>
+      </div>
+
+      <div id="tooltip"></div>
+      <div id="warn" class="warn"></div>
+    </div>
+
+    <script>
+      // (JavaScript部分与分步动画代码完全相同，因此省略以保持简洁)
+      const CSV_URL = "../Heatmap/moscow_copenhagen_tem.csv";
+      const dataMoscow = new Map();
+      const dataCopenhagen = new Map();
+      const MONTH_NAMES = [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月",
+      ];
+      const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      async function loadCSV() {
+        const response = await fetch(CSV_URL);
+        if (!response.ok)
+          throw new Error(`无法加载CSV文件: ${response.statusText}`);
+        const text = await response.text();
+        const rows = text.split("\n").slice(1);
+        rows.forEach((row) => {
+          const columns = row.split(",");
+          if (columns.length < 7) return;
+          const city = columns[2].trim();
+          const month = parseInt(columns[3], 10);
+          const day = parseInt(columns[4], 10);
+          const year = parseInt(columns[5], 10);
+          const avgTemp = parseFloat(columns[6]);
+          if (year !== 2019 || isNaN(avgTemp)) return;
+          const key = `${month}-${day}`;
+          const dataPoint = { month, day, avgTemp };
+          if (city === "Moscow") dataMoscow.set(key, dataPoint);
+          else if (city === "Copenhagen") dataCopenhagen.set(key, dataPoint);
+        });
+      }
+      function getColorForTemp(temp) {
+        const minTemp = -17.78,
+          midTemp = 2.5,
+          maxTemp = 25.06;
+        const coldColor = [48, 124, 166],
+          midColor = [250, 239, 235],
+          hotColor = [197, 76, 82];
+        const lerp = (c1, c2, factor) => c1 * (1 - factor) + c2 * factor;
+        let r, g, b;
+        if (temp <= midTemp) {
+          const factor = Math.max(
+            0,
+            Math.min(1, (temp - minTemp) / (midTemp - minTemp))
+          );
+          r = lerp(coldColor[0], midColor[0], factor);
+          g = lerp(coldColor[1], midColor[1], factor);
+          b = lerp(coldColor[2], midColor[2], factor);
+        } else {
+          const factor = Math.max(
+            0,
+            Math.min(1, (temp - midTemp) / (maxTemp - midTemp))
+          );
+          r = lerp(midColor[0], hotColor[0], factor);
+          g = lerp(midColor[1], hotColor[1], factor);
+          b = lerp(midColor[2], hotColor[2], factor);
+        }
+        r = Math.round(r);
+        g = Math.round(g);
+        b = Math.round(b);
+        return `rgb(${r}, ${g}, ${b})`;
+      }
+      function createBlankGrid(city) {
+        const gridId = `chart-grid-${city.toLowerCase()}`;
+        const gridEl = document.getElementById(gridId);
+        gridEl.innerHTML = "";
+        for (let m = 1; m <= 12; m++) {
+          for (let d = 1; d <= 31; d++) {
+            const cell = document.createElement("div");
+            cell.className = "grid-cell";
+            cell.id = `cell-${city.toLowerCase()}-${m}-${d}`;
+            if (d > DAYS_IN_MONTH[m - 1]) {
+              cell.style.visibility = "hidden";
+            }
+            gridEl.appendChild(cell);
+          }
+        }
+      }
+      function fillSeason(seasonMonths) {
+        for (const city of ["Moscow", "Copenhagen"]) {
+          const dataMap = city === "Moscow" ? dataMoscow : dataCopenhagen;
+          for (const m of seasonMonths) {
+            for (let d = 1; d <= DAYS_IN_MONTH[m - 1]; d++) {
+              const key = `${m}-${d}`;
+              const dataPoint = dataMap.get(key);
+              if (dataPoint) {
+                const cell = document.getElementById(
+                  `cell-${city.toLowerCase()}-${m}-${d}`
+                );
+                cell.style.backgroundColor = getColorForTemp(dataPoint.avgTemp);
+                cell.addEventListener("mouseover", (evt) =>
+                  showTooltip(evt, dataPoint)
+                );
+                cell.addEventListener("mouseout", hideTooltip);
+              }
+            }
+          }
+        }
+      }
+      async function runStagingAnimation() {
+        const STAGE_DELAY = 2000;
+        const seasons = {
+          winter: [12, 1, 2],
+          spring: [3, 4, 5],
+          summer: [6, 7, 8],
+          autumn: [9, 10, 11],
+        };
+        const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+        
+        // Clear and run one cycle
+        createBlankGrid("Moscow");
+        createBlankGrid("Copenhagen");
+        fillSeason(seasons.winter);
+        await sleep(STAGE_DELAY);
+        fillSeason(seasons.spring);
+        await sleep(STAGE_DELAY);
+        fillSeason(seasons.summer);
+        await sleep(STAGE_DELAY);
+        fillSeason(seasons.autumn);
+        
+        // Loop: restart after all seasons shown
+        await sleep(STAGE_DELAY);
+        runStagingAnimation(); // Recursive call for looping
+      }
+      function renderAxes(city) {
+        const monthsAxis = document.getElementById(
+          `axis-months-${city.toLowerCase()}`
+        );
+        const daysAxis = document.getElementById(
+          `axis-days-${city.toLowerCase()}`
+        );
+        monthsAxis.innerHTML = "";
+        daysAxis.innerHTML = "";
+        MONTH_NAMES.forEach((name) => {
+          const label = document.createElement("div");
+          label.className = "axis-label";
+          label.textContent = name;
+          monthsAxis.appendChild(label);
+        });
+        for (let d = 1; d <= 31; d++) {
+          const label = document.createElement("div");
+          label.className = "axis-label";
+          label.textContent = d;
+          daysAxis.appendChild(label);
+        }
+      }
+      function renderLegend(containerId) {
+        const containerEl = document.getElementById(containerId);
+        if (!containerEl) return;
+        const minTemp = -17.78,
+          maxTemp = 25.06;
+        const legendBar = document.createElement("div");
+        legendBar.className = "legend-bar-vertical";
+        const legendLabels = document.createElement("div");
+        legendLabels.className = "legend-labels-vertical";
+        const maxLabel = document.createElement("span");
+        maxLabel.textContent = `${maxTemp.toFixed(1)}°C`;
+        const minLabel = document.createElement("span");
+        minLabel.textContent = `${minTemp.toFixed(1)}°C`;
+        legendLabels.appendChild(maxLabel);
+        legendLabels.appendChild(minLabel);
+        containerEl.appendChild(legendBar);
+        containerEl.appendChild(legendLabels);
+      }
+      function showTooltip(evt, dataPoint) {
+        const tooltipEl = document.getElementById("tooltip");
+        tooltipEl.style.display = "block";
+        const temp = dataPoint.avgTemp.toFixed(1);
+        tooltipEl.innerHTML = `${dataPoint.month}月${dataPoint.day}日: ${temp}°C`;
+        const rect = evt.target.getBoundingClientRect();
+        tooltipEl.style.left = `${
+          rect.left + window.scrollX + rect.width / 2
+        }px`;
+        tooltipEl.style.top = `${rect.top + window.scrollY}px`;
+      }
+      function hideTooltip() {
+        document.getElementById("tooltip").style.display = "none";
+      }
+      async function init() {
+        try {
+          await loadCSV();
+          renderAxes("Moscow");
+          renderAxes("Copenhagen");
+          createBlankGrid("Moscow");
+          createBlankGrid("Copenhagen");
+          renderLegend("chart-block-moscow");
+          renderLegend("chart-block-copenhagen");
+          runStagingAnimation();
+        } catch (err) {
+          console.error(err);
+          const warnEl = document.getElementById("warn");
+          warnEl.style.display = "block";
+          warnEl.textContent = `加载失败：${err.message}。请确保 moscow_copenhagen_tem.csv 文件在同一目录下。`;
+        }
+      }
+      window.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>

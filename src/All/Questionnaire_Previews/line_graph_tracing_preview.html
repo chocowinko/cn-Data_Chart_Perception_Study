@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2024年产品类目销售额波动分析</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: transparent;
+      }
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: transparent;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0;
+      }
+      h1 {
+        display: none;
+      }
+      .chart-container {
+        position: relative;
+        height: 600px;
+        margin-bottom: 0;
+      }
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+      .line {
+        fill: none;
+        stroke-width: 2;
+      }
+      .dot {
+        r: 4;
+      }
+      .dot:hover {
+        r: 6;
+      }
+      .axis {
+        font-size: 12px;
+      }
+      .axis text {
+        display: none;
+      }
+      .axis-label {
+        display: none;
+      }
+      .legend {
+        display: none;
+      }
+      .tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px;
+        border-radius: 4px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .analysis-section {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+      }
+      .volatility-ranking {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .ranking-item {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid;
+      }
+      .ranking-item h4 {
+        margin: 0 0 10px 0;
+        font-size: 16px;
+      }
+      .ranking-item p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>2024年产品类目销售额波动分析</h1>
+
+      <div class="chart-container">
+        <svg id="salesChart"></svg>
+      </div>
+      <div id="tooltip" class="tooltip"></div>
+    </div>
+
+    <script>
+      // CSV文件解析函数
+      function parseCSV(csvText) {
+        const lines = csvText.split('\n')
+        const headers = lines[1].split(',').map((h) => h.trim()) // 第二行是表头
+        const months = [
+          '1月',
+          '2月',
+          '3月',
+          '4月',
+          '5月',
+          '6月',
+          '7月',
+          '8月',
+          '9月',
+          '10月',
+          '11月',
+          '12月',
+        ]
+        const categories = {}
+
+        // 从第4行开始是数据（跳过标题和分隔线）
+        for (let i = 3; i < lines.length; i++) {
+          const line = lines[i].trim()
+          if (!line) continue
+
+          const values = line.split(',').map((v) => v.trim())
+          if (values.length < 2) continue
+
+          // 跳过月份列，从第二列开始是产品类目数据
+          for (let j = 1; j < Math.min(values.length, headers.length); j++) {
+            const categoryName = headers[j].replace('(亿元)', '').trim()
+            const value = parseInt(values[j])
+
+            if (!isNaN(value) && categoryName) {
+              if (!categories[categoryName]) {
+                categories[categoryName] = []
+              }
+              categories[categoryName].push(value)
+            }
+          }
+        }
+
+        return { months, categories }
+      }
+
+      // 加载CSV文件并生成图表
+      async function loadDataAndCreateChart() {
+        try {
+          const response = await fetch('../Line_Graph/销售额.csv')
+          const csvText = await response.text()
+          const rawData = parseCSV(csvText)
+
+          createChart(rawData)
+        } catch (error) {
+          console.error('加载CSV文件失败:', error)
+          // 如果加载失败，显示错误信息
+          document.getElementById('salesChart').style.display = 'none'
+          const container = document.querySelector('.chart-container')
+          container.innerHTML =
+            '<p style="text-align: center; color: #e74c3c; padding: 50px;">无法加载数据文件，请确保销售额.csv文件在同一目录下</p>'
+        }
+      }
+
+      // 创建图表的函数
+      function createChart(rawData) {
+        // 过滤掉超过1000亿的产品类目（基于最大值）
+        const filteredCategories = {}
+        Object.keys(rawData.categories).forEach((category) => {
+          const values = rawData.categories[category]
+          const maxValue = Math.max(...values)
+          if (maxValue <= 1000) {
+            filteredCategories[category] = values
+          }
+        })
+
+        // 计算波动性（标准差）
+        function calculateStandardDeviation(values) {
+          const mean = values.reduce((sum, val) => sum + val, 0) / values.length
+          const squaredDiffs = values.map((val) => Math.pow(val - mean, 2))
+          const avgSquaredDiff = squaredDiffs.reduce((sum, val) => sum + val, 0) / values.length
+          return Math.sqrt(avgSquaredDiff)
+        }
+
+        // 计算每个类目的统计信息并按平均销售额分组
+        const categoryData = Object.keys(filteredCategories)
+          .map((category) => {
+            const values = filteredCategories[category]
+            const volatility = calculateStandardDeviation(values)
+            const mean = values.reduce((sum, val) => sum + val, 0) / values.length
+            const min = Math.min(...values)
+            const max = Math.max(...values)
+
+            return {
+              category,
+              volatility,
+              mean,
+              min,
+              max,
+              values,
+            }
+          })
+          .sort((a, b) => a.mean - b.mean) // 按平均销售额排序
+
+        // 按销售额体量分组
+        const smallGoods = categoryData.filter((d) => d.mean <= 200) // 小商品：平均销售额 ≤ 200亿
+        const mediumGoods = categoryData.filter((d) => d.mean > 200 && d.mean <= 500) // 中档商品：200-500亿
+        const largeGoods = categoryData.filter((d) => d.mean > 500) // 大宗商品：> 500亿
+
+        // 合并所有数据用于图表显示
+        const volatilityData = [...smallGoods, ...mediumGoods, ...largeGoods]
+
+        const distinctColors = [
+          '#a6cee3',
+          '#1f78b4',
+          '#b2df8a',
+          '#59a953',
+          '#fb9a99',
+          '#d54f4f',
+          '#fdbf6f',
+          '#f39c4a',
+          '#cab2d6',
+          '#8b65b4',
+        ]
+
+        // 设置图表尺寸和边距
+        const margin = { top: 10, right: 10, bottom: 10, left: 10 }
+        const containerWidth = document.querySelector('.chart-container').clientWidth
+        const containerHeight = 600
+        const width = containerWidth - margin.left - margin.right
+        const height = containerHeight - margin.top - margin.bottom
+
+        // 清除现有的SVG内容
+        d3.select('#salesChart').selectAll('*').remove()
+
+        // 创建SVG
+        const svg = d3
+          .select('#salesChart')
+          .attr('width', containerWidth)
+          .attr('height', containerHeight)
+
+        const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`)
+
+        // 创建比例尺
+        const xScale = d3.scalePoint().domain(rawData.months).range([0, width]).padding(0.1)
+
+        const yScale = d3
+          .scaleLinear()
+          .domain([0, d3.max(volatilityData, (d) => d3.max(d.values))])
+          .range([height, 0])
+
+        // 创建线条生成器
+        const line = d3
+          .line()
+          .x((d, i) => xScale(rawData.months[i]))
+          .y((d) => yScale(d))
+
+        // 创建坐标轴
+        const xAxis = d3.axisBottom(xScale)
+        const yAxis = d3.axisLeft(yScale)
+
+        // 添加X轴
+        g.append('g').attr('class', 'axis').attr('transform', `translate(0,${height})`).call(xAxis)
+
+        // 添加Y轴
+        g.append('g').attr('class', 'axis').call(yAxis)
+
+        // 添加X轴标签
+        g.append('text')
+          .attr('class', 'axis-label')
+          .attr('x', width / 2)
+          .attr('y', height + 40)
+          .style('text-anchor', 'middle')
+          .text('月份')
+
+        // 添加Y轴标签
+        g.append('text')
+          .attr('class', 'axis-label')
+          .attr('transform', 'rotate(-90)')
+          .attr('x', -height / 2)
+          .attr('y', -40)
+          .style('text-anchor', 'middle')
+          .text('销售额 (亿元)')
+
+        // 创建tooltip
+        const tooltip = d3.select('#tooltip')
+
+        // 绘制线条和点
+        volatilityData.forEach((item, index) => {
+          const color = distinctColors[index % distinctColors.length]
+
+          // 绘制线条
+          const path = g
+            .append('path')
+            .datum(item.values)
+            .attr('class', 'line')
+            .attr('d', line)
+            .style('stroke', color)
+            .style('animation-delay', `${index * 0.3}s`)
+
+          // 获取路径长度并设置动画
+          const pathLength = path.node().getTotalLength()
+          path
+            .style('stroke-dasharray', pathLength)
+            .style('stroke-dashoffset', pathLength)
+            .transition()
+            .duration(6000)
+            .ease(d3.easeLinear)
+            .style('stroke-dashoffset', 0)
+
+          // 绘制数据点（与线条同步显示）
+          const totalPoints = item.values.length
+          const animationDuration = 6000 // 与线条动画时长一致
+
+          g.selectAll(`.dot-${index}`)
+            .data(item.values)
+            .enter()
+            .append('circle')
+            .attr('class', `dot dot-${index}`)
+            .attr('cx', (d, i) => xScale(rawData.months[i]))
+            .attr('cy', (d) => yScale(d))
+            .style('fill', color)
+            .style('stroke', color)
+            .attr('r', 0)
+            .style('opacity', 0)
+            .transition()
+            .delay((d, i) => (i / (totalPoints - 1)) * animationDuration)
+            .duration(300)
+            .style('opacity', 1)
+            .attr('r', 4)
+
+          // 添加鼠标交互事件
+          g.selectAll(`.dot-${index}`)
+            .on('mouseover', function (event, d) {
+              const monthIndex = item.values.indexOf(d)
+              tooltip.transition().duration(200).style('opacity', 0.9)
+              tooltip
+                .html(`${item.category}: ${d}亿元<br/>月份: ${rawData.months[monthIndex]}`)
+                .style('left', event.pageX + 10 + 'px')
+                .style('top', event.pageY - 28 + 'px')
+              d3.select(this).transition().duration(100).attr('r', 6)
+            })
+            .on('mouseout', function () {
+              tooltip.transition().duration(500).style('opacity', 0)
+              d3.select(this).transition().duration(100).attr('r', 4)
+            })
+        })
+
+        // 创建图例（延迟显示）
+        const legend = svg
+          .append('g')
+          .attr('class', 'legend')
+          .attr('transform', `translate(${width + margin.left + 20}, ${margin.top})`)
+
+        volatilityData.forEach((item, index) => {
+          const color = distinctColors[index % distinctColors.length]
+          const legendRow = legend
+            .append('g')
+            .attr('transform', `translate(0, ${index * 20})`)
+            .style('opacity', 0)
+
+          legendRow.append('circle').attr('r', 4).style('fill', color)
+
+          legendRow
+            .append('text')
+            .attr('x', 10)
+            .attr('y', 0)
+            .attr('dy', '0.32em')
+            .style('font-size', '12px')
+            .text(item.category)
+
+          // 图例淡入动画
+          legendRow
+            .transition()
+            .delay(index * 300 + 1000)
+            .duration(300)
+            .style('opacity', 1)
+        })
+      }
+
+      // 页面加载完成后执行
+      document.addEventListener('DOMContentLoaded', loadDataAndCreateChart)
+    </script>
+  </body>
+</html>

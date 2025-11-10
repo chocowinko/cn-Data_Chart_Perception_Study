@@ -17,7 +17,12 @@
         :class="{ active: isFormalExperimentSection }"
         >正式实验</router-link
       >
-      <a href="#" class="nav-link">问卷</a>
+      <router-link
+        to="/questionnaire"
+        class="nav-link"
+        :class="{ active: $route.name === 'Questionnaire' }"
+        >问卷</router-link
+      >
     </nav>
   </header>
 </template>
