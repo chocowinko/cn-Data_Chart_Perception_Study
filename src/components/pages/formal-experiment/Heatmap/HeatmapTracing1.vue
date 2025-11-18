@@ -447,8 +447,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -499,9 +499,9 @@ const playAnimation = () => {
   color: #2c3e50;
   margin-bottom: 0 !important;
   margin-top: 13px !important;
-  font-size: 18px;
+  font-size: 16px !important;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 24px !important;
   font-family: PingFang SC, sans-serif;
   width: 100%;
 }
@@ -580,7 +580,7 @@ const playAnimation = () => {
   z-index: 10;
   margin: 0;
   padding: 2px 8px;
-  font-size: 15px;
+  font-size: 16px !important;
   font-weight: 600;
   background-color: transparent;
   border-radius: 0;
@@ -626,7 +626,7 @@ const playAnimation = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 16px !important;
   color: #666;
 }
 
@@ -643,8 +643,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -682,8 +682,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -712,8 +712,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>
@@ -733,7 +733,7 @@ const playAnimation = () => {
   color: white;
   padding: 5px 10px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 16px !important;
   pointer-events: none;
   transform: translate(-50%, -120%);
   white-space: nowrap;
@@ -767,7 +767,7 @@ const playAnimation = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 16px !important;
   color: #666;
 }
 
@@ -798,7 +798,7 @@ const playAnimation = () => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 16px !important;
   color: #555;
   text-align: left;
 }

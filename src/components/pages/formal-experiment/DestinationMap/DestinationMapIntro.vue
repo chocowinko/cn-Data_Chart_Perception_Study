@@ -1,10 +1,10 @@
 <template>
   <div class="destination-map-intro">
-    <h1 class="main-title">OD图（起点-终点图）</h1>
+    <h1 class="main-title">起点-终点图</h1>
 
     <div class="description-section">
       <p class="description">
-        此OD图显示了所选数据集中七个世界区域之间的汇总迁移流。
+        此起点-终点图显示了所选数据集中七个世界区域之间的汇总迁移流。
       </p>
 
       <ul class="features-list">

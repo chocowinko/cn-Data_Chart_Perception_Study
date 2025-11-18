@@ -11,7 +11,7 @@
         </h3>
 
         <h2 class="task-title">
-          任务1：在动画过程中，以下哪个是绿色/植物味下的二级子类别，且没有进一步细分？
+          任务1：在“绿色/植物味”这一组中，哪一个风味位于第二层，并且没有第三层？
         </h2>
 
         <div class="options-section">
@@ -125,8 +125,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -164,8 +164,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #2c3e50;
   margin: -20px 0 20px 40px;
   padding: 0;
@@ -235,8 +235,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;
@@ -248,8 +248,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -284,8 +284,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -325,8 +325,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>

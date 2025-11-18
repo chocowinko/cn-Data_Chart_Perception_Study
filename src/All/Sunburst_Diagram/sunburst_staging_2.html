@@ -21,11 +21,31 @@
         width: 100vw;
         height: 100vh;
       }
+      /* Step indicator overlay */
+      #step-indicator {
+        position: absolute;
+        left: 16px; /* will be overridden by JS */
+        top: 16px;  /* will be overridden by JS */
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.05);
+        color: #2c3e50;
+        font-family: PingFang SC, sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        border-radius: 6px;
+        pointer-events: none;
+        transition: opacity 200ms ease;
+        opacity: 0.9;
+        transform: translateX(-50%);
+        visibility: hidden;
+      }
     </style>
   </head>
   <body>
     <!-- The container where the chart will be rendered -->
     <div id="main"></div>
+    <div id="step-indicator">阶段 0：初始化（隐藏全部层级）</div>
 
     <!-- Import the ECharts library from a CDN -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
@@ -337,10 +357,39 @@
       }
 
       myChart.setOption(option)
+      // Position once at startup (keep hidden until animation starts)
+      positionStepIndicator()
 
       // Staging animation - layer by layer display
       let currentStage = 0
       let animationTimers = []
+
+      function positionStepIndicator() {
+        var el = document.getElementById('step-indicator')
+        if (!el) return
+        // Center horizontally, above the sunburst outer ring vertically
+        var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        var vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+        var minDim = Math.min(vw, vh)
+        var centerX = Math.round(vw / 2)
+        var centerY = Math.round(vh / 2)
+        var radius = (minDim * 0.95) / 2 // matches chart radius
+        var top = Math.round(centerY - radius - 40) // 40px above the outer ring
+        el.style.left = centerX + 'px'
+        el.style.top = Math.max(10, top) + 'px'
+      }
+
+      function setStep(text) {
+        var el = document.getElementById('step-indicator')
+        if (el) {
+          el.textContent = text
+          el.style.opacity = 0.95
+          el.style.visibility = 'visible'
+          positionStepIndicator()
+        }
+      }
+
+      
 
       function playStagingAnimation() {
         // Clear previous timers
@@ -379,10 +428,14 @@
           },
         })
 
-        // Stage 1 (200msms later): Show only top-level categories
+        // Step text: initial
+        setStep('阶段 0：初始化（隐藏全部层级）')
+
+        // Stage 1 (~300ms later): Show only top-level categories
         animationTimers.push(
           setTimeout(() => {
             currentStage = 1
+            setStep('阶段 1：显示第一层（大类）')
             myChart.setOption({
               series: {
                 levels: [
@@ -411,13 +464,14 @@
                 ],
               },
             })
-          }, 200),
+          }, 300),
         )
 
-        // Stage 2 (1700msms later): Show second layer
+        // Stage 2 (~2550ms later): Show second layer
         animationTimers.push(
           setTimeout(() => {
             currentStage = 2
+            setStep('阶段 2：显示第二层（子类别）')
             myChart.setOption({
               series: {
                 levels: [
@@ -446,13 +500,14 @@
                 ],
               },
             })
-          }, 1700),
+          }, 2550),
         )
 
-        // Stage 3 (3200msms later): Show all layers
+        // Stage 3 (~4800ms later): Show all layers
         animationTimers.push(
           setTimeout(() => {
             currentStage = 3
+            setStep('阶段 3：显示全部层级（含最外层标签）')
             myChart.setOption({
               series: {
                 levels: [
@@ -481,7 +536,14 @@
                 ],
               },
             })
-          }, 3200),
+          }, 4800),
+        )
+
+        // Final message (~7050ms later): Animation complete
+        animationTimers.push(
+          setTimeout(() => {
+            setStep('动画完成')
+          }, 7050),
         )
       }
 
@@ -491,6 +553,7 @@
       // Add a listener to resize the chart when the window is resized
       window.addEventListener('resize', function () {
         myChart.resize()
+        positionStepIndicator()
       })
     </script>
   </body>

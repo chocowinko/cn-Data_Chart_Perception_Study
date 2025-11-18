@@ -4,7 +4,7 @@
 
     <div class="description-section">
       <p class="description">
-        该图表基于世界咖啡研究（WCR）风味指南，展示了咖啡风味的层级关系。
+        旭日图用从内向外的圆环区域展示多层信息，图中信息来源于世界咖啡研究（WCR），不同区块展示了逐层细分的咖啡风味信息。
       </p>
 
       <p class="description">
@@ -20,7 +20,7 @@
       </p>
 
       <p class="description">
-        颜色用于对相似的风味家族进行分组，使复杂的关系更容易理解。
+        此外，我们用相近的颜色来表示相似的风味类型。
       </p>
     </div>
 
@@ -68,7 +68,7 @@ const continueFormal = () => {
 }
 
 .description-section {
-  margin-bottom: 30px;
+  margin-bottom: 0;
 }
 
 .description {
@@ -80,6 +80,10 @@ const continueFormal = () => {
   color: #545454;
   margin: 0 0 20px 0;
   text-align: left;
+}
+
+.description:last-child {
+  margin-bottom: 10px;
 }
 
 .features-list {
@@ -100,8 +104,8 @@ const continueFormal = () => {
 
 .chart-display {
   width: 100%;
-  margin-top: 20px;
-  margin-bottom: 40px;
+  margin-top: -20px;
+  margin-bottom: 5px;
   overflow: hidden;
   display: flex;
   justify-content: flex-start;
@@ -111,11 +115,11 @@ const continueFormal = () => {
 .chart-iframe {
   width: 100%;
   max-width: 1500px;
-  height: 900px;
+  height: 1080px;
   display: block;
   border: none;
   overflow: hidden;
-  zoom: 0.5;
+  zoom: 0.6;
 }
 
 :deep(body),
@@ -134,7 +138,7 @@ const continueFormal = () => {
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
-  margin-top: -30px;
+  margin-top: 20px;
 }
 
 .continue-button:hover {

@@ -360,30 +360,30 @@
           // 重置到初始状态
           svg.attr('class', 'stage-initial')
 
-          // 阶段1: 显示产品大类 (2秒)
+          // 阶段1: 显示产品大类 (3秒)
           setTimeout(() => {
             svg.attr('class', 'stage-1')
           }, 100)
 
-          // 阶段2: 显示子类别 (再2秒)
+          // 阶段2: 显示子类别 (再3秒)
           setTimeout(() => {
             svg.attr('class', 'stage-1 stage-2')
-          }, 2100)
+          }, 3100)
 
-          // 阶段3a: 显示Consumer客户类型 (再2秒) - 这是问题关注的阶段
+          // 阶段3a: 显示Consumer客户类型 (再3秒) - 这是问题关注的阶段
           setTimeout(() => {
             svg.attr('class', 'stage-1 stage-2 stage-3a')
-          }, 4100)
-
-          // 阶段3b: 显示Corporate客户类型 (再2秒)
-          setTimeout(() => {
-            svg.attr('class', 'stage-1 stage-2 stage-3a stage-3b')
           }, 6100)
 
-          // 阶段3c: 显示Home Office客户类型 (再2秒)
+          // 阶段3b: 显示Corporate客户类型 (再3秒)
+          setTimeout(() => {
+            svg.attr('class', 'stage-1 stage-2 stage-3a stage-3b')
+          }, 9100)
+
+          // 阶段3c: 显示Home Office客户类型 (再3秒)
           setTimeout(() => {
             svg.attr('class', 'stage-1 stage-2 stage-3a stage-3b stage-3c')
-          }, 8100)
+          }, 12100)
         })
       }
 

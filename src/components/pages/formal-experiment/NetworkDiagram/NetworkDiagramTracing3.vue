@@ -7,10 +7,14 @@
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          追踪事件：一条消息广播从学生 114 开始，并通过网络传播。每个学生按联系频率顺序（从高到低）依次将消息转发给他们的联系人。</h3>
+          追踪事件：一条消息广播从学生 114
+          开始，并通过网络传播。每个学生按联系频率顺序（从高到低）依次将消息转发给他们的联系人。
+        </h3>
 
         <h2 class="task-title">
-          任务 3：卡其色社群中，当其他成员已获悉消息时，哪个学生反而是从社群外收到的？</h2>
+          任务
+          3：卡其色社群中，当其他成员已获悉消息时，哪个学生反而是从社群外收到的？
+        </h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -22,7 +26,9 @@
               class="option-radio"
             />
             <label :for="`option-${option.value}`" class="option-label">
-              <span class="option-letter">{{ option.label.substring(0, 3) }}</span>
+              <span class="option-letter">{{
+                option.label.substring(0, 3)
+              }}</span>
               <span v-html="option.label.substring(4)"></span>
             </label>
           </div>
@@ -32,12 +38,17 @@
         <div class="button-control">
           <button
             class="confirm-btn"
-            @click="handleConfirm(null, selectedAnswer, '/circle-packing-intro')"
+            @click="
+              handleConfirm(null, selectedAnswer, '/circle-packing-intro')
+            "
             :disabled="!selectedAnswer"
           >
             <span class="button-text">确认</span>
           </button>
-          <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
+          <button
+            class="play-animation-btn"
+            @click="handlePlayAnimation(playAnimation)"
+          >
             <span class="button-text">播放动画</span>
           </button>
         </div>
@@ -59,33 +70,33 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useTaskTimer } from '@/composables/useTaskTimer'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useTaskTimer } from "@/composables/useTaskTimer";
 
-const router = useRouter()
-const selectedAnswer = ref('')
-const chartIframe = ref(null)
+const router = useRouter();
+const selectedAnswer = ref("");
+const chartIframe = ref(null);
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
-  'network-diagram-tracing-3',
-  '网络图 + 追踪 (3/3)',
-)
+  "network-diagram-tracing-3",
+  "网络图 + 追踪 (3/3)"
+);
 
 const options = [
-  { value: 'A', label: '(A) 学生 74' },
-  { value: 'B', label: '(B) 学生 73' },
-  { value: 'C', label: '(C) 学生 122' },
-  { value: 'D', label: '(D) 学生 89' },
-]
+  { value: "A", label: "(A) 学生 74" },
+  { value: "B", label: "(B) 学生 73" },
+  { value: "C", label: "(C) 学生 122" },
+  { value: "D", label: "(D) 学生 89" },
+];
 
 const playAnimation = () => {
   if (chartIframe.value && chartIframe.value.contentWindow) {
     if (chartIframe.value.contentWindow.startBroadcast) {
-      chartIframe.value.contentWindow.startBroadcast()
+      chartIframe.value.contentWindow.startBroadcast();
     }
   }
-}
+};
 
 // confirmAnswer 功能已由 handleConfirm 替代
 </script>
@@ -104,8 +115,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -126,19 +137,19 @@ const playAnimation = () => {
 .task-section {
   flex: 0 0 280px;
   min-width: 280px;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 
 .chart-area {
   flex: 1;
   min-width: 800px;
   width: calc(100vw - 320px);
-  margin-top: 70px;
+  margin-top: 30px;
 }
 
 .chart-wrapper {
   width: 100%;
-  margin-top: -50px;
+  margin-top: 0;
   margin-bottom: 0;
   overflow: visible;
 }
@@ -186,10 +197,10 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
-  margin: 0 0 20px 0;
+  margin: 10px 0 15px 0;
   text-align: left;
   font-style: italic;
 }
@@ -205,8 +216,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -246,8 +257,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -292,8 +303,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>

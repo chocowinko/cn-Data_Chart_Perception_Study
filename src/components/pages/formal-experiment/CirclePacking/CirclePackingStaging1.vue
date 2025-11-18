@@ -7,10 +7,10 @@
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          分阶段事件：可视化从大陆 → 次区域 → 国家逐步构建。</h3>
+          分阶段事件：可视化从大陆 → 区域 → 国家逐步构建。</h3>
 
         <h2 class="task-title">
-          任务 1：在四个欧洲次区域中，哪个次区域的总排放量第二高？其总排放量是否超过欧洲总排放量的一半？</h2>
+          任务 1：在欧洲的四个大组中，哪一组的总排放量排第二高？是否超过了欧洲总排放量的一半？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -106,8 +106,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -144,8 +144,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #2c3e50;
   margin: 10px 0 20px 40px;
   padding: 0;
@@ -206,8 +206,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;
@@ -225,8 +225,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -266,8 +266,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -312,8 +312,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>

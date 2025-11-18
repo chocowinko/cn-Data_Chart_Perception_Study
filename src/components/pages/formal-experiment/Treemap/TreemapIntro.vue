@@ -4,7 +4,8 @@
 
     <div class="description-section">
       <p class="description">
-        该树状图比较了2016年（状态A）和2017年（状态B）之间的销售表现。每个矩形的面积代表总销售额，便于跨年度的视觉比较。
+        树状图可以用多层网格展示出不同商品类别的销售情况。下图中的两个树状图比较了2016年（状态A）和2017年（状态B）之间的销售表现，矩形面积代表销售额的多少。
+        实验中使用动画方便比较两个年度之间销售的变化。
       </p>
 
       <p class="description">层级结构分为三个级别：</p>
@@ -36,13 +37,13 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
 
 const continueFormal = () => {
-  router.push('/treemap-highlighting-1')
-}
+  router.push("/treemap-highlighting-1");
+};
 </script>
 
 <style scoped>
@@ -67,6 +68,7 @@ const continueFormal = () => {
 
 .description-section {
   margin-bottom: 30px;
+  max-width: 1000px;
 }
 
 .description {

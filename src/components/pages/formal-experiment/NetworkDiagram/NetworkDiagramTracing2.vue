@@ -104,8 +104,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -126,19 +126,19 @@ const playAnimation = () => {
 .task-section {
   flex: 0 0 280px;
   min-width: 280px;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 
 .chart-area {
   flex: 1;
   min-width: 800px;
   width: calc(100vw - 320px);
-  margin-top: 70px;
+  margin-top: 30px;
 }
 
 .chart-wrapper {
   width: 100%;
-  margin-top: -50px;
+  margin-top: 0;
   margin-bottom: 0;
   overflow: visible;
 }
@@ -184,10 +184,10 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
-  margin: 0 0 20px 0;
+  margin: 10px 0 15px 0;
   text-align: left;
   font-style: italic;
 }
@@ -201,8 +201,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -240,8 +240,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -284,8 +284,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>

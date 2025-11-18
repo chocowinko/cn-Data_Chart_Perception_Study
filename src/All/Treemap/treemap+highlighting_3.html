@@ -46,37 +46,32 @@
       }
       .node-label {
         fill: white;
-        font-size: 8px;
         pointer-events: none;
+      }
+      .sub-category-label {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .segment-label {
+        font-size: 12px;
+      }
+      .segment-value-label {
+        font-size: 12px;
+        font-weight: 500;
       }
       .parent-label {
         fill: white;
-        font-size: 12px;
+        font-size: 18px;
         font-weight: bold;
         pointer-events: none;
       }
 
-      @keyframes flashBorder {
-        0%,
-        100% {
-          stroke: #30ebe8;
-          stroke-width: 2px;
-        }
-        50% {
-          stroke: #30ebe8;
-          stroke-width: 6px;
-          filter: drop-shadow(0 0 6px #30ebe8);
-        }
-      }
-
-      .highlight-animation {
-        animation: flashBorder 1.5s infinite;
-        z-index: 9999;
-        position: relative;
-      }
-
       .sub-category-group {
         transition: opacity 0.5s;
+      }
+      .dimmed {
+        fill: #dcdcdc !important;
+        opacity: 0.35;
       }
     </style>
   </head>
@@ -101,10 +96,6 @@
     <script>
       const chartWidth = 700
       const chartHeight = 900
-
-      // 增长最快的前五名子品类数据
-      const top5Growth2016 = ['Supplies', 'Machines', 'Copiers', 'Fasteners', 'Tables']
-      const top5Growth2017 = ['Appliances', 'Art', 'Binders', 'Accessories', 'Labels']
 
       // 创建一个通用的Tooltip
       const tooltip = d3.select('body').append('div').attr('class', 'tooltip')
@@ -177,6 +168,17 @@
 
       // --- 核心绘图函数 ---
       function createTreemap(containerId, dataForYear, year) {
+        const getFillForNode = (node) => {
+          if (!node.depth) return 'transparent'
+          const category =
+            node.depth === 1
+              ? node.data.name
+              : node.depth === 2
+                ? node.parent.data.name
+                : node.parent.parent.data.name
+          return getColor(category, node.depth)
+        }
+
         const svg = d3
           .select(containerId)
           .append('svg')
@@ -224,7 +226,24 @@
           .sum((d) => d.value)
           .sort((a, b) => b.value - a.value)
 
-        d3.treemap().size([chartWidth, chartHeight]).padding(1).paddingTop(20)(root)
+        d3.treemap().size([chartWidth, chartHeight]).padding(1).paddingTop(30)(root)
+
+        const highlightSet = new Set()
+        root.descendants().forEach((node) => {
+          if (node.depth === 2 && node.parent?.data.name === 'Furniture') {
+            highlightSet.add(node.data.name)
+          }
+        })
+
+        const isHighlightedNode = (node) => {
+          if (node.depth === 2) {
+            return highlightSet.has(node.data.name)
+          }
+          if (node.depth > 2 && node.parent) {
+            return highlightSet.has(node.parent.data.name)
+          }
+          return false
+        }
 
         const cell = svg
           .selectAll('g')
@@ -240,19 +259,11 @@
           .append('rect')
           .attr('width', (d) => d.x1 - d.x0)
           .attr('height', (d) => d.y1 - d.y0)
-          .attr('fill', (d) => {
-            if (!d.depth) return 'transparent'
-            // 根据产品类别着色
-            const category =
-              d.depth === 1
-                ? d.data.name
-                : d.depth === 2
-                  ? d.parent.data.name
-                  : d.parent.parent.data.name
-            return getColor(category, d.depth)
-          })
+          .attr('fill', (d) => getFillForNode(d))
           .attr('stroke', '#fff')
           .attr('stroke-width', 1)
+          .attr('data-original-fill', (d) => getFillForNode(d))
+          .attr('data-highlighted', (d) => (isHighlightedNode(d) ? 'true' : 'false'))
 
         // 产品类别标签 (depth 1)
         cell
@@ -260,16 +271,16 @@
           .append('text')
           .attr('class', 'parent-label')
           .attr('x', 4)
-          .attr('y', 13)
+          .attr('y', 20)
           .text((d) => translate(d.data.name))
 
         // 子类别标签 (depth 2)
         cell
           .filter((d) => d.depth === 2)
           .append('text')
-          .attr('class', 'node-label')
-          .attr('x', 4)
-          .attr('y', 13)
+          .attr('class', 'node-label sub-category-label')
+          .attr('x', 6)
+          .attr('y', 22)
           .text((d) => translate(d.data.name))
           .style('display', (d) => (d.x1 - d.x0 < 10 ? 'none' : 'inline'))
 
@@ -278,7 +289,7 @@
         // 第一行：客户类型名称
         leafCells
           .append('text')
-          .attr('class', 'node-label')
+          .attr('class', 'node-label segment-label')
           .attr('x', 4)
           .attr('y', 13)
           .text((d) => {
@@ -290,7 +301,7 @@
         // 第二行：销售额
         leafCells
           .append('text')
-          .attr('class', 'node-label')
+          .attr('class', 'node-label segment-value-label')
           .attr('x', 4)
           .attr('y', 25)
           .text((d) => `$${d3.format(',.0f')(d.data.value)}`)
@@ -313,34 +324,6 @@
             tooltip.style('opacity', 0)
           })
 
-        // 创建高亮边框层
-        const highlightLayer = svg
-          .append('g')
-          .attr('class', 'highlight-layer')
-          .style('pointer-events', 'none')
-          .style('opacity', 0)
-
-        // 在高亮层绘制边框
-        const highlightData = root.descendants().filter((d) => {
-          if (d.depth === 2) {
-            // 高亮所有属于"Furniture"类别的子品类
-            const category = d.parent.data.name
-            return category === 'Furniture'
-          }
-          return false
-        })
-
-        highlightLayer
-          .selectAll('rect')
-          .data(highlightData)
-          .enter()
-          .append('rect')
-          .attr('x', (d) => d.x0)
-          .attr('y', (d) => d.y0)
-          .attr('width', (d) => d.x1 - d.x0)
-          .attr('height', (d) => d.y1 - d.y0)
-          .attr('fill', 'none')
-          .attr('class', 'highlight-animation')
       }
 
       // --- 主逻辑：加载数据并为每个年份调用绘图函数 ---
@@ -412,8 +395,34 @@
         })
 
       window.playHighlightAnimation = function () {
-        // 显示所有高亮层
-        d3.selectAll('.highlight-layer').transition().duration(500).style('opacity', 1)
+        const allRects = d3.selectAll('rect[data-original-fill]')
+        allRects
+          .transition()
+          .duration(300)
+          .attr('fill', function () {
+            return d3.select(this).attr('data-original-fill')
+          })
+          .style('opacity', 1)
+
+        const nonHighlightRects = allRects.filter(function () {
+          return d3.select(this).attr('data-highlighted') === 'false'
+        })
+
+        nonHighlightRects
+          .transition()
+          .delay(300)
+          .duration(400)
+          .attr('fill', '#dcdcdc')
+          .style('opacity', 0.35)
+
+        allRects
+          .filter(function () {
+            return d3.select(this).attr('data-highlighted') === 'true'
+          })
+          .transition()
+          .delay(300)
+          .duration(400)
+          .style('opacity', 1)
       }
     </script>
   </body>

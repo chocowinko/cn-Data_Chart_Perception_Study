@@ -260,8 +260,8 @@ const playAnimation = () => {
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 22px;
-  color: #545454;
+  line-height: 20px;
+  color: #1f1f1f;
   cursor: pointer;
   text-align: left;
 }

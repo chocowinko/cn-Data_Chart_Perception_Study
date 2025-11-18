@@ -49,6 +49,16 @@ html {
   box-sizing: border-box;
   background: #ffffff;
 }
+
+/* Global rule: unify all h1 title font-size across the app */
+h1 {
+  font-size: 25px !important;
+}
+
+/* Force all .page-title (h1/h2 etc.) to 25px, override scoped rules */
+#app .page-title {
+  font-size: 25px !important;
+}
 </style>
 
 <style scoped>

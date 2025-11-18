@@ -6,8 +6,11 @@
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
+        <h3 class="event-description">
+          分阶段事件：圆点的颜色用于区分学生群体，而连线的颜色则表示联系强度（深红色=强，中等红色=中，浅粉色=弱）。
+        </h3>
         <h2 class="task-title">
-          任务 3：哪些学生既有强核心关系（密友）又有中等关系（疏远朋友）？</h2>
+          任务 3：哪些学生既有强核心关系（密友）又有中等关系（普通朋友）？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -102,8 +105,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -124,19 +127,32 @@ const playAnimation = () => {
 .task-section {
   flex: 0 0 280px;
   min-width: 280px;
-  margin-top: 60px;
+  margin-top: 30px;
+}
+
+.event-description {
+  font-family:
+    PingFang SC,
+    sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: #545454;
+  margin: 10px 0 10px 0;
+  text-align: left;
 }
 
 .chart-area {
   flex: 1;
   min-width: 800px;
   width: calc(100vw - 320px);
-  margin-top: 70px;
+  margin-top: 30px;
 }
 
 .chart-wrapper {
   width: 100%;
-  margin-top: -50px;
+  margin-top: 0;
   margin-bottom: 0;
   overflow: visible;
 }
@@ -184,8 +200,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -225,8 +241,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -271,8 +287,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>

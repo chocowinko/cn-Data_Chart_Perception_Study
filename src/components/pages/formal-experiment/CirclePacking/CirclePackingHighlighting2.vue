@@ -10,7 +10,7 @@
           高亮事件：高亮显示五个亚洲次区域中排放量最高的国家。</h3>
 
         <h2 class="task-title">
-          任务 2：芬兰与中亚地区的国家相比，哪个的人均排放量更高？</h2>
+          任务 2：在五个高亮的亚洲国家中，排名第二的国家与芬兰相比，谁的人均排放量更高？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -107,8 +107,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -145,8 +145,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #2c3e50;
   margin: 10px 0 20px 40px;
   padding: 0;
@@ -207,8 +207,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;
@@ -226,8 +226,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -267,8 +267,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -313,8 +313,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>

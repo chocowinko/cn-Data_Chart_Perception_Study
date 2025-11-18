@@ -7,11 +7,11 @@
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          分阶段事件：动画的最后阶段展示最详细的风味描述。
+          分阶段事件：动画逐层逐步展示咖啡风味的层级结构。
         </h3>
 
         <h2 class="task-title">
-          任务3：风味黑莓、覆盆子和草莓都属于哪个更大的组？
+          任务3：当“黑莓”、“覆盆子”和“草莓”这些味道出现时，它们都属于哪个更大的分组？
         </h2>
 
         <div class="options-section">
@@ -119,8 +119,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -156,8 +156,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #2c3e50;
   margin: -20px 0 20px 40px;
   padding: 0;
@@ -225,8 +225,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;
@@ -236,8 +236,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -270,8 +270,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -309,8 +309,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>

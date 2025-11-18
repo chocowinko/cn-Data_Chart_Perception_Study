@@ -204,11 +204,14 @@
               .style('fill', GREY_COLOR) // 初始为灰色
             node
               .append('text')
-              .text((d) => d.id)
+              .text((d) => {
+                const id = String(d.id)
+                return id.startsWith('proxy_') ? id.replace('proxy_', '社群 ') : id
+              })
               .attr('dx', 18)
               .attr('dy', 5)
               .style('fill', '#333')
-              .style('font-size', '14px')
+              .style('font-size', '20px')
               .style('pointer-events', 'none')
 
             // --- ✨ 步骤 2: 注释掉自动动画，改为通过外部触发 ---

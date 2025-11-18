@@ -480,7 +480,7 @@ const traceAnimation = () => {
 
 .axis text {
   font-family: PingFang SC, sans-serif;
-  font-size: 11px;
+  font-size: 16px !important;
   fill: #333;
 }
 
@@ -522,8 +522,8 @@ const traceAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -573,8 +573,8 @@ const traceAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 10px 0 10px 0;
   text-align: left;
@@ -607,8 +607,8 @@ const traceAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -675,8 +675,8 @@ const traceAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>

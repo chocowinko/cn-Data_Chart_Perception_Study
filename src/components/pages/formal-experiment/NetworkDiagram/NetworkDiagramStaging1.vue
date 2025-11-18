@@ -6,8 +6,12 @@
     <div class="content-container">
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
+        <h3 class="event-description">
+          分阶段事件：圆点的颜色用于区分学生群体，而连线的颜色则表示联系强度（深红色=强，中等红色=中，浅粉色=弱）。
+        </h3>
         <h2 class="task-title">
-          任务 1：动画完成后，最终完整网络图中哪个社群的内部关系最均匀（即既不包含强核心关系也不包含中等关系）？
+          任务
+          1：动画完成后，最终完整网络图中哪个社群的内部关系最均匀（即既不包含强核心关系也不包含中等关系）？
         </h2>
 
         <div class="options-section">
@@ -20,7 +24,9 @@
               class="option-radio"
             />
             <label :for="`option-${option.value}`" class="option-label">
-              <span class="option-letter">{{ option.label.substring(0, 3) }}</span>
+              <span class="option-letter">{{
+                option.label.substring(0, 3)
+              }}</span>
               <span v-html="option.label.substring(4)"></span>
             </label>
           </div>
@@ -30,12 +36,17 @@
         <div class="button-control">
           <button
             class="confirm-btn"
-            @click="handleConfirm(null, selectedAnswer, '/network-diagram-staging-2')"
+            @click="
+              handleConfirm(null, selectedAnswer, '/network-diagram-staging-2')
+            "
             :disabled="!selectedAnswer"
           >
             <span class="button-text">确认</span>
           </button>
-          <button class="play-animation-btn" @click="handlePlayAnimation(playAnimation)">
+          <button
+            class="play-animation-btn"
+            @click="handlePlayAnimation(playAnimation)"
+          >
             <span class="button-text">播放动画</span>
           </button>
         </div>
@@ -57,32 +68,33 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useTaskTimer } from '@/composables/useTaskTimer'
+import { ref } from "vue";
+import { useTaskTimer } from "@/composables/useTaskTimer";
 
-const selectedAnswer = ref('')
-const chartIframe = ref(null)
+const selectedAnswer = ref("");
+const chartIframe = ref(null);
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
-  'network-diagram-staging-1',
-  '网络图 + 分阶段 (1/3)',
-)
+  "network-diagram-staging-1",
+  "网络图 + 分阶段 (1/3)"
+);
 
 const options = [
-  { value: 'A', label: '(A) 社群 2' },
-  { value: 'B', label: '(B) 社群 3' },
-  { value: 'C', label: '(C) 社群 6' },
-  { value: 'D', label: '(D) 社群 7' },
-]
+  { value: "A", label: "(A) 社群 2" },
+  { value: "B", label: "(B) 社群 3" },
+  { value: "C", label: "(C) 社群 6" },
+  { value: "D", label: "(D) 社群 7" },
+];
 
 const playAnimation = () => {
   if (chartIframe.value && chartIframe.value.contentWindow) {
-    const startButton = chartIframe.value.contentWindow.document.getElementById('start-staging')
+    const startButton =
+      chartIframe.value.contentWindow.document.getElementById("start-staging");
     if (startButton) {
-      startButton.click()
+      startButton.click();
     }
   }
-}
+};
 
 // confirmAnswer 功能已由 handleConfirm 替代
 </script>
@@ -96,11 +108,13 @@ const playAnimation = () => {
 }
 
 .page-title {
-  font-family: PingFang SC, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -121,19 +135,32 @@ const playAnimation = () => {
 .task-section {
   flex: 0 0 280px;
   min-width: 280px;
-  margin-top: 60px;
+  margin-top: 30px;
+}
+
+.event-description {
+  font-family:
+    PingFang SC,
+    sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: #545454;
+  margin: 10px 0 10px 0;
+  text-align: left;
 }
 
 .chart-area {
   flex: 1;
   min-width: 800px;
   width: calc(100vw - 320px);
-  margin-top: 70px;
+  margin-top: 30px;
 }
 
 .chart-wrapper {
   width: 100%;
-  margin-top: -50px;
+  margin-top: 0;
   margin-bottom: 0;
   overflow: visible;
 }
@@ -176,11 +203,13 @@ const playAnimation = () => {
 }
 
 .task-title {
-  font-family: PingFang SC, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -215,11 +244,13 @@ const playAnimation = () => {
 }
 
 .option-label {
-  font-family: PingFang SC, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -259,11 +290,13 @@ const playAnimation = () => {
 }
 
 .button-text {
-  font-family: PingFang SC, sans-serif;
+  font-family:
+    PingFang SC,
+    sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>

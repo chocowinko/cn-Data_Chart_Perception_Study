@@ -1,7 +1,7 @@
 <template>
   <div class="destination-map-highlighting-task">
     <!-- 页面标题 -->
-    <h2 class="page-title">目的地图 + 高亮 (1/3)</h2>
+    <h2 class="page-title">起点-终点图 + 高亮 (1/3)</h2>
 
     <!-- 主内容区域：左右两列布局 -->
     <div class="content-container">
@@ -73,7 +73,7 @@ const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(
   'destination-map-highlighting-1',
-  '目的地图 + 高亮 (1/3)',
+  '起点-终点图 + 高亮 (1/3)',
 )
 
 const options = [
@@ -121,8 +121,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -204,8 +204,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;
@@ -221,8 +221,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -260,8 +260,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -308,8 +308,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>

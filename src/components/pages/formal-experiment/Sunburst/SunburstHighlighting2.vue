@@ -7,10 +7,10 @@
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          高亮事件：高亮显示包含枫糖浆的顶级风味类别。</h3>
+          高亮事件：同时高亮四个风味大类及其所有子类：果味、香料味、烘焙味、甜味。</h3>
 
         <h2 class="task-title">
-          任务2：枫糖浆属于哪个顶级风味类别？</h2>
+          任务2：枫糖浆属于哪一个风味大类？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">
@@ -118,8 +118,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -157,8 +157,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #2c3e50;
   margin: -20px 0 20px 40px;
   padding: 0;
@@ -228,8 +228,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;
@@ -241,8 +241,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   text-align: left;
@@ -277,8 +277,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #545454;
   cursor: pointer;
   text-align: left;
@@ -318,8 +318,8 @@ const playAnimation = () => {
     sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 16px !important;
+  line-height: 24px !important;
   color: #ffffff;
 }
 </style>
