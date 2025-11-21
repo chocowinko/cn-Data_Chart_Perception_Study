@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
+const SESSION_STORAGE_KEY = 'questionnaire_data'
+
 export const useQuestionnaireStore = defineStore('questionnaire', () => {
   // 第一部分：背景经验
   const part1 = ref({
@@ -260,6 +262,30 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
       endTime: null
     }
     console.log('🗑️ 所有问卷数据已清除')
+    sessionStorage.removeItem(SESSION_STORAGE_KEY)
+  }
+
+  /**
+   * 设置用户名
+   */
+  function setUserName(name) {
+    part1.value.name = name
+  }
+
+  /**
+   * 从 sessionStorage 初始化 store
+   */
+  function initializeFromSession() {
+    const savedState = sessionStorage.getItem(SESSION_STORAGE_KEY)
+    if (savedState) {
+      const savedStore = JSON.parse(savedState)
+      part1.value = savedStore.part1
+      part2.value = savedStore.part2
+      part3.value = savedStore.part3
+      part4.value = savedStore.part4
+      timestamps.value = savedStore.timestamps
+      console.log('✅ 问卷数据已从 sessionStorage 恢复')
+    }
   }
 
   return {
@@ -283,6 +309,8 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     getAllData,
     exportData,
     downloadJSON,
-    clearAllData
+    clearAllData,
+    setUserName,
+    initializeFromSession
   }
 })

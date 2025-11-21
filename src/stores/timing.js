@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+const SESSION_STORAGE_KEY = 'timing_data'
+
 export const useTimingStore = defineStore('timing', () => {
   // 存储所有任务的计时数据
   const taskRecords = ref([])
@@ -112,6 +114,7 @@ export const useTimingStore = defineStore('timing', () => {
       duration: null,
       answer: null,
     }
+    sessionStorage.removeItem(SESSION_STORAGE_KEY)
   }
 
   /**
@@ -132,7 +135,18 @@ export const useTimingStore = defineStore('timing', () => {
     return JSON.stringify(data, null, 2)
   }
 
+  function initializeFromSession() {
+    const savedState = sessionStorage.getItem(SESSION_STORAGE_KEY)
+    if (savedState) {
+      const savedStore = JSON.parse(savedState)
+      taskRecords.value = savedStore.taskRecords
+      currentTask.value = savedStore.currentTask
+      console.log('✅ 计时数据已从 sessionStorage 恢复')
+    }
+  }
+
   return {
+    initializeFromSession,
     taskRecords,
     currentTask,
     startTiming,

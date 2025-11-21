@@ -1,11 +1,49 @@
 <script setup>
+import { onMounted, computed } from 'vue'
 import Header from './components/layout/Header.vue'
 // import NetworkChart from './components/charts/NetworkChart.vue'
 // import ScatterChart from './components/charts/ScatterChart.vue'
 import DevMenu from './components/DevMenu.vue'
-import { useRoute } from 'vue-router'
+import NamePromptModal from './components/modals/NamePromptModal.vue'
+import { useQuestionnaireStore } from './stores/questionnaire.js'
+import { useTimingStore } from './stores/timing.js'
 
-const route = useRoute()
+
+const questionnaireStore = useQuestionnaireStore()
+const timingStore = useTimingStore()
+
+const showNamePrompt = computed(() => !questionnaireStore.part1.name)
+
+onMounted(() => {
+  questionnaireStore.initializeFromSession()
+  timingStore.initializeFromSession()
+
+  // 订阅 questionnaireStore 的变化
+  questionnaireStore.$subscribe((mutation, state) => {
+    // 为了避免存储敏感信息或过大的数据，可以选择性地保存
+    const stateToSave = {
+      part1: state.part1,
+      part2: state.part2,
+      part3: state.part3,
+      part4: state.part4,
+      timestamps: state.timestamps
+    }
+    sessionStorage.setItem('questionnaire_data', JSON.stringify(stateToSave))
+  })
+
+  // 订阅 timingStore 的变化
+  timingStore.$subscribe((mutation, state) => {
+    const stateToSave = {
+      taskRecords: state.taskRecords,
+      currentTask: state.currentTask
+    }
+    sessionStorage.setItem('timing_data', JSON.stringify(stateToSave))
+  })
+})
+
+function handleNameSubmit(name) {
+  questionnaireStore.setUserName(name)
+}
 </script>
 
 <template>
@@ -26,6 +64,7 @@ const route = useRoute()
       </div> -->
     </main>
     <DevMenu />
+    <NamePromptModal v-if="showNamePrompt" @submit="handleNameSubmit" />
   </div>
 </template>
 
