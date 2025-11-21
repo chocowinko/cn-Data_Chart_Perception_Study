@@ -8,7 +8,7 @@
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          分阶段事件：地图上的线条按人们移动到哪里分组显示。
+          分阶段事件：动画将分阶段展示数据，每一阶段显示迁往同一个目的地的所有路线。
         </h3>
 
         <h2 class="task-title">
@@ -80,7 +80,7 @@ const options = [
   {
     letter: 'A',
     value: 'A',
-    text: '拉丁美洲和加勒比地区',
+    text: '拉丁美洲',
   },
   {
     letter: 'B',

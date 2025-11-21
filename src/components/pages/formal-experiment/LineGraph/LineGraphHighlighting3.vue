@@ -8,7 +8,7 @@
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h2 class="task-title">
-          任务3：图表高亮了全年销售中最不稳定（红色）和
+          任务3：图表高亮了全年销售中最不稳定（紫色）和
           最稳定（蓝色）的产品线。以下哪项描述最为准确？
         </h2>
 
@@ -72,22 +72,22 @@ const options = [
   {
     letter: "A",
     value: "A",
-    text: "最不稳定的红线全年剧烈波动，而最稳定的蓝线则呈现平稳下降趋势",
+    text: "最不稳定的紫线全年剧烈波动，而最稳定的蓝线则呈现平稳下降趋势",
   },
   {
     letter: "B",
     value: "B",
-    text: "两条线在十二月都有相似的销售高峰，红线只是波动幅度更大",
+    text: "两条线在十二月都有相似的销售高峰，紫线只是波动幅度更大",
   },
   {
     letter: "C",
     value: "C",
-    text: "最不稳定的红线呈现出戏剧性的U型反弹，而最稳定的蓝线全年基本保持平稳",
+    text: "最不稳定的紫线呈现出戏剧性的U型反弹，而最稳定的蓝线全年基本保持平稳",
   },
   {
     letter: "D",
     value: "D",
-    text: "最不稳定的红线正在快速增长，而最稳定的蓝线则在迅速下降",
+    text: "最不稳定的紫线正在快速增长，而最稳定的蓝线则在迅速下降",
   },
 ];
 
@@ -195,18 +195,18 @@ function initializeChart() {
     const lines = csvText.split("\n");
     const headers = lines[1].split(",").map((h) => h.trim());
     const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月',
     ];
     const categories = {};
 
@@ -261,7 +261,7 @@ function initializeChart() {
       "#ccebc5",
     ];
 
-    const margin = { top: 60, right: 180, bottom: 60, left: 60 };
+    const margin = { top: 60, right: 180, bottom: 60, left: 80 };
     const containerWidth =
       document.querySelector(".chart-container").clientWidth;
     const containerHeight = 600;
@@ -308,7 +308,7 @@ function initializeChart() {
       .attr("class", "axis-label")
       .attr("transform", "rotate(-90)")
       .attr("x", -height / 2)
-      .attr("y", -40)
+      .attr('y', -60)
       .style("text-anchor", "middle")
       .text("销售额 (亿元)");
 

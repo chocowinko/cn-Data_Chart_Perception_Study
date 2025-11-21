@@ -286,12 +286,12 @@ const initScatterplot = () => {
     g.select('.x-axis-title')
       .attr('x', width / 2)
       .attr('y', height + 45)
-      .text('Age')
+      .text('年龄')
     g.select('.y-axis-title')
       .attr('x', -height / 2)
       .attr('y', -50)
       .attr('transform', 'rotate(-90)')
-      .text('Sleep Efficiency')
+      .text('睡眠效率')
 
     // 定义年龄组
     const ageGroups = [
@@ -312,7 +312,7 @@ const initScatterplot = () => {
       .attr('y', 0)
       .style('font-size', '14px')
       .style('font-weight', 'bold')
-      .text('Caffeine Consumption:')
+      .text('咖啡因摄入：')
 
     legend.append('circle').attr('cx', 10).attr('cy', 20).attr('r', 5).attr('fill', '#F29076')
     legend
@@ -320,7 +320,7 @@ const initScatterplot = () => {
       .attr('x', 20)
       .attr('y', 25)
       .style('font-size', '12px')
-      .text('With Caffeine')
+      .text('饮用咖啡')
 
     legend.append('circle').attr('cx', 10).attr('cy', 40).attr('r', 5).attr('fill', '#5AB3A6')
     legend
@@ -328,7 +328,7 @@ const initScatterplot = () => {
       .attr('x', 20)
       .attr('y', 45)
       .style('font-size', '12px')
-      .text('Without Caffeine')
+      .text('未饮咖啡')
 
     // 按年龄组分步显示数据点
     ageGroups.forEach((group, i) => {

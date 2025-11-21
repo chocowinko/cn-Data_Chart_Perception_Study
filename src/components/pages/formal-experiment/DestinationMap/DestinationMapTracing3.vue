@@ -8,7 +8,7 @@
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          追踪事件：您已经看到了包含所有路线的地图。现在，我们将提取三条典型路线以更仔细地观察它们。我们将观察它们完整的逐步旅程。
+          追踪事件：系统将追踪演示三条主要路线。请注意观察不同路线的路径走向与流量大小（线条粗细）。
         </h3>
 
         <h2 class="task-title">
@@ -63,11 +63,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 import { useTaskTimer } from '@/composables/useTaskTimer'
 
-const router = useRouter()
 const selectedAnswer = ref('')
 
 const { handlePlayAnimation, handleConfirm } = useTaskTimer(

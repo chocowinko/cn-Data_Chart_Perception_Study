@@ -11,7 +11,7 @@
         </h3>
 
         <h2 class="task-title">
-          任务1：在“绿色/植物味”这一组中，哪一个风味位于第二层，并且没有第三层？
+          任务1：在“绿色/植物味”这一组中，以下哪一个风味位于第二层，并且没有第三层？
         </h2>
 
         <div class="options-section">
@@ -233,10 +233,10 @@ const playAnimation = () => {
   font-family:
     PingFang SC,
     sans-serif;
-  font-style: normal;
+  font-style: italic;
   font-weight: 400;
-  font-size: 16px !important;
-  line-height: 24px !important;
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;

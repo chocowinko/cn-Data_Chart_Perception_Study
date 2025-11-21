@@ -160,18 +160,18 @@ const initScatterplot = () => {
       if (day.count > 0 && day.day % 2 === 0) {
         const dateObj = new Date(day.year, day.month - 1, day.day)
         const monthNames = [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
+          '一月',
+          '二月',
+          '三月',
+          '四月',
+          '五月',
+          '六月',
+          '七月',
+          '八月',
+          '九月',
+          '十月',
+          '十一月',
+          '十二月',
         ]
         processedData.push({
           date: date,
@@ -384,7 +384,7 @@ const playAnimation = () => {
 
   const layout = {
     title: {
-      text: '<b>2016 Daily Average PM2.5 and Ozone Concentration Scatterplot in Changping District, Beijing</b>',
+      text: '<b>2016年北京市昌平区PM2.5与臭氧日均浓度散点图</b>',
       font: {
         size: 18,
         family: 'PingFang SC, sans-serif',
@@ -394,14 +394,14 @@ const playAnimation = () => {
       xanchor: 'left',
     },
     xaxis: {
-      title: 'Daily Average Ozone Concentration (μg/m³)',
+      title: '臭氧日均浓度 (μg/m³)',
       title_font: { size: 14 },
       showgrid: true,
       gridwidth: 1,
       gridcolor: 'rgba(128,128,128,0.2)',
     },
     yaxis: {
-      title: 'Daily Average PM2.5 Concentration (μg/m³)',
+      title: 'PM2.5日均浓度 (μg/m³)',
       title_font: { size: 14 },
       showgrid: true,
       gridwidth: 1,

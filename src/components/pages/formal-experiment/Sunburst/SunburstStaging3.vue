@@ -7,8 +7,7 @@
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          分阶段事件：动画逐层逐步展示咖啡风味的层级结构。
-        </h3>
+          分阶段事件：动画逐层逐步展示咖啡风味的层级结构。</h3>
 
         <h2 class="task-title">
           任务3：当“黑莓”、“覆盆子”和“草莓”这些味道出现时，它们都属于哪个更大的分组？
@@ -119,8 +118,8 @@ const playAnimation = () => {
   font-family: PingFang SC, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px !important;
-  line-height: 24px !important;
+  font-size: 1rem;
+  line-height: 1.5rem;
   color: #1f1f1f;
   margin: 0 0 10px 0;
   padding: 0;
@@ -223,10 +222,10 @@ const playAnimation = () => {
 
 .event-description {
   font-family: PingFang SC, sans-serif;
-  font-style: normal;
+  font-style: italic;
   font-weight: 400;
-  font-size: 16px !important;
-  line-height: 24px !important;
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;

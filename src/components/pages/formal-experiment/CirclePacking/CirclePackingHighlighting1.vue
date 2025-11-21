@@ -7,10 +7,10 @@
       <!-- 左侧：任务问题区域 -->
       <div class="task-section">
         <h3 class="event-description">
-          高亮事件：高亮显示四个欧洲次区域中排放量最高的国家。</h3>
+          高亮事件：高亮显示欧洲四个区域中排放量最高的国家。</h3>
 
         <h2 class="task-title">
-          任务 1：欧洲地区哪个国家的人均温室气体排放量最高？</h2>
+          任务 1：欧洲哪个国家的人均温室气体排放量最高？</h2>
 
         <div class="options-section">
           <div class="option" v-for="option in options" :key="option.value">

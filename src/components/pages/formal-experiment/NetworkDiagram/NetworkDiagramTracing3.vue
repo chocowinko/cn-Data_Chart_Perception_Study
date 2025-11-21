@@ -84,10 +84,10 @@ const { handlePlayAnimation, handleConfirm } = useTaskTimer(
 );
 
 const options = [
-  { value: "A", label: "(A) 学生 74" },
-  { value: "B", label: "(B) 学生 73" },
-  { value: "C", label: "(C) 学生 122" },
-  { value: "D", label: "(D) 学生 89" },
+  { value: "A", label: "(A) 学生 74 和 89" },
+  { value: "B", label: "(B) 学生 73 和 89" },
+  { value: "C", label: "(C) 学生 74 和 122" },
+  { value: "D", label: "(D) 学生 73 和 74" },
 ];
 
 const playAnimation = () => {

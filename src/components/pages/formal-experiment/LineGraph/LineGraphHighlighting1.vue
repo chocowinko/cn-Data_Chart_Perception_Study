@@ -180,18 +180,18 @@ function initChart() {
     const lines = csvText.split('\n')
     const headers = lines[1].split(',').map((h) => h.trim())
     const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月',
     ]
     const categories = {}
 
@@ -261,7 +261,7 @@ function initChart() {
       '#ccebc5',
     ]
 
-    const margin = { top: 60, right: 180, bottom: 60, left: 60 }
+    const margin = { top: 60, right: 180, bottom: 60, left: 80 }
     const containerWidth = document.querySelector('.chart-container').clientWidth
     const containerHeight = 600
     const width = containerWidth - margin.left - margin.right
@@ -306,7 +306,7 @@ function initChart() {
       .attr('class', 'axis-label')
       .attr('transform', 'rotate(-90)')
       .attr('x', -height / 2)
-      .attr('y', -40)
+      .attr('y', -60)
       .style('text-anchor', 'middle')
       .text('销售额 (亿元)')
 

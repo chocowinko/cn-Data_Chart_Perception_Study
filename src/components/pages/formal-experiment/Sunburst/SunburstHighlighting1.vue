@@ -222,10 +222,10 @@ const playAnimation = () => {
 
 .event-description {
   font-family: PingFang SC, sans-serif;
-  font-style: normal;
+  font-style: italic;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 1rem;
+  line-height: 1.5rem;
   color: #545454;
   margin: 10px 0 20px 0;
   text-align: left;
